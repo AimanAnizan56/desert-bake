@@ -4,6 +4,7 @@ import { Box, Text, Flex, Img, IconButton } from '@chakra-ui/react';
 import { UserIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
 import pages from '../lib/list_page';
 import Head from 'next/head';
+import { totalmem } from 'os';
 
 const Navbar = ({ pageTitle, pageDescription }: { pageTitle: string; pageDescription: string }) => {
   const Icons: { href: string; icon: JSX.Element }[] = [
@@ -17,10 +18,12 @@ const Navbar = ({ pageTitle, pageDescription }: { pageTitle: string; pageDescrip
     },
   ];
 
+  const title = `Desert Bake | ${pageTitle}`;
+
   return (
     <>
       <Head>
-        <title>Desert Bake | {pageTitle}</title>
+        <title>{title}</title>
         <meta name="description" content={pageDescription} />
         <link rel="icon" href="/favicon.jpg" />
       </Head>
