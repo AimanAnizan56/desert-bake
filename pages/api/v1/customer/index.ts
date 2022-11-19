@@ -6,7 +6,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (method == 'GET') {
     // ! only for admin
-    // todo - add to retrieve all customer data
+    // todo - check if the user is admin
+    // todo --> research how to use session in next or nodejs
+
+    // add to retrieve all customer data
     await GetHandler(req, res);
   } else if (method == 'POST') {
     await PostHandler(req, res);
