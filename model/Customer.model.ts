@@ -1,4 +1,5 @@
 import { hashPassword } from '../lib/helper';
+import { makeQuery } from '../lib/mysql_config';
 
 export class Customer {
   private readonly id!: number;
@@ -11,4 +12,31 @@ export class Customer {
     this.email = email;
     this.password = hashPassword(password);
   }
+
+  validate = async () => {
+    const row = makeQuery('SELECT customer_id FROM customer WHERE customer_email=?', [this.email]);
+    const data: Array<{ customer_id: number }> = await row;
+
+    if (data.length == 0) {
+      return true;
+    }
+    return false;
+  };
+
+  insertDb = async () => {
+    const row = makeQuery('INSERT INTO customer(customer_name, customer_email, password) VALUES (?,?,?)', [this.name, this.email, this.password]);
+    const data = await row;
+
+    if (data.affectedRows == 1) {
+      return {
+        id: data.insertId,
+        name: this.name,
+        email: this.email,
+      };
+    }
+
+    return {
+      error: 'Could not create',
+    };
+  };
 }
