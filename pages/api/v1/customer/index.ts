@@ -7,11 +7,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (method == 'GET') {
     // ! only for admin
     // todo - add to retrieve all customer data
-    res.status(200).json({ data: {} });
+    await GetHandler(req, res);
   } else if (method == 'POST') {
     await PostHandler(req, res);
   }
 }
+
+const GetHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const data = await Customer.getAllCustomerData();
+  res.status(200).json({
+    length: data.length,
+    data,
+  });
+};
 
 const PostHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { name, email, password } = req.body;
