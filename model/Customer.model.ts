@@ -39,4 +39,13 @@ export class Customer {
       error: 'Could not create',
     };
   };
+
+  static getAllCustomerData = async () => {
+    const data = await makeQuery('SELECT customer_id, customer_name, customer_email FROM customer');
+
+    if (data.length == 0) {
+      return [];
+    }
+    return data;
+  };
 }
