@@ -18,6 +18,8 @@ const SignUp = () => {
   const [showPass, setShowPass] = useState(false);
   const [showRePass, setShowRePass] = useState(false);
   const [buttonLoading, setButtonLoading] = useState(false);
+  const [checkboxTerm, setCheckboxTerm] = useState(false);
+  const [isButtonDisabled, setButtonDisabled] = useState(true);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -26,6 +28,13 @@ const SignUp = () => {
 
   const handleSubmit = () => {
     setButtonLoading(true);
+    console.log('submitting');
+  };
+
+  const handleCheckboxTerm = () => {
+    console.log('checkbox handler');
+    setCheckboxTerm(!checkboxTerm);
+    setButtonDisabled(checkboxTerm);
   };
 
   return (
@@ -41,21 +50,21 @@ const SignUp = () => {
         <PasswordComponent value={rePassword} onChange={setRePassword} state={showRePass} setState={setShowRePass} placeholder="Re-enter password" />
 
         <Box as="div">
-          <Checkbox w={'100%'} px={'.7rem'}>
+          <Checkbox w={'100%'} px={'.7rem'} isChecked={checkboxTerm} onChange={() => handleCheckboxTerm()}>
             <Text fontSize={'0.8rem'}>
               By signing up, you accept the{' '}
-              <Text display={'inline-block'} color={'blue.300'}>
-                Term of service
-              </Text>{' '}
+              <Box as="span" color={'blue.300'} fontWeight={'bold'}>
+                Term and service
+              </Box>{' '}
               and{' '}
-              <Text display={'inline-block'} color={'blue.300'}>
+              <Box as="span" color={'blue.300'} fontWeight={'bold'}>
                 Privacy Policy
-              </Text>
+              </Box>
             </Text>
           </Checkbox>
         </Box>
 
-        <Button w={'100%'} mt={'0.8rem'} isLoading={buttonLoading} loadingText={'Submitting'} onClick={handleSubmit} bg={'brand.500'} color={'white'} _hover={{ background: 'brand.600' }}>
+        <Button w={'100%'} mt={'0.8rem'} isDisabled={isButtonDisabled} isLoading={buttonLoading} loadingText={'Submitting'} onClick={handleSubmit} bg={'brand.500'} color={'white'} _hover={{ background: 'brand.600' }}>
           Submit
         </Button>
       </Box>
