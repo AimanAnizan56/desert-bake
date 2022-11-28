@@ -1,4 +1,5 @@
 import { Box, Button, Container, Text, Heading, Input, InputGroup, InputRightElement, Checkbox } from '@chakra-ui/react';
+import Link from 'next/link';
 import { Dispatch, SetStateAction, useState } from 'react';
 
 const PasswordComponent = ({ state, setState, placeholder, value, onChange }: { state: boolean; setState: Dispatch<SetStateAction<boolean>>; placeholder: string; value: string; onChange: Dispatch<SetStateAction<string>> }) => {
@@ -39,7 +40,7 @@ const SignUp = () => {
 
   return (
     <Container>
-      <Box as="form" boxShadow={'dark-lg'} borderRadius={'0.5rem'} px={8} py={5} mt={'8rem'}>
+      <Box as="form" boxShadow={'dark-lg'} borderRadius={'0.5rem'} px={8} py={5} mt={'5rem'}>
         <Heading as="h1" textAlign={'center'} mb="2rem" color={'brand.500'}>
           Sign Up
         </Heading>
@@ -53,12 +54,12 @@ const SignUp = () => {
           <Checkbox w={'100%'} px={'.7rem'} isChecked={checkboxTerm} onChange={() => handleCheckboxTerm()}>
             <Text fontSize={'0.8rem'}>
               By signing up, you accept the{' '}
-              <Box as="span" color={'blue.300'} fontWeight={'bold'}>
+              <Box as="span" color={'blue.300'} fontWeight={'bold'} _hover={{ textDecoration: 'underline' }}>
                 Term and service
               </Box>{' '}
               and{' '}
-              <Box as="span" color={'blue.300'} fontWeight={'bold'}>
-                Privacy Policy
+              <Box as="span" color={'blue.300'} fontWeight={'bold'} _hover={{ textDecoration: 'underline' }}>
+                <Link href="/">Privacy Policy</Link>
               </Box>
             </Text>
           </Checkbox>
@@ -67,6 +68,13 @@ const SignUp = () => {
         <Button w={'100%'} mt={'0.8rem'} isDisabled={isButtonDisabled} isLoading={buttonLoading} loadingText={'Submitting'} onClick={handleSubmit} bg={'brand.500'} color={'white'} _hover={{ background: 'brand.600' }}>
           Submit
         </Button>
+
+        <Text fontSize={'0.8rem'} mt={'0.8rem'} textAlign={'center'}>
+          Already have an account?{' '}
+          <Box as="span" color={'blue.300'} fontWeight={'bold'} _hover={{ textDecoration: 'underline' }}>
+            <Link href={'/signin'}>Log In</Link>
+          </Box>
+        </Text>
       </Box>
     </Container>
   );
