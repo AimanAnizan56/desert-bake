@@ -25,7 +25,7 @@ const SignIn = () => {
   });
 
   const handleSubmit = async () => {
-    const res = await axios.post('/api/v1/customer/login', {
+    const res = await axios.post('/api/v1/customer/auth', {
       ...customerData,
     });
 
