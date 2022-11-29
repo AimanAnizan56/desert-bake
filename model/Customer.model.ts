@@ -48,4 +48,14 @@ export class Customer {
     }
     return data;
   };
+
+  static getCustomerData = async (email: string, password: string) => {
+    const hashedPassword = hashPassword(password);
+    const data = await makeQuery('SELECT customer_id, customer_name, customer_email FROM customer WHERE customer_email=? AND password=?', [email, hashedPassword]);
+
+    if (data.length == 0) {
+      return [];
+    }
+    return data[0];
+  };
 }
