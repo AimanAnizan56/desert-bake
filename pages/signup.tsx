@@ -1,6 +1,6 @@
 import { Box, Button, Container, Text, Heading, Input, InputGroup, InputRightElement, Checkbox } from '@chakra-ui/react';
 import Link from 'next/link';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useState, useEffect } from 'react';
 
 const PasswordComponent = ({ state, setState, placeholder, value, onChange }: { state: boolean; setState: Dispatch<SetStateAction<boolean>>; placeholder: string; value: string; onChange: Dispatch<SetStateAction<string>> }) => {
   return (
@@ -27,6 +27,14 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [rePassword, setRePassword] = useState('');
 
+  useEffect(() => {
+    if (name.length != 0 && email.length != 0 && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) && password.length != 0 && rePassword.length != 0 && password === rePassword && checkboxTerm) {
+      setButtonDisabled(false);
+    } else {
+      setButtonDisabled(true);
+    }
+  }, [name, email, password, rePassword]);
+
   const handleSubmit = () => {
     setButtonLoading(true);
     console.log('submitting');
@@ -35,7 +43,6 @@ const SignUp = () => {
   const handleCheckboxTerm = () => {
     console.log('checkbox handler');
     setCheckboxTerm(!checkboxTerm);
-    setButtonDisabled(checkboxTerm);
   };
 
   return (
