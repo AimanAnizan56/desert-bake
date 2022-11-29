@@ -91,6 +91,11 @@ const SignUp = () => {
         });
       }, 2500);
 
+      setName('');
+      setEmail('');
+      setPassword('');
+      setRePassword('');
+
       console.log('User Data', data);
     }
   };
