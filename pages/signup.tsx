@@ -1,4 +1,5 @@
 import { Box, Button, Container, Text, Heading, Input, InputGroup, InputRightElement, Checkbox } from '@chakra-ui/react';
+import axios from 'axios';
 import Link from 'next/link';
 import { Dispatch, SetStateAction, useState, useEffect } from 'react';
 
@@ -16,6 +17,7 @@ const PasswordComponent = ({ state, setState, placeholder, value, onChange }: { 
 };
 
 const SignUp = () => {
+  const [emailError, setEmailError] = useState<undefined | boolean>(undefined);
   const [showPass, setShowPass] = useState(false);
   const [showRePass, setShowRePass] = useState(false);
   const [buttonLoading, setButtonLoading] = useState(false);
@@ -28,7 +30,21 @@ const SignUp = () => {
   const [rePassword, setRePassword] = useState('');
 
   useEffect(() => {
-    if (name.length != 0 && email.length != 0 && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) && password.length != 0 && rePassword.length != 0 && password == rePassword && /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(password) && checkboxTerm) {
+    if (emailError == undefined) {
+      return;
+    }
+
+    if (
+      name.length != 0 &&
+      email.length != 0 &&
+      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) &&
+      password.length != 0 &&
+      rePassword.length != 0 &&
+      password == rePassword &&
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(password) &&
+      checkboxTerm &&
+      !emailError
+    ) {
       setButtonDisabled(false);
     } else {
       setButtonDisabled(true);
@@ -40,8 +56,15 @@ const SignUp = () => {
     console.log('submitting');
   };
 
+  const handleEmailBlur = async () => {
+    // todo -- change for later
+    const res = await axios.post('/api/v1/customer/validate', { email: email });
+    const { message } = res.data;
+
+    console.log('message', message);
+  };
+
   const handleCheckboxTerm = () => {
-    console.log('checkbox handler');
     setCheckboxTerm(!checkboxTerm);
   };
 
@@ -52,7 +75,7 @@ const SignUp = () => {
           Sign Up
         </Heading>
         <Input variant={'filled'} mb="1rem" focusBorderColor={'brand.500'} placeholder="Enter name" type="text" value={name} onChange={(e) => setName(e.target.value)} isRequired />
-        <Input variant={'filled'} mb="1rem" focusBorderColor={'brand.500'} placeholder="Enter email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} isRequired />
+        <Input variant={'filled'} mb="1rem" focusBorderColor={'brand.500'} placeholder="Enter email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} onBlur={handleEmailBlur} isRequired />
 
         <PasswordComponent value={password} onChange={setPassword} state={showPass} setState={setShowPass} placeholder="Enter password" />
         <PasswordComponent value={rePassword} onChange={setRePassword} state={showRePass} setState={setShowRePass} placeholder="Re-enter password" />
