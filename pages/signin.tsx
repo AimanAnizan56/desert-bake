@@ -2,6 +2,7 @@ import { Alert, AlertIcon, Box, Button, Container, Heading, Input, InputGroup, I
 import Link from 'next/link';
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const SignIn = () => {
   const [alertOn, setAlertOn] = useState({
@@ -16,15 +17,22 @@ const SignIn = () => {
   const [buttonState, setButtonState] = useState({
     isDisabled: true,
     isLoading: false,
-    handleSubmit: async () => {
-      console.log('handle submit');
-    },
   });
 
   const [customerData, setCustomerData] = useState({
     email: '' as string,
     password: '' as string,
   });
+
+  const handleSubmit = async () => {
+    const res = await axios.post('/api/v1/customer/login', {
+      ...customerData,
+    });
+
+    const { details } = res.data;
+
+    console.log(details);
+  };
 
   useEffect(() => {
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(customerData.email) && customerData.password.length > 0) {
@@ -62,7 +70,7 @@ const SignIn = () => {
             </InputRightElement>
           </InputGroup>
 
-          <Button w={'100%'} mt={'0.8rem'} isDisabled={buttonState.isDisabled} isLoading={buttonState.isLoading} loadingText={'Logging'} onClick={buttonState.handleSubmit} bg={'brand.500'} color={'white'} _hover={{ background: 'brand.600' }}>
+          <Button w={'100%'} mt={'0.8rem'} isDisabled={buttonState.isDisabled} isLoading={buttonState.isLoading} loadingText={'Logging'} onClick={handleSubmit} bg={'brand.500'} color={'white'} _hover={{ background: 'brand.600' }}>
             Login
           </Button>
           <Text fontSize={'0.8rem'} mt={'0.8rem'} textAlign={'center'}>
