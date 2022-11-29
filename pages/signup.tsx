@@ -95,6 +95,7 @@ const SignUp = () => {
       setEmail('');
       setPassword('');
       setRePassword('');
+      setCheckboxTerm(false);
 
       console.log('User Data', data);
     }
