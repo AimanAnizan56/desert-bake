@@ -9,12 +9,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // todo -- change for better message
   if (!validate) {
     res.status(200).json({
-      message: '!validate',
+      message: 'Email has already registered',
+      error: true,
     });
     return;
   }
 
   res.status(200).json({
-    message: 'validate',
+    message: 'Email not been registered yet',
+    error: false,
   });
 }
