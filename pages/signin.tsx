@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, Box, Button, Checkbox, Container, Heading, Input, InputGroup, InputRightElement, Text } from '@chakra-ui/react';
+import { Alert, AlertIcon, Box, Button, Container, Heading, Input, InputGroup, InputRightElement, Text } from '@chakra-ui/react';
 import Link from 'next/link';
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
