@@ -46,8 +46,8 @@ const SignIn = () => {
   return (
     <>
       <Head>
-        <title>Desert Bake | Sign Up</title>
-        <meta name="description" content="Desert Bake Sign Up" />
+        <title>Desert Bake | Sign In</title>
+        <meta name="description" content="Desert Bake Sign In" />
         <link rel="icon" href="/favicon.jpg" />
       </Head>
 
