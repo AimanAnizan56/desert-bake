@@ -27,7 +27,7 @@ const loginRoute = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(200).json(user);
     return;
   } else if (req.method != 'POST') {
-    res.status(400).json({ error: true, message: 'Request method not allowed' });
+    res.status(405).json({ error: true, message: 'Request method not allowed' });
     return;
   }
 
