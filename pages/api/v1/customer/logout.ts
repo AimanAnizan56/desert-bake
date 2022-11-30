@@ -1,4 +1,4 @@
-import { withIronSessionApiRoute } from 'iron-session/next/dist';
+import { withIronSessionApiRoute } from 'iron-session/next';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { ironSessionOptions } from '../../../../lib/helper';
 
