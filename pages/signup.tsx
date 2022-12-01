@@ -143,11 +143,9 @@ const SignUp = () => {
               <Input variant={'filled'} focusBorderColor={'brand.500'} placeholder="Enter email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} onBlur={handleEmailBlur} isInvalid={emailError} ref={emailRef} isRequired />
             </InputGroup>
             {emailError && (
-              <>
-                <Text ml="0.3rem" color="red" fontWeight="bold" fontSize="0.7rem" mt={'0.1rem'}>
-                  Email already exist!
-                </Text>
-              </>
+              <Text ml="0.3rem" color="red" fontWeight="bold" fontSize="0.7rem" mt={'0.1rem'}>
+                Email already exist!
+              </Text>
             )}
           </Box>
           <PasswordComponent value={password} onChange={setPassword} state={showPass} setState={setShowPass} placeholder="Enter password" />
