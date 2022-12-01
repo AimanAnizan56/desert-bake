@@ -1,4 +1,6 @@
-import { Alert, AlertIcon, Box, Button, Container, Heading, Input, InputGroup, InputRightElement, Text } from '@chakra-ui/react';
+import { Alert, AlertIcon, Box, Button, Container, Heading, Input, InputGroup, InputLeftElement, InputRightElement, Text } from '@chakra-ui/react';
+import { EmailIcon, LockIcon } from '@chakra-ui/icons';
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
@@ -58,15 +60,19 @@ const SignIn = () => {
           </Heading>
 
           <Box as="div" mb="1rem">
-            <Input variant={'filled'} focusBorderColor={'brand.500'} placeholder="Enter email" type="email" value={customerData.email} onChange={(e) => setCustomerData({ ...customerData, email: e.target.value })} isInvalid={emailError} isRequired />
+            <InputGroup>
+              <InputLeftElement pointerEvents="none" children={<EmailIcon color={'gray.500'} />} />
+              <Input variant={'filled'} focusBorderColor={'brand.500'} placeholder="Enter email" type="email" value={customerData.email} onChange={(e) => setCustomerData({ ...customerData, email: e.target.value })} isInvalid={emailError} isRequired />
+            </InputGroup>
           </Box>
 
           <InputGroup size="md" mb="1rem">
+            <InputLeftElement pointerEvents="none" children={<LockIcon color={'gray.500'} />} />
             <Input variant={'filled'} pr="4.5rem" focusBorderColor={'brand.500'} value={customerData.password} onChange={(e) => setCustomerData({ ...customerData, password: e.target.value })} type={showPassword ? 'text' : 'password'} placeholder={'Enter password'} isRequired />
             <InputRightElement width="4.5rem">
-              <Button h="1.75rem" size="sm" onClick={() => setShowPassword(!showPassword)}>
-                {showPassword ? 'Hide' : 'Show'}
-              </Button>
+              <Box tabIndex={0} h="1.75rem" w="1rem" color={'gray.500'} cursor={'pointer'} _hover={{ color: 'gray.700' }} display="flex" justifyContent={'center'} onClick={() => setShowPassword(!showPassword)}>
+                {showPassword ? <EyeIcon /> : <EyeSlashIcon />}
+              </Box>
             </InputRightElement>
           </InputGroup>
 
