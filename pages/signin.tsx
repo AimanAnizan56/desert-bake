@@ -26,6 +26,14 @@ const SignIn = () => {
     password: '' as string,
   });
 
+  const handleEmailOnBlur = () => {
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(customerData.email)) {
+      setEmailError(false);
+      return;
+    }
+    setEmailError(true);
+  };
+
   const handleSubmit = async () => {
     const res = await axios.post('/api/v1/customer/auth', {
       ...customerData,
@@ -62,8 +70,24 @@ const SignIn = () => {
           <Box as="div" mb="1rem">
             <InputGroup>
               <InputLeftElement pointerEvents="none" children={<EmailIcon color={'gray.500'} />} />
-              <Input variant={'filled'} focusBorderColor={'brand.500'} placeholder="Enter email" type="email" value={customerData.email} onChange={(e) => setCustomerData({ ...customerData, email: e.target.value })} isInvalid={emailError} isRequired />
+              <Input
+                variant={'filled'}
+                focusBorderColor={'brand.500'}
+                placeholder="Enter email"
+                type="email"
+                value={customerData.email}
+                onChange={(e) => setCustomerData({ ...customerData, email: e.target.value })}
+                isInvalid={emailError}
+                onBlur={handleEmailOnBlur}
+                onFocus={() => setEmailError(false)}
+                isRequired
+              />
             </InputGroup>
+            {emailError && (
+              <Text ml="0.3rem" color="red" fontWeight="bold" fontSize="0.7rem" mt={'0.1rem'}>
+                Email is invalid!
+              </Text>
+            )}
           </Box>
 
           <InputGroup size="md" mb="1rem">
