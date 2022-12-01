@@ -8,8 +8,10 @@ import { useState, useEffect } from 'react';
 import axios, { AxiosError } from 'axios';
 import { withIronSessionSsr } from 'iron-session/next';
 import { ironSessionOptions } from '../lib/helper';
+import { useRouter } from 'next/router';
 
 const SignIn = () => {
+  const router = useRouter();
   const [alertOn, setAlertOn] = useState({
     trigger: false,
     status: undefined as 'success' | 'info' | 'warning' | 'error' | 'loading' | undefined,
@@ -48,8 +50,11 @@ const SignIn = () => {
         ...customerData,
       });
 
-      // todo -- redirect user to homepage if success
-      console.log('response', await res);
+      // redirect user to homepage if success
+      const { error } = res.data;
+      if (!error) {
+        router.push('/');
+      }
     } catch (err) {
       // *** Axios error catch
       if (axios.isAxiosError(err)) {
