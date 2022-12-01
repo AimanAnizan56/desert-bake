@@ -1,4 +1,6 @@
-import { Box, Button, Container, Text, Heading, Input, InputGroup, InputRightElement, Checkbox, Alert, AlertIcon } from '@chakra-ui/react';
+import { Box, Button, Container, Text, Heading, Input, InputGroup, InputRightElement, Checkbox, Alert, AlertIcon, InputLeftElement } from '@chakra-ui/react';
+import { EmailIcon, LockIcon } from '@chakra-ui/icons';
+import { EyeIcon, EyeSlashIcon, UserCircleIcon } from '@heroicons/react/24/solid';
 import axios from 'axios';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -7,11 +9,12 @@ import { Dispatch, SetStateAction, useState, useEffect, useRef, MutableRefObject
 const PasswordComponent = ({ state, setState, placeholder, value, onChange }: { state: boolean; setState: Dispatch<SetStateAction<boolean>>; placeholder: string; value: string; onChange: Dispatch<SetStateAction<string>> }) => {
   return (
     <InputGroup size="md" mb="1rem">
+      <InputLeftElement pointerEvents="none" children={<LockIcon color={'gray.500'} />} />
       <Input variant={'filled'} pr="4.5rem" focusBorderColor={'brand.500'} value={value} onChange={(e) => onChange(e.target.value)} type={state ? 'text' : 'password'} placeholder={placeholder} isRequired />
       <InputRightElement width="4.5rem">
-        <Button h="1.75rem" size="sm" onClick={() => setState(!state)}>
-          {state ? 'Hide' : 'Show'}
-        </Button>
+        <Box tabIndex={0} h="1.75rem" w="1rem" color={'gray.500'} cursor={'pointer'} _hover={{ color: 'gray.700' }} display="flex" justifyContent={'center'} onClick={() => setState(!state)}>
+          {state ? <EyeIcon /> : <EyeSlashIcon />}
+        </Box>
       </InputRightElement>
     </InputGroup>
   );
@@ -130,13 +133,21 @@ const SignUp = () => {
           <Heading as="h1" textAlign={'center'} mb="2rem" color={'brand.500'}>
             Sign Up
           </Heading>
-          <Input variant={'filled'} mb="1rem" focusBorderColor={'brand.500'} placeholder="Enter name" type="text" value={name} onChange={(e) => setName(e.target.value)} isRequired />
+          <InputGroup mb="1rem">
+            <InputLeftElement pointerEvents="none" children={<UserCircleIcon width={'20px'} height={'20px'} color={'#718096'} />} />
+            <Input variant={'filled'} focusBorderColor={'brand.500'} placeholder="Enter name" type="text" value={name} onChange={(e) => setName(e.target.value)} isRequired />
+          </InputGroup>
           <Box as="div" mb="1rem">
-            <Input variant={'filled'} focusBorderColor={'brand.500'} placeholder="Enter email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} onBlur={handleEmailBlur} isInvalid={emailError} ref={emailRef} isRequired />
+            <InputGroup>
+              <InputLeftElement pointerEvents="none" children={<EmailIcon color={!emailError ? 'gray.500' : 'red'} />} />
+              <Input variant={'filled'} focusBorderColor={'brand.500'} placeholder="Enter email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} onBlur={handleEmailBlur} isInvalid={emailError} ref={emailRef} isRequired />
+            </InputGroup>
             {emailError && (
-              <Text ml="0.3rem" color="red" fontWeight="bold" fontSize="0.8rem">
-                Email already exist!
-              </Text>
+              <>
+                <Text ml="0.3rem" color="red" fontWeight="bold" fontSize="0.7rem" mt={'0.1rem'}>
+                  Email already exist!
+                </Text>
+              </>
             )}
           </Box>
           <PasswordComponent value={password} onChange={setPassword} state={showPass} setState={setShowPass} placeholder="Enter password" />
