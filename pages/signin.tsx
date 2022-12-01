@@ -5,7 +5,7 @@ import { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { withIronSessionSsr } from 'iron-session/next';
 import { ironSessionOptions } from '../lib/helper';
 
@@ -38,13 +38,43 @@ const SignIn = () => {
   };
 
   const handleSubmit = async () => {
-    const res = await axios.post('/api/v1/customer/auth', {
-      ...customerData,
-    });
+    type ServerError = {
+      error: boolean;
+      message: string;
+    };
 
-    const { details } = res.data;
+    try {
+      const res = await axios.post('/api/v1/customer/auth', {
+        ...customerData,
+      });
 
-    console.log(details);
+      // todo -- redirect user to homepage if success
+      console.log('response', await res);
+    } catch (err) {
+      // *** Axios error catch
+      if (axios.isAxiosError(err)) {
+        const serverError = err as AxiosError<ServerError>;
+        if (serverError && serverError.response) {
+          console.log('server error data', serverError.response.data);
+          const { error, message } = serverError.response.data;
+
+          if (error) {
+            setAlertOn({
+              trigger: true,
+              status: 'error',
+              message: message == 'Login failed' ? 'Your email or password is incorrect' : message,
+            });
+
+            setTimeout(() => {
+              setAlertOn({
+                ...alertOn,
+                trigger: false,
+              });
+            }, 3000);
+          }
+        }
+      }
+    }
   };
 
   useEffect(() => {
