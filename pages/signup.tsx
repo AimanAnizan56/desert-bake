@@ -12,7 +12,20 @@ const PasswordComponent = ({ state, setState, placeholder, value, onChange }: { 
       <InputLeftElement pointerEvents="none" children={<LockIcon color={'gray.500'} />} />
       <Input variant={'filled'} pr="4.5rem" focusBorderColor={'brand.500'} value={value} onChange={(e) => onChange(e.target.value)} type={state ? 'text' : 'password'} placeholder={placeholder} isRequired />
       <InputRightElement width="4.5rem">
-        <Box tabIndex={0} h="1.75rem" w="1rem" color={'gray.500'} cursor={'pointer'} _hover={{ color: 'gray.700' }} display="flex" justifyContent={'center'} onClick={() => setState(!state)}>
+        <Box
+          tabIndex={0}
+          h="1.75rem"
+          w="1rem"
+          color={'gray.500'}
+          cursor={'pointer'}
+          _hover={{ color: 'gray.700' }}
+          display="flex"
+          justifyContent={'center'}
+          onClick={() => setState(!state)}
+          onKeyDown={(e) => {
+            if (e.key == 'Enter' || e.keyCode == 32) setState(!state);
+          }}
+        >
           {state ? <EyeIcon /> : <EyeSlashIcon />}
         </Box>
       </InputRightElement>
