@@ -37,6 +37,7 @@ const SignUp = () => {
   const emailRef = useRef() as MutableRefObject<HTMLInputElement>;
 
   const [emailError, setEmailError] = useState<undefined | boolean>(undefined);
+  const [emailErrorMessage, setEmailErrorMessage] = useState('');
   const [alertOn, setAlertOn] = useState({
     status: undefined as 'success' | 'info' | 'warning' | 'error' | 'loading' | undefined,
     trigger: false,
@@ -118,14 +119,21 @@ const SignUp = () => {
   };
 
   const handleEmailBlur = async () => {
+    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+      setEmailErrorMessage('Email is invalid!');
+      setEmailError(true);
+      return;
+    }
     const res = await axios.post('/api/v1/customer/validate', { email: email });
     const { error }: { error: boolean; message: string } = res.data;
 
     if (error) {
+      setEmailErrorMessage('Email already exist!');
       setEmailError(true);
       return;
     }
 
+    setEmailErrorMessage('');
     setEmailError(false);
   };
 
@@ -153,11 +161,11 @@ const SignUp = () => {
           <Box as="div" mb="1rem">
             <InputGroup>
               <InputLeftElement pointerEvents="none" children={<EmailIcon color={!emailError ? 'gray.500' : 'red'} />} />
-              <Input variant={'filled'} focusBorderColor={'brand.500'} placeholder="Enter email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} onBlur={handleEmailBlur} isInvalid={emailError} ref={emailRef} isRequired />
+              <Input variant={'filled'} focusBorderColor={'brand.500'} placeholder="Enter email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} onBlur={handleEmailBlur} isInvalid={emailError} ref={emailRef} onFocus={() => setEmailError(false)} isRequired />
             </InputGroup>
             {emailError && (
               <Text ml="0.3rem" color="red" fontWeight="bold" fontSize="0.7rem" mt={'0.1rem'}>
-                Email already exist!
+                {emailErrorMessage}
               </Text>
             )}
           </Box>
