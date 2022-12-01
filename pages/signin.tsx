@@ -1,10 +1,13 @@
 import { Alert, AlertIcon, Box, Button, Container, Heading, Input, InputGroup, InputLeftElement, InputRightElement, Text } from '@chakra-ui/react';
 import { EmailIcon, LockIcon } from '@chakra-ui/icons';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
+import { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { withIronSessionSsr } from 'iron-session/next';
+import { ironSessionOptions } from '../lib/helper';
 
 const SignIn = () => {
   const [alertOn, setAlertOn] = useState({
@@ -136,3 +139,21 @@ const SignIn = () => {
 };
 
 export default SignIn;
+
+export const getServerSideProps: GetServerSideProps = withIronSessionSsr(async ({ req }) => {
+  const user = req.session.user;
+
+  if (user) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+      props: {},
+    };
+  }
+
+  return {
+    props: {},
+  };
+}, ironSessionOptions);
