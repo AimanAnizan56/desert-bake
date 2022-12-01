@@ -4,40 +4,14 @@ import { EyeIcon, EyeSlashIcon, UserCircleIcon } from '@heroicons/react/24/solid
 import axios from 'axios';
 import Head from 'next/head';
 import Link from 'next/link';
-import { Dispatch, SetStateAction, useState, useEffect, useRef, MutableRefObject } from 'react';
-
-const PasswordComponent = ({ state, setState, placeholder, value, onChange }: { state: boolean; setState: Dispatch<SetStateAction<boolean>>; placeholder: string; value: string; onChange: Dispatch<SetStateAction<string>> }) => {
-  return (
-    <InputGroup size="md" mb="1rem">
-      <InputLeftElement pointerEvents="none" children={<LockIcon color={'gray.500'} />} />
-      <Input variant={'filled'} pr="4.5rem" focusBorderColor={'brand.500'} value={value} onChange={(e) => onChange(e.target.value)} type={state ? 'text' : 'password'} placeholder={placeholder} isRequired />
-      <InputRightElement width="4.5rem">
-        <Box
-          tabIndex={0}
-          h="1.75rem"
-          w="1rem"
-          color={'gray.500'}
-          cursor={'pointer'}
-          _hover={{ color: 'gray.700' }}
-          display="flex"
-          justifyContent={'center'}
-          onClick={() => setState(!state)}
-          onKeyDown={(e) => {
-            if (e.key == 'Enter' || e.keyCode == 32) setState(!state);
-          }}
-        >
-          {state ? <EyeIcon /> : <EyeSlashIcon />}
-        </Box>
-      </InputRightElement>
-    </InputGroup>
-  );
-};
+import { useState, useEffect, useRef, MutableRefObject } from 'react';
 
 const SignUp = () => {
   const emailRef = useRef() as MutableRefObject<HTMLInputElement>;
 
   const [emailError, setEmailError] = useState<undefined | boolean>(undefined);
   const [emailErrorMessage, setEmailErrorMessage] = useState('');
+  const [passwordError, setPasswordError] = useState<undefined | boolean>(undefined);
   const [alertOn, setAlertOn] = useState({
     status: undefined as 'success' | 'info' | 'warning' | 'error' | 'loading' | undefined,
     trigger: false,
@@ -137,6 +111,14 @@ const SignUp = () => {
     setEmailError(false);
   };
 
+  const handlePasswordBlur = () => {
+    if (/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(password)) {
+      setPasswordError(false);
+      return;
+    }
+    setPasswordError(true);
+  };
+
   const handleCheckboxTerm = () => {
     setCheckboxTerm(!checkboxTerm);
   };
@@ -154,10 +136,12 @@ const SignUp = () => {
           <Heading as="h1" textAlign={'center'} mb="2rem" color={'brand.500'}>
             Sign Up
           </Heading>
+
           <InputGroup mb="1rem">
             <InputLeftElement pointerEvents="none" children={<UserCircleIcon width={'20px'} height={'20px'} color={'#718096'} />} />
             <Input variant={'filled'} focusBorderColor={'brand.500'} placeholder="Enter name" type="text" value={name} onChange={(e) => setName(e.target.value)} isRequired />
           </InputGroup>
+
           <Box as="div" mb="1rem">
             <InputGroup>
               <InputLeftElement pointerEvents="none" children={<EmailIcon color={!emailError ? 'gray.500' : 'red'} />} />
@@ -169,8 +153,63 @@ const SignUp = () => {
               </Text>
             )}
           </Box>
-          <PasswordComponent value={password} onChange={setPassword} state={showPass} setState={setShowPass} placeholder="Enter password" />
-          <PasswordComponent value={rePassword} onChange={setRePassword} state={showRePass} setState={setShowRePass} placeholder="Re-enter password" />
+
+          <Box as="div" mb="1rem">
+            <InputGroup>
+              <InputLeftElement pointerEvents="none" children={<LockIcon color={'gray.500'} />} />
+              <Input variant={'filled'} pr="4.5rem" focusBorderColor={'brand.500'} value={password} onBlur={handlePasswordBlur} onFocus={() => setPasswordError(false)} onChange={(e) => setPassword(e.target.value)} type={showPass ? 'text' : 'password'} placeholder={'Enter password'} isRequired />
+              <InputRightElement width="4.5rem">
+                <Box
+                  tabIndex={0}
+                  h="1.75rem"
+                  w="1rem"
+                  color={'gray.500'}
+                  cursor={'pointer'}
+                  _hover={{ color: 'gray.700' }}
+                  display="flex"
+                  justifyContent={'center'}
+                  onClick={() => setShowPass(!showPass)}
+                  onKeyDown={(e) => {
+                    if (e.key == 'Enter' || e.keyCode == 32) setShowPass(!showPass);
+                  }}
+                >
+                  {showPass ? <EyeIcon /> : <EyeSlashIcon />}
+                </Box>
+              </InputRightElement>
+            </InputGroup>
+
+            {passwordError && (
+              <Text ml="0.3rem" color="red" fontWeight="bold" fontSize="0.7rem" mt={'0.1rem'}>
+                Password must be at least 8 length, including lowercase, uppercase, number and special character!
+              </Text>
+            )}
+          </Box>
+
+          <Box as="div" mb="1rem">
+            <InputGroup size="md" mb="1rem">
+              <InputLeftElement pointerEvents="none" children={<LockIcon color={'gray.500'} />} />
+              <Input variant={'filled'} pr="4.5rem" focusBorderColor={'brand.500'} value={rePassword} onChange={(e) => setRePassword(e.target.value)} type={showRePass ? 'text' : 'password'} placeholder={'Re-enter password'} isRequired />
+              <InputRightElement width="4.5rem">
+                <Box
+                  tabIndex={0}
+                  h="1.75rem"
+                  w="1rem"
+                  color={'gray.500'}
+                  cursor={'pointer'}
+                  _hover={{ color: 'gray.700' }}
+                  display="flex"
+                  justifyContent={'center'}
+                  onClick={() => setShowRePass(!showRePass)}
+                  onKeyDown={(e) => {
+                    if (e.key == 'Enter' || e.keyCode == 32) setShowRePass(!showRePass);
+                  }}
+                >
+                  {showRePass ? <EyeIcon /> : <EyeSlashIcon />}
+                </Box>
+              </InputRightElement>
+            </InputGroup>
+          </Box>
+
           <Box as="div">
             <Checkbox w={'100%'} px={'.7rem'} isChecked={checkboxTerm} onChange={() => handleCheckboxTerm()}>
               <Text fontSize={'0.8rem'}>
@@ -185,9 +224,11 @@ const SignUp = () => {
               </Text>
             </Checkbox>
           </Box>
+
           <Button w={'100%'} mt={'0.8rem'} isDisabled={isButtonDisabled} isLoading={buttonLoading} loadingText={'Submitting'} onClick={handleSubmit} bg={'brand.500'} color={'white'} _hover={{ background: 'brand.600' }}>
             Submit
           </Button>
+
           <Text fontSize={'0.8rem'} mt={'0.8rem'} textAlign={'center'}>
             Already have an account?{' '}
             <Box as="span" color={'blue.300'} fontWeight={'bold'} _hover={{ textDecoration: 'underline' }}>
