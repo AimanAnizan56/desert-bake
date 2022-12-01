@@ -1,7 +1,7 @@
 import { Box, Button, Container, Text, Heading, Input, InputGroup, InputRightElement, Checkbox, Alert, AlertIcon, InputLeftElement } from '@chakra-ui/react';
 import { EmailIcon, LockIcon } from '@chakra-ui/icons';
 import { EyeIcon, EyeSlashIcon, UserCircleIcon } from '@heroicons/react/24/solid';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useState, useEffect, useRef, MutableRefObject } from 'react';
@@ -58,37 +58,66 @@ const SignUp = () => {
       return;
     }
 
-    console.log('submitting');
-    const res = await axios.post('/api/v1/customer', {
-      name: name,
-      email: email,
-      password: password,
-    });
-
-    const { message, data } = res.data;
-
-    if (res.status == 201) {
-      setButtonLoading(false);
-      setAlertOn({
-        status: 'success',
-        trigger: true,
-        message: message,
+    // ** submitting
+    try {
+      const res = await axios.post('/api/v1/customer', {
+        name: name,
+        email: email,
+        password: password,
       });
 
-      setTimeout(() => {
+      const { message, data } = res.data;
+
+      if (res.status == 201) {
+        setButtonLoading(false);
         setAlertOn({
-          ...alertOn,
-          trigger: false,
+          status: 'success',
+          trigger: true,
+          message: message,
         });
-      }, 2500);
 
-      setName('');
-      setEmail('');
-      setPassword('');
-      setRePassword('');
-      setCheckboxTerm(false);
+        setTimeout(() => {
+          setAlertOn({
+            ...alertOn,
+            trigger: false,
+          });
+        }, 2500);
 
-      console.log('User Data', data);
+        setName('');
+        setEmail('');
+        setPassword('');
+        setRePassword('');
+        setCheckboxTerm(false);
+        console.log('User Data', data);
+      }
+    } catch (err) {
+      type ServerError = {
+        detail: string;
+        message: string;
+      };
+      // *** Axios error catch
+      if (axios.isAxiosError(err)) {
+        const serverError = err as AxiosError<ServerError>;
+        if (serverError && serverError.response) {
+          console.log('server error data', serverError.response.data);
+          const { detail, message } = serverError.response.data;
+
+          if (message) {
+            setAlertOn({
+              trigger: true,
+              status: 'error',
+              message: detail,
+            });
+
+            setTimeout(() => {
+              setAlertOn({
+                ...alertOn,
+                trigger: false,
+              });
+            }, 3000);
+          }
+        }
+      }
     }
   };
 
