@@ -33,13 +33,7 @@ const PostHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       detail: 'Ensure that the name, email and password are included',
     });
 
-    return {
-      statusCode: 400,
-      send: {
-        message: 'Please provide name, email and password',
-        detail: 'Ensure that the name, email and password are included',
-      },
-    };
+    return;
   }
   const customer = new Customer(name, email, password);
 
