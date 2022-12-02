@@ -4,7 +4,6 @@ import { Box, Text, Flex, Img, IconButton } from '@chakra-ui/react';
 import { UserIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
 import pages from '../lib/list_page';
 import Head from 'next/head';
-import { totalmem } from 'os';
 
 const Navbar = ({ pageTitle, pageDescription }: { pageTitle: string; pageDescription: string }) => {
   const Icons: { href: string; icon: JSX.Element }[] = [
@@ -47,7 +46,7 @@ const Navbar = ({ pageTitle, pageDescription }: { pageTitle: string; pageDescrip
             ))}
           </Box>
 
-          <Box display="flex" gap="1rem">
+          <Box display="flex" gap="1rem" alignItems={'center'}>
             {Icons.map((icon, i) => (
               <Box key={i} boxSize="1.3rem" _hover={{ color: 'brand.400' }}>
                 <Link href={icon.href}>{icon.icon}</Link>
