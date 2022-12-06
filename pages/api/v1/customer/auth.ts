@@ -7,6 +7,7 @@ declare module 'iron-session' {
   interface IronSessionData {
     user?: {
       id: string;
+      name: string;
       email: string;
       admin: boolean;
     };
@@ -47,6 +48,7 @@ const loginRoute = async (req: NextApiRequest, res: NextApiResponse) => {
 
   req.session.user = {
     id: data.customer_id,
+    name: data.customer_name,
     email: data.customer_email,
     admin: false,
   };
