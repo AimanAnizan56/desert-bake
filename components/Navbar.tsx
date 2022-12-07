@@ -1,8 +1,7 @@
 import { Fragment } from 'react';
 import Link from 'next/link';
-import { Box, Text, Flex, Img, IconButton } from '@chakra-ui/react';
+import { Box, Text, Flex, Img } from '@chakra-ui/react';
 import { UserIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
-import pages from '../lib/list_page';
 import Head from 'next/head';
 
 const Navbar = ({ pageTitle, pageDescription }: { pageTitle: string; pageDescription: string }) => {
@@ -14,6 +13,24 @@ const Navbar = ({ pageTitle, pageDescription }: { pageTitle: string; pageDescrip
     {
       href: '/cart',
       icon: <ShoppingBagIcon />,
+    },
+  ];
+
+  const pages: Array<{
+    link: string;
+    title: string;
+  }> = [
+    {
+      link: '/',
+      title: 'Home',
+    },
+    {
+      link: '/about',
+      title: 'About Us',
+    },
+    {
+      link: '/products',
+      title: 'Products',
     },
   ];
 
