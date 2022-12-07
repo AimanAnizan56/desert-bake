@@ -83,7 +83,7 @@ const Navbar = ({ pageTitle, pageDescription, user }: { pageTitle: string; pageD
                 <Button bgColor={'brand.400'} color={'white'} _hover={{ bgColor: 'brand.600' }}>
                   <Link href={'/signin'}>Login</Link>
                 </Button>
-                <Button bgColor={'transparent'} color={'brand.400'} borderWidth={'2px'} borderColor={'brand.400'} _hover={{ bgColor: 'transparent' }}>
+                <Button bgColor={'transparent'} color={'brand.400'} borderWidth={'2px'} borderColor={'brand.400'} _hover={{ bgColor: 'brand.50' }}>
                   <Link href={'/signup'}>Sign Up</Link>
                 </Button>
               </>
