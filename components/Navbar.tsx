@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Box, Text, Flex, Img, Button } from '@chakra-ui/react';
+import { Box, Text, Grid, Img, Button } from '@chakra-ui/react';
 import { UserIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
 import Head from 'next/head';
 
@@ -50,8 +50,8 @@ const Navbar = ({ pageTitle, pageDescription, user }: { pageTitle: string; pageD
         <link rel="icon" href="/favicon.jpg" />
       </Head>
       <Box as="nav" bgColor="white" boxShadow="base" py="0.7rem" px="4rem" fontSize="1.1rem">
-        <Flex justify="space-between" alignItems="center">
-          <Box>
+        <Grid templateColumns={'1fr 1fr 1fr'} alignItems={'center'}>
+          <Box justifySelf={'start'}>
             <Link href="/">
               <Text as="b" fontSize="1.3rem">
                 <Img src="/img/logo.png" alt="Desert Bake" h="3rem" />
@@ -59,7 +59,7 @@ const Navbar = ({ pageTitle, pageDescription, user }: { pageTitle: string; pageD
             </Link>
           </Box>
 
-          <Box display="flex" gap="2rem">
+          <Box display="flex" gap="2rem" justifySelf={'center'}>
             {pages.map((page, index) => (
               <Fragment key={index}>
                 <Link href={page.link}>
@@ -69,7 +69,7 @@ const Navbar = ({ pageTitle, pageDescription, user }: { pageTitle: string; pageD
             ))}
           </Box>
 
-          <Box display="flex" gap="1rem" alignItems={'center'}>
+          <Box display="flex" gap="1rem" alignItems={'center'} justifySelf={'end'}>
             {user ? (
               <>
                 {Icons.map((icon, i) => (
@@ -89,7 +89,7 @@ const Navbar = ({ pageTitle, pageDescription, user }: { pageTitle: string; pageD
               </>
             )}
           </Box>
-        </Flex>
+        </Grid>
       </Box>
     </>
   );
