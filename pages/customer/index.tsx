@@ -2,7 +2,7 @@ import { Button } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-const User = () => {
+const Customer = () => {
   const router = useRouter();
 
   return (
@@ -12,4 +12,4 @@ const User = () => {
   );
 };
 
-export default User;
+export default Customer;
