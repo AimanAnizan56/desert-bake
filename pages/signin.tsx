@@ -9,6 +9,7 @@ import axios, { AxiosError } from 'axios';
 import { withIronSessionSsr } from 'iron-session/next';
 import { ironSessionOptions } from '../lib/helper';
 import { useRouter } from 'next/router';
+import { Loading } from '../components/Loading';
 
 const SignIn = () => {
   const router = useRouter();
@@ -49,6 +50,11 @@ const SignIn = () => {
       return;
     }
 
+    setButtonState({
+      ...buttonState,
+      isLoading: true,
+    });
+
     try {
       const res = await axios.post('/api/v1/customer/auth', {
         ...customerData,
@@ -57,6 +63,10 @@ const SignIn = () => {
       // redirect user to homepage if success
       const { error } = res.data;
       if (!error) {
+        setButtonState({
+          ...buttonState,
+          isLoading: false,
+        });
         router.push('/');
       }
     } catch (err) {
@@ -68,6 +78,10 @@ const SignIn = () => {
           const { error, message } = serverError.response.data;
 
           if (error) {
+            setButtonState({
+              ...buttonState,
+              isLoading: false,
+            });
             setAlertOn({
               trigger: true,
               status: 'error',
@@ -174,7 +188,7 @@ const SignIn = () => {
             </InputRightElement>
           </InputGroup>
 
-          <Button w={'100%'} mt={'0.8rem'} isDisabled={buttonState.isDisabled} isLoading={buttonState.isLoading} loadingText={'Logging'} onClick={handleSubmit} bg={'brand.500'} color={'white'} _hover={{ background: 'brand.600' }}>
+          <Button w={'100%'} mt={'0.8rem'} isDisabled={buttonState.isDisabled} isLoading={buttonState.isLoading} loadingText={'Please wait...'} onClick={handleSubmit} bg={'brand.500'} color={'white'} _hover={{ background: 'brand.600' }}>
             Login
           </Button>
           <Text fontSize={'0.8rem'} mt={'0.8rem'} textAlign={'center'}>
