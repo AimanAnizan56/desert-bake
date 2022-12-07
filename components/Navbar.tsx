@@ -25,12 +25,12 @@ const Navbar = ({ pageTitle, pageDescription }: { pageTitle: string; pageDescrip
       title: 'Home',
     },
     {
-      link: '/about',
-      title: 'About Us',
-    },
-    {
       link: '/products',
       title: 'Products',
+    },
+    {
+      link: '/about',
+      title: 'About',
     },
   ];
 
