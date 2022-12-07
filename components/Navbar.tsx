@@ -26,7 +26,7 @@ const Navbar = ({ pageTitle, pageDescription }: { pageTitle: string; pageDescrip
         <meta name="description" content={pageDescription} />
         <link rel="icon" href="/favicon.jpg" />
       </Head>
-      <Box as="nav" bgColor="white" boxShadow="base" py="1rem" px="5rem" fontSize="1.2rem">
+      <Box as="nav" bgColor="white" boxShadow="base" py="0.7rem" px="4rem" fontSize="1.1rem">
         <Flex justify="space-between" alignItems="center">
           <Box>
             <Link href="/">
