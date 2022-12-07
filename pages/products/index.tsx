@@ -1,7 +1,13 @@
-import { Box } from '@chakra-ui/react';
+import Navbar from '../../components/Navbar';
 
 const Products = () => {
-  return <Box>This is product</Box>;
+  return (
+    <>
+      <Navbar pageTitle="List of Products" pageDescription="This is page that display all available products" />
+      <main>This is product</main>
+      <footer>footer </footer>
+    </>
+  );
 };
 
 export default Products;
