@@ -7,7 +7,7 @@ import Head from 'next/head';
 const Navbar = ({ pageTitle, pageDescription }: { pageTitle: string; pageDescription: string }) => {
   const Icons: { href: string; icon: JSX.Element }[] = [
     {
-      href: '/user',
+      href: '/customer',
       icon: <UserIcon />,
     },
     {
