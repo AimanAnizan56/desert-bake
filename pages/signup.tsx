@@ -5,6 +5,9 @@ import axios, { AxiosError } from 'axios';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useState, useEffect, useRef, MutableRefObject } from 'react';
+import { GetServerSideProps } from 'next';
+import { withIronSessionSsr } from 'iron-session/next';
+import { ironSessionOptions } from '../lib/helper';
 
 const SignUp = () => {
   const emailRef = useRef() as MutableRefObject<HTMLInputElement>;
@@ -278,3 +281,21 @@ const SignUp = () => {
 };
 
 export default SignUp;
+
+export const getServerSideProps: GetServerSideProps = withIronSessionSsr(async ({ req }) => {
+  const user = req.session.user;
+
+  if (user) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+      props: {},
+    };
+  }
+
+  return {
+    props: {},
+  };
+}, ironSessionOptions);
