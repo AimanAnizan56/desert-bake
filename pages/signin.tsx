@@ -45,6 +45,10 @@ const SignIn = () => {
       message: string;
     };
 
+    if (buttonState.isDisabled) {
+      return;
+    }
+
     try {
       const res = await axios.post('/api/v1/customer/auth', {
         ...customerData,
@@ -118,6 +122,11 @@ const SignIn = () => {
                 isInvalid={emailError}
                 onBlur={handleEmailOnBlur}
                 onFocus={() => setEmailError(false)}
+                onKeyDown={(e) => {
+                  if (e.key == 'Enter') {
+                    handleSubmit();
+                  }
+                }}
                 isRequired
               />
             </InputGroup>
@@ -130,7 +139,21 @@ const SignIn = () => {
 
           <InputGroup size="md" mb="1rem">
             <InputLeftElement pointerEvents="none" children={<LockIcon color={'gray.500'} />} />
-            <Input variant={'filled'} pr="4.5rem" focusBorderColor={'brand.500'} value={customerData.password} onChange={(e) => setCustomerData({ ...customerData, password: e.target.value })} type={showPassword ? 'text' : 'password'} placeholder={'Enter password'} isRequired />
+            <Input
+              variant={'filled'}
+              pr="4.5rem"
+              focusBorderColor={'brand.500'}
+              value={customerData.password}
+              onChange={(e) => setCustomerData({ ...customerData, password: e.target.value })}
+              type={showPassword ? 'text' : 'password'}
+              placeholder={'Enter password'}
+              onKeyDown={(e) => {
+                if (e.key == 'Enter') {
+                  handleSubmit();
+                }
+              }}
+              isRequired
+            />
             <InputRightElement width="4.5rem">
               <Box
                 tabIndex={0}
