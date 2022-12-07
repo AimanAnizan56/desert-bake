@@ -1,10 +1,16 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Box, Text, Flex, Img } from '@chakra-ui/react';
+import { Box, Text, Flex, Img, Button } from '@chakra-ui/react';
 import { UserIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
 import Head from 'next/head';
 
-const Navbar = ({ pageTitle, pageDescription }: { pageTitle: string; pageDescription: string }) => {
+type UserType = {
+  id?: number;
+  name?: string;
+  email?: string;
+};
+
+const Navbar = ({ pageTitle, pageDescription, user }: { pageTitle: string; pageDescription: string; user?: UserType }) => {
   const Icons: { href: string; icon: JSX.Element }[] = [
     {
       href: '/customer',
@@ -64,11 +70,24 @@ const Navbar = ({ pageTitle, pageDescription }: { pageTitle: string; pageDescrip
           </Box>
 
           <Box display="flex" gap="1rem" alignItems={'center'}>
-            {Icons.map((icon, i) => (
-              <Box key={i} boxSize="1.3rem" _hover={{ color: 'brand.400' }}>
-                <Link href={icon.href}>{icon.icon}</Link>
-              </Box>
-            ))}
+            {user ? (
+              <>
+                {Icons.map((icon, i) => (
+                  <Box key={i} boxSize="1.3rem" _hover={{ color: 'brand.400' }}>
+                    <Link href={icon.href}>{icon.icon}</Link>
+                  </Box>
+                ))}
+              </>
+            ) : (
+              <>
+                <Button bgColor={'brand.400'} color={'white'} _hover={{ bgColor: 'brand.600' }}>
+                  <Link href={'/signin'}>Login</Link>
+                </Button>
+                <Button bgColor={'transparent'} color={'brand.400'} borderWidth={'2px'} borderColor={'brand.400'} _hover={{ bgColor: 'transparent' }}>
+                  <Link href={'/signup'}>Sign Up</Link>
+                </Button>
+              </>
+            )}
           </Box>
         </Flex>
       </Box>
