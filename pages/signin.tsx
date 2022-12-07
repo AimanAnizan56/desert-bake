@@ -128,6 +128,8 @@ const SignIn = () => {
               <InputLeftElement pointerEvents="none" children={<EmailIcon color={'gray.500'} />} />
               <Input
                 variant={'filled'}
+                bgColor={'brand.50'}
+                _hover={{ bgColor: 'brand.100' }}
                 focusBorderColor={'brand.500'}
                 placeholder="Enter email"
                 type="email"
@@ -155,6 +157,8 @@ const SignIn = () => {
             <InputLeftElement pointerEvents="none" children={<LockIcon color={'gray.500'} />} />
             <Input
               variant={'filled'}
+              bgColor={'brand.50'}
+              _hover={{ bgColor: 'brand.100' }}
               pr="4.5rem"
               focusBorderColor={'brand.500'}
               value={customerData.password}

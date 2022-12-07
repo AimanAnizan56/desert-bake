@@ -171,13 +171,27 @@ const SignUp = () => {
 
           <InputGroup mb="1rem">
             <InputLeftElement pointerEvents="none" children={<UserCircleIcon width={'20px'} height={'20px'} color={'#718096'} />} />
-            <Input variant={'filled'} focusBorderColor={'brand.500'} placeholder="Enter name" type="text" value={name} onChange={(e) => setName(e.target.value)} isRequired />
+            <Input variant={'filled'} bgColor={'brand.50'} _hover={{ bgColor: 'brand.100' }} focusBorderColor={'brand.500'} placeholder="Enter name" type="text" value={name} onChange={(e) => setName(e.target.value)} isRequired />
           </InputGroup>
 
           <Box as="div" mb="1rem">
             <InputGroup>
               <InputLeftElement pointerEvents="none" children={<EmailIcon color={!emailError ? 'gray.500' : 'red'} />} />
-              <Input variant={'filled'} focusBorderColor={'brand.500'} placeholder="Enter email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} onBlur={handleEmailBlur} isInvalid={emailError} ref={emailRef} onFocus={() => setEmailError(false)} isRequired />
+              <Input
+                variant={'filled'}
+                bgColor={'brand.50'}
+                _hover={{ bgColor: 'brand.100' }}
+                focusBorderColor={'brand.500'}
+                placeholder="Enter email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                onBlur={handleEmailBlur}
+                isInvalid={emailError}
+                ref={emailRef}
+                onFocus={() => setEmailError(false)}
+                isRequired
+              />
             </InputGroup>
             {emailError && (
               <Text ml="0.3rem" color="red" fontWeight="bold" fontSize="0.7rem" mt={'0.1rem'}>
@@ -189,7 +203,20 @@ const SignUp = () => {
           <Box as="div" mb="1rem">
             <InputGroup>
               <InputLeftElement pointerEvents="none" children={<LockIcon color={'gray.500'} />} />
-              <Input variant={'filled'} pr="4.5rem" focusBorderColor={'brand.500'} value={password} onBlur={handlePasswordBlur} onFocus={() => setPasswordError(false)} onChange={(e) => setPassword(e.target.value)} type={showPass ? 'text' : 'password'} placeholder={'Enter password'} isRequired />
+              <Input
+                variant={'filled'}
+                bgColor={'brand.50'}
+                _hover={{ bgColor: 'brand.100' }}
+                pr="4.5rem"
+                focusBorderColor={'brand.500'}
+                value={password}
+                onBlur={handlePasswordBlur}
+                onFocus={() => setPasswordError(false)}
+                onChange={(e) => setPassword(e.target.value)}
+                type={showPass ? 'text' : 'password'}
+                placeholder={'Enter password'}
+                isRequired
+              />
               <InputRightElement width="4.5rem">
                 <Box
                   tabIndex={0}
@@ -220,7 +247,7 @@ const SignUp = () => {
           <Box as="div" mb="1rem">
             <InputGroup size="md" mb="1rem">
               <InputLeftElement pointerEvents="none" children={<LockIcon color={'gray.500'} />} />
-              <Input variant={'filled'} pr="4.5rem" focusBorderColor={'brand.500'} value={rePassword} onChange={(e) => setRePassword(e.target.value)} type={showRePass ? 'text' : 'password'} placeholder={'Re-enter password'} isRequired />
+              <Input variant={'filled'} bgColor={'brand.50'} _hover={{ bgColor: 'brand.100' }} pr="4.5rem" focusBorderColor={'brand.500'} value={rePassword} onChange={(e) => setRePassword(e.target.value)} type={showRePass ? 'text' : 'password'} placeholder={'Re-enter password'} isRequired />
               <InputRightElement width="4.5rem">
                 <Box
                   tabIndex={0}
