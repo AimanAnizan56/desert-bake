@@ -1,8 +1,10 @@
 import { Fragment, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Box, Text, Grid, Img, Button } from '@chakra-ui/react';
-import { UserIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
+import { UserIcon, ShoppingBagIcon, ArrowLeftOnRectangleIcon } from '@heroicons/react/24/outline';
 import Head from 'next/head';
+import axios from 'axios';
+import { useRouter } from 'next/router';
 
 type UserType = {
   id?: number;
@@ -11,14 +13,41 @@ type UserType = {
 };
 
 const Navbar = ({ pageTitle, pageDescription, user }: { pageTitle: string; pageDescription: string; user?: UserType }) => {
-  const Icons: { href: string; icon: JSX.Element }[] = [
+  const router = useRouter();
+
+  const Icons: { href: string; icon: JSX.Element; fc: Function }[] = [
     {
       href: '/customer',
       icon: <UserIcon />,
+      fc: () => {},
     },
     {
       href: '/cart',
       icon: <ShoppingBagIcon />,
+      fc: () => {},
+    },
+    {
+      href: '#',
+      icon: <ArrowLeftOnRectangleIcon />,
+      fc: async (e: any) => {
+        // logout
+        e.preventDefault();
+
+        try {
+          let res = await axios.get('/api/v1/customer/logout');
+          const { logout, message } = await res.data;
+
+          if (logout) {
+            if (router.pathname == '/') {
+              router.reload();
+              return;
+            }
+            router.push('/');
+          }
+        } catch (err) {
+          console.log('err', err);
+        }
+      },
     },
   ];
 
@@ -74,7 +103,14 @@ const Navbar = ({ pageTitle, pageDescription, user }: { pageTitle: string; pageD
               <>
                 {Icons.map((icon, i) => (
                   <Box key={i} boxSize="1.3rem" _hover={{ color: 'brand.400' }}>
-                    <Link href={icon.href}>{icon.icon}</Link>
+                    <Link
+                      href={icon.href}
+                      onClick={(e: Event) => {
+                        icon.fc(e);
+                      }}
+                    >
+                      {icon.icon}
+                    </Link>
                   </Box>
                 ))}
               </>
