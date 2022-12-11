@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import CustomerController from '../../../../controller/Customer.controller';
-import { Customer } from '../../../../model/Customer.model';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { method } = req;
