@@ -8,8 +8,10 @@ import { useState, useEffect, useRef, MutableRefObject } from 'react';
 import { GetServerSideProps } from 'next';
 import { withIronSessionSsr } from 'iron-session/next';
 import { ironSessionOptions } from '../lib/helper';
+import { useRouter } from 'next/router';
 
 const SignUp = () => {
+  const router = useRouter();
   const emailRef = useRef() as MutableRefObject<HTMLInputElement>;
 
   const [emailError, setEmailError] = useState<undefined | boolean>(undefined);
@@ -84,6 +86,8 @@ const SignUp = () => {
             ...alertOn,
             trigger: false,
           });
+
+          router.push('/signin');
         }, 2500);
 
         setName('');
