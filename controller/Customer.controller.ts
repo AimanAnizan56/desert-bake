@@ -27,6 +27,15 @@ export default class CustomerController {
     }
 
     const { email, password } = req.body;
+
+    if (!email || !password) {
+      res.status(400).json({
+        error: true,
+        message: 'Email or password is empty',
+      });
+      return;
+    }
+
     const data = await Customer.getCustomerData(email, password);
 
     if (data.length == 0) {
