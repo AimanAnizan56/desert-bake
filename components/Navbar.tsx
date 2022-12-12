@@ -1,7 +1,7 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment } from 'react';
 import Link from 'next/link';
 import { Box, Text, Grid, Img, Button } from '@chakra-ui/react';
-import { UserIcon, ShoppingBagIcon, ArrowLeftOnRectangleIcon } from '@heroicons/react/24/outline';
+import { UserIcon, ShoppingBagIcon, ArrowLeftOnRectangleIcon, ClipboardDocumentCheckIcon } from '@heroicons/react/24/outline';
 import Head from 'next/head';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -27,7 +27,12 @@ const Navbar = ({ pageTitle, pageDescription, user }: { pageTitle: string; pageD
       fc: () => {},
     },
     {
-      href: '#',
+      href: '/order',
+      icon: <ClipboardDocumentCheckIcon />,
+      fc: () => {},
+    },
+    {
+      href: '',
       icon: <ArrowLeftOnRectangleIcon />,
       fc: async (e: any) => {
         // logout
