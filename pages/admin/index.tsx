@@ -7,6 +7,8 @@ const Home = (props: any) => {
   return (
     <>
       <Navbar pageTitle="Admin Home" pageDescription="Homepage for admin" user={props.user} currentPage={'Home'} />
+
+      <main>This is homepage for admin</main>
     </>
   );
 };
