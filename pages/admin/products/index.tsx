@@ -1,5 +1,7 @@
+import { Box, Button, Container, Flex, Heading } from '@chakra-ui/react';
 import { withIronSessionSsr } from 'iron-session/next';
 import { GetServerSideProps } from 'next';
+import Link from 'next/link';
 import Navbar from '../../../components/Navbar';
 import { ironSessionOptions } from '../../../lib/helper';
 
@@ -8,7 +10,21 @@ const Products = (props: any) => {
     <>
       <Navbar pageTitle="Products" pageDescription="Product page" user={props.user} currentPage={'Products'} />
 
-      <main>This is products for admin page</main>
+      <main>
+        <Container maxW={'container.md'}>
+          <Flex mt={'2rem'} justifyContent={'space-between'} alignItems={'center'}>
+            <Heading as="h1" size={'lg'} color={'brand.400'}>
+              Products
+            </Heading>
+
+            <Box as="div">
+              <Button size={'sm'} colorScheme={'whatsapp'}>
+                <Link href={'/admin/products/create'}>+ Add Product</Link>
+              </Button>
+            </Box>
+          </Flex>
+        </Container>
+      </main>
     </>
   );
 };
