@@ -22,7 +22,7 @@ const Products = (props: any) => {
 
   return (
     <>
-      {user ? <Navbar pageTitle="List of Products" pageDescription="This is page that display all available products" user={user} /> : <Navbar pageTitle="List of Products" pageDescription="This is page that display all available products" />}
+      {user ? <Navbar pageTitle="List of Products" pageDescription="This is page that display all available products" currentPage={'Products'} user={user} /> : <Navbar pageTitle="List of Products" pageDescription="This is page that display all available products" currentPage="Products" />}
       <main>This is product</main>
       <footer>footer </footer>
     </>

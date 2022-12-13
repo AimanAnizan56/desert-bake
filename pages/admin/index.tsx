@@ -6,7 +6,7 @@ import { ironSessionOptions } from '../../lib/helper';
 const Home = (props: any) => {
   return (
     <>
-      <Navbar pageTitle="Admin Home" pageDescription="Homepage for admin" user={props.user} />
+      <Navbar pageTitle="Admin Home" pageDescription="Homepage for admin" user={props.user} currentPage={'Home'} />
     </>
   );
 };

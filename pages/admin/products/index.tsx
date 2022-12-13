@@ -6,7 +6,7 @@ import { ironSessionOptions } from '../../../lib/helper';
 const Products = (props: any) => {
   return (
     <>
-      <Navbar pageTitle="Products" pageDescription="Product page" user={props.user} />
+      <Navbar pageTitle="Products" pageDescription="Product page" user={props.user} currentPage={'Products'} />
 
       <main>This is products for admin page</main>
     </>

@@ -13,14 +13,14 @@ const About = () => {
   if (isLoading)
     return (
       <>
-        <Navbar pageTitle="About" pageDescription="This is about page" />
+        <Navbar pageTitle="About" pageDescription="This is about page" currentPage={'About'} />
         <Loading />
       </>
     );
 
   return (
     <>
-      <Navbar pageTitle="About" pageDescription="This is about page" />
+      <Navbar pageTitle="About" pageDescription="This is about page" currentPage={'About'} />
       About pagee
     </>
   );
