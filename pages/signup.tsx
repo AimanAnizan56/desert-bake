@@ -17,6 +17,7 @@ const SignUp = () => {
   const [emailError, setEmailError] = useState<undefined | boolean>(undefined);
   const [emailErrorMessage, setEmailErrorMessage] = useState('');
   const [passwordError, setPasswordError] = useState<undefined | boolean>(undefined);
+  const [rePasswordError, setRePasswordError] = useState<undefined | boolean>(undefined);
   const [alertOn, setAlertOn] = useState({
     status: undefined as 'success' | 'info' | 'warning' | 'error' | 'loading' | undefined,
     trigger: false,
@@ -150,9 +151,21 @@ const SignUp = () => {
   const handlePasswordBlur = () => {
     if (/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(password)) {
       setPasswordError(false);
+      setRePasswordError(false);
+      if (password != rePassword) {
+        setRePasswordError(true);
+      }
       return;
     }
     setPasswordError(true);
+  };
+
+  const handleReEnterPasswordBlur = () => {
+    if (rePassword == password) {
+      setRePasswordError(false);
+      return;
+    }
+    setRePasswordError(true);
   };
 
   const handleCheckboxTerm = () => {
@@ -249,9 +262,22 @@ const SignUp = () => {
           </Box>
 
           <Box as="div" mb="1rem">
-            <InputGroup size="md" mb="1rem">
+            <InputGroup>
               <InputLeftElement pointerEvents="none" children={<LockIcon color={'gray.500'} />} />
-              <Input variant={'filled'} bgColor={'brand.50'} _hover={{ bgColor: 'brand.100' }} pr="4.5rem" focusBorderColor={'brand.500'} value={rePassword} onChange={(e) => setRePassword(e.target.value)} type={showRePass ? 'text' : 'password'} placeholder={'Re-enter password'} isRequired />
+              <Input
+                variant={'filled'}
+                bgColor={'brand.50'}
+                _hover={{ bgColor: 'brand.100' }}
+                pr="4.5rem"
+                focusBorderColor={'brand.500'}
+                value={rePassword}
+                onBlur={handleReEnterPasswordBlur}
+                onFocus={() => setRePasswordError(false)}
+                onChange={(e) => setRePassword(e.target.value)}
+                type={showRePass ? 'text' : 'password'}
+                placeholder={'Re-enter password'}
+                isRequired
+              />
               <InputRightElement width="4.5rem">
                 <Box
                   tabIndex={0}
@@ -271,6 +297,12 @@ const SignUp = () => {
                 </Box>
               </InputRightElement>
             </InputGroup>
+
+            {rePasswordError && (
+              <Text ml="0.3rem" color="red" fontWeight="bold" fontSize="0.7rem" mt={'0.1rem'}>
+                Password not match
+              </Text>
+            )}
           </Box>
 
           <Box as="div">
