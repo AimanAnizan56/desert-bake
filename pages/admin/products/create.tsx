@@ -1,5 +1,5 @@
-import { Box, Text, Container, Divider, Heading, Input, InputGroup, InputLeftElement, Select, RadioGroup, Radio } from '@chakra-ui/react';
-import { ChatBubbleOvalLeftEllipsisIcon, ClipboardDocumentListIcon, CurrencyDollarIcon } from '@heroicons/react/24/outline';
+import { Box, Text, Container, Divider, Heading, Input, InputGroup, InputLeftElement, RadioGroup, Radio, Flex } from '@chakra-ui/react';
+import { ChartPieIcon, ChatBubbleOvalLeftEllipsisIcon, ClipboardDocumentListIcon, CurrencyDollarIcon, PhotoIcon } from '@heroicons/react/24/outline';
 import { withIronSessionSsr } from 'iron-session/next';
 import { GetServerSideProps } from 'next';
 import { useState } from 'react';
@@ -38,8 +38,12 @@ const CreateProduct = (props: any) => {
 
               <Divider border={'1px'} color={'gray.500'} opacity={1} mb={'1rem'} />
 
-              <Box as={'div'} color={'gray.500'}>
-                <Text>Product Type</Text>
+              <Box as={'div'} color={'gray.500'} mb={'1rem'}>
+                <Flex gap={'0.5rem'} alignItems={'center'}>
+                  <ChartPieIcon width={'20px'} height={'20px'} />
+                  <Text>Product Type</Text>
+                </Flex>
+
                 <RadioGroup ml={'1rem'} mt={'0.3rem'} colorScheme={'brand'} onChange={(value) => setRadValue(value)} value={radValue}>
                   <Radio mr={'1rem'} value={'dessert'}>
                     Dessert
@@ -51,6 +55,14 @@ const CreateProduct = (props: any) => {
                     Bread
                   </Radio>
                 </RadioGroup>
+              </Box>
+
+              <Divider border={'1px'} color={'gray.500'} opacity={1} mb={'1rem'} />
+              <Box as={'div'} color={'gray.500'} mb={'1rem'}>
+                <Flex gap={'0.5rem'} alignItems={'center'}>
+                  <PhotoIcon width={'20px'} height={'20px'} />
+                  <Text>Product Image</Text>
+                </Flex>
               </Box>
             </Box>
           </Box>
