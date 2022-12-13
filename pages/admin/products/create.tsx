@@ -63,6 +63,8 @@ const CreateProduct = (props: any) => {
                   <PhotoIcon width={'20px'} height={'20px'} />
                   <Text>Product Image</Text>
                 </Flex>
+
+                <input type={'file'} placeholder="Basic usage" />
               </Box>
             </Box>
           </Box>
