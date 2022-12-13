@@ -36,6 +36,13 @@ export default class CustomerController {
       return;
     }
 
+    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+      res.status(400).json({
+        message: 'Email is invalid',
+      });
+      return;
+    }
+
     const data = await Customer.getCustomerData(email, password);
 
     if (data.length == 0) {
@@ -84,6 +91,13 @@ export default class CustomerController {
         detail: 'Ensure that the name, email and password are included',
       });
 
+      return;
+    }
+
+    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) && !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(password)) {
+      res.status(400).json({
+        message: 'Email or password is invalid',
+      });
       return;
     }
     const customer = new Customer(name, email, password);

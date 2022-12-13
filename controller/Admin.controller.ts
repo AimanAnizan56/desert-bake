@@ -17,6 +17,13 @@ export default class AdminController {
       return;
     }
 
+    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+      res.status(400).json({
+        message: 'Email is invalid',
+      });
+      return;
+    }
+
     const data = await Admin.getAdminData(email, password);
 
     if (data.length == 0) {
