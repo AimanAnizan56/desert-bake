@@ -43,4 +43,16 @@ export default class AdminController {
     await req.session.save();
     res.status(200).json({ error: false, message: 'Login success' });
   };
+
+  static logout = (req: NextApiRequest, res: NextApiResponse) => {
+    req.session.destroy();
+    if (req.session.user == undefined) {
+      res.status(200).json({ logout: true, message: 'Logout success' });
+      return;
+    }
+    res.status(500).json({
+      error: true,
+      message: 'Logout failed',
+    });
+  };
 }
