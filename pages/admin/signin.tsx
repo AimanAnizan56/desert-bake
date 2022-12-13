@@ -5,7 +5,7 @@ import axios, { AxiosError } from 'axios';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const SignIn = () => {
   const router = useRouter();
@@ -94,6 +94,15 @@ const SignIn = () => {
       }
     }
   };
+
+  useEffect(() => {
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(adminData.email) && adminData.password.length > 0) {
+      setButtonState({ ...buttonState, isDisabled: false });
+      return;
+    }
+
+    setButtonState({ ...buttonState, isDisabled: true });
+  }, [adminData.email, adminData.password]);
 
   return (
     <>
