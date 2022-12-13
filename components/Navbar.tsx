@@ -58,11 +58,11 @@ const Navbar = ({ pageTitle, pageDescription, user }: { pageTitle: string; pageD
         title: 'Home',
       },
       {
-        link: '/admin/view-products',
+        link: '/admin/products',
         title: 'Products',
       },
       {
-        link: '/admin/view-orders',
+        link: '/admin/orders',
         title: 'Orders',
       },
     ];
