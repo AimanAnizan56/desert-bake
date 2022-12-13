@@ -217,10 +217,10 @@ export default SignIn;
 export const getServerSideProps: GetServerSideProps = withIronSessionSsr(async ({ req }) => {
   const user = req.session.user;
 
-  if (user && user.admin == true) {
+  if (user) {
     return {
       redirect: {
-        destination: '/admin/',
+        destination: user.admin ? '/admin/' : '/',
         permanent: false,
       },
       props: {},
