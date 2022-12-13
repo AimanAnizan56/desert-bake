@@ -13,7 +13,7 @@ type UserType = {
   admin?: boolean;
 };
 
-const Navbar = ({ pageTitle, pageDescription, user }: { pageTitle: string; pageDescription: string; user?: UserType }) => {
+const Navbar = ({ pageTitle, pageDescription, user, currentPage }: { pageTitle: string; pageDescription: string; user?: UserType; currentPage?: string }) => {
   const router = useRouter();
 
   const title = `Desert Bake | ${pageTitle}`;
@@ -88,7 +88,9 @@ const Navbar = ({ pageTitle, pageDescription, user }: { pageTitle: string; pageD
               {pages.map((page, index) => (
                 <Fragment key={index}>
                   <Link href={page.link}>
-                    <Text _hover={{ color: 'brand.400' }}>{page.title}</Text>
+                    <Text _hover={{ color: 'brand.400' }} color={page.title == currentPage ? 'brand.400' : ''}>
+                      {page.title}
+                    </Text>
                   </Link>
                 </Fragment>
               ))}
@@ -201,7 +203,9 @@ const Navbar = ({ pageTitle, pageDescription, user }: { pageTitle: string; pageD
             {pages.map((page, index) => (
               <Fragment key={index}>
                 <Link href={page.link}>
-                  <Text _hover={{ color: 'brand.400' }}>{page.title}</Text>
+                  <Text _hover={{ color: 'brand.400' }} color={page.title == currentPage ? 'brand.400' : ''}>
+                    {page.title}
+                  </Text>
                 </Link>
               </Fragment>
             ))}
