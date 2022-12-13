@@ -24,10 +24,14 @@ export default class AdminController {
       return;
     }
 
-    // todo - change better response
-    res.status(200).json({
-      message: `hello ${email}`,
-      data: data,
-    });
+    req.session.user = {
+      id: data.admin_id,
+      name: data.admin_name,
+      email: data.admin_email,
+      admin: true,
+    };
+
+    await req.session.save();
+    res.status(200).json({ error: false, message: 'Login success' });
   };
 }
