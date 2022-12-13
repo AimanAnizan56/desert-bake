@@ -13,6 +13,7 @@ const CreateProduct = (props: any) => {
     name: '',
     price: '',
     description: '',
+    type: '',
   });
 
   return (
@@ -29,7 +30,7 @@ const CreateProduct = (props: any) => {
             <Box as="div" mt={'1rem'}>
               <InputGroup mb={'1rem'}>
                 <InputLeftElement pointerEvents="none" children={<ClipboardDocumentListIcon color={'var(--chakra-colors-gray-400)'} width={'20px'} height={'20px'} />} />
-                <Input type="text" placeholder="Product Name" _focusVisible={{ borderColor: 'brand.400', boxShadow: '0 0 0 1px var(--chakra-colors-brand-400)' }} />
+                <Input type="text" placeholder="Product Name" value={product.name} onChange={(e) => setProduct({ ...product, name: e.target.value })} _focusVisible={{ borderColor: 'brand.400', boxShadow: '0 0 0 1px var(--chakra-colors-brand-400)' }} />
               </InputGroup>
 
               <InputGroup mb={'1rem'}>
@@ -49,14 +50,14 @@ const CreateProduct = (props: any) => {
                       price: parseFloat(product.price).toFixed(2),
                     });
                   }}
-                  value={product?.price}
+                  value={product.price}
                   _focusVisible={{ borderColor: 'brand.400', boxShadow: '0 0 0 1px var(--chakra-colors-brand-400)' }}
                 />
               </InputGroup>
 
               <InputGroup mb={'1rem'}>
                 <InputLeftElement pointerEvents="none" children={<ChatBubbleOvalLeftEllipsisIcon color={'var(--chakra-colors-gray-400)'} width={'20px'} height={'20px'} />} />
-                <Input type="text" placeholder="Product Description" _focusVisible={{ borderColor: 'brand.400', boxShadow: '0 0 0 1px var(--chakra-colors-brand-400)' }} />
+                <Input type="text" placeholder="Product Description" value={product.description} onChange={(e) => setProduct({ ...product, description: e.target.value })} _focusVisible={{ borderColor: 'brand.400', boxShadow: '0 0 0 1px var(--chakra-colors-brand-400)' }} />
               </InputGroup>
 
               <Divider border={'1px'} color={'gray.500'} opacity={1} mb={'1rem'} />
@@ -67,7 +68,7 @@ const CreateProduct = (props: any) => {
                   <Text>Product Type</Text>
                 </Flex>
 
-                <RadioGroup ml={'1rem'} mt={'0.3rem'} colorScheme={'brand'} onChange={(value) => setRadValue(value)} value={radValue}>
+                <RadioGroup ml={'1rem'} mt={'0.3rem'} colorScheme={'brand'} onChange={(value) => setProduct({ ...product, type: value })} value={product.type}>
                   <Radio mr={'1rem'} value={'dessert'}>
                     Dessert
                   </Radio>
