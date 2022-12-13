@@ -3,6 +3,11 @@ import Admin from '../model/Admin.model';
 
 export default class AdminController {
   static login = async (req: NextApiRequest, res: NextApiResponse) => {
+    if (req.method != 'POST') {
+      res.status(405).json({ error: true, message: 'Request method not allowed' });
+      return;
+    }
+
     const { email, password } = req.body;
 
     if (!email || !password) {
