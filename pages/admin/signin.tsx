@@ -1,11 +1,14 @@
 import { EmailIcon, LockIcon } from '@chakra-ui/icons';
 import { Box, Container, Heading, InputGroup, InputLeftElement, Input, InputRightElement, Button, Alert, AlertIcon, Text } from '@chakra-ui/react';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+import axios, { AxiosError } from 'axios';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 const SignIn = () => {
+  const router = useRouter();
   const [adminData, setAdminData] = useState({
     email: '' as string,
     password: '' as string,
@@ -33,7 +36,63 @@ const SignIn = () => {
   };
 
   const handleSubmit = async () => {
-    // todo - submit to admin login api
+    type ServerError = {
+      error: boolean;
+      message: string;
+    };
+
+    if (buttonState.isDisabled) {
+      return;
+    }
+
+    setButtonState({
+      ...buttonState,
+      isLoading: true,
+    });
+
+    try {
+      const res = await axios.post('/api/v1/admin/auth', {
+        ...adminData,
+      });
+
+      // redirect user to admin homepage if success
+      const { error } = res.data;
+      if (!error) {
+        setButtonState({
+          ...buttonState,
+          isLoading: false,
+        });
+        router.push('/admin/');
+      }
+    } catch (err) {
+      // *** Axios error catch
+      if (axios.isAxiosError(err)) {
+        const serverError = err as AxiosError<ServerError>;
+        if (serverError && serverError.response) {
+          console.log('server error data', serverError.response.data);
+          const { error, message } = serverError.response.data;
+
+          if (error) {
+            setButtonState({
+              ...buttonState,
+              isLoading: false,
+            });
+            setAlertOn({
+              trigger: true,
+              status: 'error',
+              message: message == 'Login failed' ? 'Your email or password is incorrect' : message,
+            });
+
+            setTimeout(() => {
+              setAlertOn({
+                ...alertOn,
+                trigger: false,
+              });
+            }, 3000);
+          }
+        }
+      }
+    }
   };
 
   return (
@@ -67,7 +126,7 @@ const SignIn = () => {
                 onFocus={() => setEmailError(false)}
                 onKeyDown={(e) => {
                   if (e.key == 'Enter') {
-                    // handleSubmit();
+                    handleSubmit();
                   }
                 }}
                 isRequired
@@ -94,7 +153,7 @@ const SignIn = () => {
               placeholder={'Enter password'}
               onKeyDown={(e) => {
                 if (e.key == 'Enter') {
-                  //  handleSubmit();
+                  handleSubmit();
                 }
               }}
               isRequired
@@ -119,7 +178,7 @@ const SignIn = () => {
             </InputRightElement>
           </InputGroup>
 
-          <Button w={'100%'} mt={'0.8rem'} isDisabled={buttonState.isDisabled} isLoading={buttonState.isLoading} loadingText={'Please wait...'} /* onClick={handleSubmit} */ bg={'brand.500'} color={'white'} _hover={{ background: 'brand.600' }}>
+          <Button w={'100%'} mt={'0.8rem'} isDisabled={buttonState.isDisabled} isLoading={buttonState.isLoading} loadingText={'Please wait...'} onClick={handleSubmit} bg={'brand.500'} color={'white'} _hover={{ background: 'brand.600' }}>
             Login
           </Button>
           <Text fontSize={'0.8rem'} mt={'0.8rem'} textAlign={'center'}>
