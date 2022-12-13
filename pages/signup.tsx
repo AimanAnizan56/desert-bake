@@ -319,7 +319,7 @@ export const getServerSideProps: GetServerSideProps = withIronSessionSsr(async (
   if (user) {
     return {
       redirect: {
-        destination: '/',
+        destination: user.admin ? '/admin/' : '/',
         permanent: false,
       },
       props: {},

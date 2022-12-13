@@ -75,6 +75,17 @@ export default function Home(props: any) {
 }
 
 export const getServerSideProps: GetServerSideProps = withIronSessionSsr(async ({ req }) => {
+  if (req.session.user) {
+    if (req.session.user.admin) {
+      return {
+        redirect: {
+          destination: '/admin/',
+          permanent: false,
+        },
+      };
+    }
+  }
+
   return {
     props: {
       user: req.session.user ? req.session.user : {},
