@@ -99,7 +99,7 @@ const Navbar = ({ pageTitle, pageDescription, user, currentPage }: { pageTitle: 
             <Box display="flex" gap="1rem" alignItems={'center'} justifySelf={'end'}>
               {Icons.map((icon, i) => (
                 <Tooltip placement={'bottom'} label={icon.label}>
-                  <Box key={i} boxSize="1.3rem" _hover={{ color: 'brand.400' }}>
+                  <Box key={i} boxSize="1.3rem" _hover={{ color: 'brand.400' }} color={icon.label == currentPage ? 'brand.400' : ''}>
                     <Link
                       href={icon.href}
                       onClick={(e: Event) => {
@@ -216,7 +216,7 @@ const Navbar = ({ pageTitle, pageDescription, user, currentPage }: { pageTitle: 
               <>
                 {Icons.map((icon, i) => (
                   <Tooltip placement={'bottom'} label={icon.label}>
-                    <Box key={i} boxSize="1.3rem" _hover={{ color: 'brand.400' }}>
+                    <Box key={i} boxSize="1.3rem" _hover={{ color: 'brand.400' }} color={icon.label == currentPage ? 'brand.400' : ''}>
                       <Link
                         href={icon.href}
                         onClick={(e: Event) => {
