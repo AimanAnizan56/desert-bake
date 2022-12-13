@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import Link from 'next/link';
-import { Box, Text, Grid, Img, Button } from '@chakra-ui/react';
+import { Box, Text, Grid, Img, Button, Tooltip } from '@chakra-ui/react';
 import { UserIcon, ShoppingBagIcon, ArrowLeftOnRectangleIcon, ClipboardDocumentCheckIcon } from '@heroicons/react/24/outline';
 import Head from 'next/head';
 import axios from 'axios';
@@ -20,15 +20,17 @@ const Navbar = ({ pageTitle, pageDescription, user }: { pageTitle: string; pageD
 
   // *** for admin
   if (user && user.admin) {
-    const Icons: { href: string; icon: JSX.Element; fc: Function }[] = [
+    const Icons: { href: string; icon: JSX.Element; label: string; fc: Function }[] = [
       {
         href: '/admin/profile',
         icon: <UserIcon />,
+        label: 'My Profile',
         fc: () => {},
       },
       {
         href: '/admin',
         icon: <ArrowLeftOnRectangleIcon />,
+        label: 'Logout',
         fc: async (e: any) => {
           // logout
           e.preventDefault();
@@ -94,16 +96,18 @@ const Navbar = ({ pageTitle, pageDescription, user }: { pageTitle: string; pageD
 
             <Box display="flex" gap="1rem" alignItems={'center'} justifySelf={'end'}>
               {Icons.map((icon, i) => (
-                <Box key={i} boxSize="1.3rem" _hover={{ color: 'brand.400' }}>
-                  <Link
-                    href={icon.href}
-                    onClick={(e: Event) => {
-                      icon.fc(e);
-                    }}
-                  >
-                    {icon.icon}
-                  </Link>
-                </Box>
+                <Tooltip placement={'bottom'} label={icon.label}>
+                  <Box key={i} boxSize="1.3rem" _hover={{ color: 'brand.400' }}>
+                    <Link
+                      href={icon.href}
+                      onClick={(e: Event) => {
+                        icon.fc(e);
+                      }}
+                    >
+                      {icon.icon}
+                    </Link>
+                  </Box>
+                </Tooltip>
               ))}
             </Box>
           </Grid>
@@ -113,25 +117,29 @@ const Navbar = ({ pageTitle, pageDescription, user }: { pageTitle: string; pageD
   }
 
   // *** For customer
-  const Icons: { href: string; icon: JSX.Element; fc: Function }[] = [
+  const Icons: { href: string; icon: JSX.Element; label: string; fc: Function }[] = [
     {
       href: '/customer',
       icon: <UserIcon />,
+      label: 'My Profile',
       fc: () => {},
     },
     {
       href: '/cart',
       icon: <ShoppingBagIcon />,
+      label: 'View Cart',
       fc: () => {},
     },
     {
       href: '/order',
       icon: <ClipboardDocumentCheckIcon />,
+      label: 'View Order',
       fc: () => {},
     },
     {
       href: '',
       icon: <ArrowLeftOnRectangleIcon />,
+      label: 'Logout',
       fc: async (e: any) => {
         // logout
         e.preventDefault();
@@ -203,16 +211,18 @@ const Navbar = ({ pageTitle, pageDescription, user }: { pageTitle: string; pageD
             {user ? (
               <>
                 {Icons.map((icon, i) => (
-                  <Box key={i} boxSize="1.3rem" _hover={{ color: 'brand.400' }}>
-                    <Link
-                      href={icon.href}
-                      onClick={(e: Event) => {
-                        icon.fc(e);
-                      }}
-                    >
-                      {icon.icon}
-                    </Link>
-                  </Box>
+                  <Tooltip placement={'bottom'} label={icon.label}>
+                    <Box key={i} boxSize="1.3rem" _hover={{ color: 'brand.400' }}>
+                      <Link
+                        href={icon.href}
+                        onClick={(e: Event) => {
+                          icon.fc(e);
+                        }}
+                      >
+                        {icon.icon}
+                      </Link>
+                    </Box>
+                  </Tooltip>
                 ))}
               </>
             ) : (
