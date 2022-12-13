@@ -193,12 +193,6 @@ const SignIn = () => {
           <Button w={'100%'} mt={'0.8rem'} isDisabled={buttonState.isDisabled} isLoading={buttonState.isLoading} loadingText={'Please wait...'} onClick={handleSubmit} bg={'brand.500'} color={'white'} _hover={{ background: 'brand.600' }}>
             Login
           </Button>
-          <Text fontSize={'0.8rem'} mt={'0.8rem'} textAlign={'center'}>
-            Does not have an account?{' '}
-            <Box as="span" color={'blue.300'} fontWeight={'bold'} _hover={{ textDecoration: 'underline' }}>
-              <Link href={'/signup'}>Create Account</Link>
-            </Box>
-          </Text>
         </Box>
       </Container>
 
