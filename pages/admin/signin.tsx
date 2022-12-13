@@ -2,10 +2,13 @@ import { EmailIcon, LockIcon } from '@chakra-ui/icons';
 import { Box, Container, Heading, InputGroup, InputLeftElement, Input, InputRightElement, Button, Alert, AlertIcon, Text } from '@chakra-ui/react';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import axios, { AxiosError } from 'axios';
+import { withIronSessionSsr } from 'iron-session/next';
+import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { ironSessionOptions } from '../../lib/helper';
 
 const SignIn = () => {
   const router = useRouter();
@@ -210,3 +213,21 @@ const SignIn = () => {
 };
 
 export default SignIn;
+
+export const getServerSideProps: GetServerSideProps = withIronSessionSsr(async ({ req }) => {
+  const user = req.session.user;
+
+  if (user && user.admin == true) {
+    return {
+      redirect: {
+        destination: '/admin/',
+        permanent: false,
+      },
+      props: {},
+    };
+  }
+
+  return {
+    props: {},
+  };
+}, ironSessionOptions);
