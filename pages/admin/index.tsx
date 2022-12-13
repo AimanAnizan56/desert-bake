@@ -1,9 +1,14 @@
 import { withIronSessionSsr } from 'iron-session/next';
 import { GetServerSideProps } from 'next';
+import Navbar from '../../components/Navbar';
 import { ironSessionOptions } from '../../lib/helper';
 
-const Home = () => {
-  return <div>Homepage for admin</div>;
+const Home = (props: any) => {
+  return (
+    <>
+      <Navbar pageTitle="Admin Home" pageDescription="Homepage for admin" user={props.user} />
+    </>
+  );
 };
 
 export default Home;
