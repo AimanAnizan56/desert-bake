@@ -12,6 +12,7 @@ export default class AdminController {
 
     if (!email || !password) {
       res.status(400).json({
+        error: true,
         message: 'Email or password field is empty',
       });
       return;
@@ -19,6 +20,7 @@ export default class AdminController {
 
     if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
       res.status(400).json({
+        error: true,
         message: 'Email is invalid',
       });
       return;
