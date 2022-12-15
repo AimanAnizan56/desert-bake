@@ -54,15 +54,24 @@ export default class AdminController {
     };
   };
 
-  static logout = (req: NextApiRequest, res: NextApiResponse) => {
+  static logout = (req: NextApiRequest) => {
     req.session.destroy();
     if (req.session.user == undefined) {
-      res.status(200).json({ logout: true, message: 'Logout success' });
-      return;
+      return {
+        statusCode: 200,
+        body: {
+          logout: true,
+          message: 'Logout success',
+        },
+      };
     }
-    res.status(500).json({
-      error: true,
-      message: 'Logout failed',
-    });
+
+    return {
+      statusCode: 500,
+      body: {
+        error: true,
+        message: 'Logout failed',
+      },
+    };
   };
 }

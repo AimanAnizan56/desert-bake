@@ -1,17 +1,28 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import CustomerController from '../../../../controller/Customer.controller';
+import nextConnect from 'next-connect';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { method } = req;
+const handler = nextConnect({
+  onNoMatch: (req: NextApiRequest, res: NextApiResponse) => {
+    res.status(405).json({ error: true, message: 'Request method not allowed' });
+  },
+});
 
-  if (method == 'GET') {
-    // ! only for admin
-    // todo - check if the user is admin
-    // todo --> research how to use session in next or nodejs
+handler.post(async (req: NextApiRequest, res: NextApiResponse) => {
+  const { statusCode, body } = await CustomerController.create(req);
 
-    // add to retrieve all customer data
-    await CustomerController.getAll(req, res);
-  } else if (method == 'POST') {
-    await CustomerController.create(req, res);
-  }
-}
+  res.status(statusCode).json(body);
+});
+
+handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
+  // ! only for admin
+  // todo - check if the user is admin
+  // todo --> research how to use session in next or nodejs
+
+  // add to retrieve all customer data
+  const { statusCode, body } = await CustomerController.getAll(req);
+
+  res.status(statusCode).json(body);
+});
+
+export default handler;

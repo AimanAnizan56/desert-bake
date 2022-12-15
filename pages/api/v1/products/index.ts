@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import multer from 'multer';
 import multiparty from 'multiparty';
-import { FileReadResult } from 'fs/promises';
 
 const upload = multer({
   storage: multer.diskStorage({

@@ -4,7 +4,11 @@ import AdminController from '../../../../controller/Admin.controller';
 import { ironSessionOptions } from '../../../../lib/helper';
 import nextConnect from 'next-connect';
 
-const loginRoute = nextConnect();
+const loginRoute = nextConnect({
+  onNoMatch: (req: NextApiRequest, res: NextApiResponse) => {
+    res.status(405).json({ error: true, message: 'Request method not allowed' });
+  },
+});
 
 loginRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
   const { statusCode, body } = await AdminController.login(req);

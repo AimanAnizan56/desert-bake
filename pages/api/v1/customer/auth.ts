@@ -2,6 +2,7 @@ import { withIronSessionApiRoute } from 'iron-session/next';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import CustomerController from '../../../../controller/Customer.controller';
 import { ironSessionOptions } from '../../../../lib/helper';
+import nextConnect from 'next-connect';
 
 declare module 'iron-session' {
   interface IronSessionData {
@@ -14,8 +15,16 @@ declare module 'iron-session' {
   }
 }
 
-const loginRoute = async (req: NextApiRequest, res: NextApiResponse) => {
-  CustomerController.login(req, res);
-};
+const loginRoute = nextConnect({
+  onNoMatch: (req: NextApiRequest, res: NextApiResponse) => {
+    res.status(405).json({ error: true, message: 'Request method not allowed' });
+  },
+});
+
+loginRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
+  const { statusCode, body } = await CustomerController.login(req);
+
+  res.status(statusCode).json(body);
+});
 
 export default withIronSessionApiRoute(loginRoute, ironSessionOptions);
