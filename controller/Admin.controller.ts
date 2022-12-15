@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest } from 'next';
 import Admin from '../model/Admin.model';
 
 export default class AdminController {
