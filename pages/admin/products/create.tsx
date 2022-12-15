@@ -1,20 +1,70 @@
 import { Box, Text, Container, Divider, Heading, Input, InputGroup, InputLeftElement, RadioGroup, Radio, Flex, Button } from '@chakra-ui/react';
 import { ChartPieIcon, ChatBubbleOvalLeftEllipsisIcon, ClipboardDocumentListIcon, CurrencyDollarIcon, PhotoIcon } from '@heroicons/react/24/outline';
+import axios from 'axios';
 import { withIronSessionSsr } from 'iron-session/next';
 import { GetServerSideProps } from 'next';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Navbar from '../../../components/Navbar';
 import { ironSessionOptions } from '../../../lib/helper';
 
 const CreateProduct = (props: any) => {
-  const [radValue, setRadValue] = useState('dessert');
-
+  const formRef = useRef<HTMLFormElement | null>(null);
+  // const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [product, setProduct] = useState({
     name: '',
     price: '',
     description: '',
-    type: '',
+    type: 'dessert',
+    image: undefined,
   });
+  const [buttonState, setButtonState] = useState({
+    isLoading: false,
+    isDisabled: true,
+  });
+
+  useEffect(() => {
+    if (product.name.length > 0 && product.price.length > 0 && product.description.length > 0 && product.type.length > 0 && product.image != undefined) {
+      setButtonState({ ...buttonState, isDisabled: false });
+      return;
+    }
+    setButtonState({ ...buttonState, isDisabled: true });
+  }, [product]);
+
+  const setImage = (e: any) => {
+    // @ts-ignore
+    if (e.target.files.length > 0) {
+      setProduct({ ...product, image: e.target.files[0] });
+      return;
+    }
+    setProduct({ ...product, image: undefined });
+  };
+
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    };
+    const url = '/api/v1/products/';
+
+    if (product.name.length == 0 || product.description.length == 0 || product.price.length == 0 || product.type.length == 0 || product.image == undefined) {
+      return;
+    }
+
+    for (let key in product) {
+      // @ts-ignore
+      formData.append(key, product[key]);
+    }
+
+    try {
+      // const data = await axios.post(url, formData, config);
+      // @ts-ignore
+      // for (let pair of formData.entries()) {
+      //   console.log(pair);
+      // }
+    } catch (err) {}
+  };
 
   return (
     <>
@@ -27,7 +77,7 @@ const CreateProduct = (props: any) => {
               New Product
             </Heading>
 
-            <Box as="div" mt={'1rem'}>
+            <form style={{ marginTop: '1rem' }} ref={formRef}>
               <InputGroup mb={'1rem'}>
                 <InputLeftElement pointerEvents="none" children={<ClipboardDocumentListIcon color={'var(--chakra-colors-gray-400)'} width={'20px'} height={'20px'} />} />
                 <Input type="text" placeholder="Product Name" value={product.name} onChange={(e) => setProduct({ ...product, name: e.target.value })} _focusVisible={{ borderColor: 'brand.400', boxShadow: '0 0 0 1px var(--chakra-colors-brand-400)' }} />
@@ -89,15 +139,17 @@ const CreateProduct = (props: any) => {
                   <Text>Product Image</Text>
                 </Flex>
 
-                <input type={'file'} placeholder="Basic usage" />
+                <input type={'file'} accept={'image/*'} placeholder="Basic usage" onChange={setImage} />
               </Box>
 
               <Divider border={'1px'} color={'gray.500'} opacity={1} mb={'1rem'} />
 
               <Box as="div" textAlign={'center'}>
-                <Button colorScheme={'brand'}>Create Product</Button>
+                <Button colorScheme={'brand'} isLoading={buttonState.isLoading} isDisabled={buttonState.isDisabled} onClick={handleSubmit}>
+                  Create Product
+                </Button>
               </Box>
-            </Box>
+            </form>
           </Box>
         </Container>
       </main>
