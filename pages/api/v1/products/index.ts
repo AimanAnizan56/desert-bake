@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import multer from 'multer';
 import multiparty from 'multiparty';
+import { FileReadResult } from 'fs/promises';
 
 const upload = multer({
   storage: multer.diskStorage({
@@ -16,16 +17,40 @@ export const config = {
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  console.log('content-type', req.headers['content-type']);
   const form = new multiparty.Form();
-  const data = await new Promise((resolve, reject) => {
+  type DataType = {
+    fields: {
+      name: [string];
+      price: [string];
+      description: [string];
+      type: [string];
+    };
+    files: {
+      image: [
+        [
+          {
+            fieldName: string;
+            originalFilename: string;
+            path: string;
+            headers: {
+              'content-disposition': string;
+              'content-type': string;
+            };
+            size: number;
+          }
+        ]
+      ];
+    };
+  };
+
+  const data: DataType = await new Promise((resolve, reject) => {
     form.parse(req, (err, fields, files) => {
       if (err) reject({ err });
       resolve({ fields, files });
     });
   });
 
-  console.log('Form data: ', data);
+  console.log('Form data: ', data.files.image);
 
   return res.status(200).json({ data });
 }
