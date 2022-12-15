@@ -215,8 +215,8 @@ const Navbar = ({ pageTitle, pageDescription, user, currentPage }: { pageTitle: 
             {user ? (
               <>
                 {Icons.map((icon, i) => (
-                  <Tooltip placement={'bottom'} label={icon.label}>
-                    <Box key={i} boxSize="1.3rem" _hover={{ color: 'brand.400' }} color={icon.label == currentPage ? 'brand.400' : ''}>
+                  <Tooltip key={i} placement={'bottom'} label={icon.label}>
+                    <Box boxSize="1.3rem" _hover={{ color: 'brand.400' }} color={icon.label == currentPage ? 'brand.400' : ''}>
                       <Link
                         href={icon.href}
                         onClick={(e: Event) => {
