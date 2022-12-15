@@ -42,7 +42,7 @@ const CreateProduct = (props: any) => {
     const formData = new FormData();
     const config = {
       headers: {
-        'content-type': 'multipart/form-data',
+        'Content-Type': 'multipart/form-data',
       },
     };
     const url = '/api/v1/products/';
@@ -57,11 +57,11 @@ const CreateProduct = (props: any) => {
     }
 
     try {
-      // const data = await axios.post(url, formData, config);
       // @ts-ignore
-      // for (let pair of formData.entries()) {
-      //   console.log(pair);
-      // }
+      for (let pair of formData.entries()) {
+        console.log(pair);
+      }
+      const data = await axios.post(url, formData, config);
     } catch (err) {}
   };
 
