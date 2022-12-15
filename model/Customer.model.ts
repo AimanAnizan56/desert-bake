@@ -1,7 +1,7 @@
 import { hashPassword } from '../lib/helper';
 import { makeQuery } from '../lib/mysql_config';
 
-export class Customer {
+export default class Customer {
   private readonly id!: number;
   private name: string;
   private email: string;

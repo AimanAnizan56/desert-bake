@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { Customer } from '../model/Customer.model';
+import Customer from '../model/Customer.model';
 
 export default class CustomerController {
   static login = async (req: NextApiRequest) => {
