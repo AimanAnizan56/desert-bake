@@ -6,10 +6,6 @@ export default class AdminController {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      // res.status(400).json({
-      //   error: true,
-      //   message: 'Email or password field is empty',
-      // });
       return {
         statusCode: 400,
         body: {
@@ -20,10 +16,6 @@ export default class AdminController {
     }
 
     if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-      // res.status(400).json({
-      //   error: true,
-      //   message: 'Email is invalid',
-      // });
       return {
         statusCode: 400,
         body: {
@@ -36,7 +28,6 @@ export default class AdminController {
     const data = await Admin.getAdminData(email, password);
 
     if (data.length == 0) {
-      // res.status(401).json({ error: true, message: 'Login failed' });
       return {
         statusCode: 401,
         body: {
@@ -54,7 +45,6 @@ export default class AdminController {
     };
 
     await req.session.save();
-    // res.status(200).json({ error: false, message: 'Login success' });
     return {
       statusCode: 200,
       body: {
