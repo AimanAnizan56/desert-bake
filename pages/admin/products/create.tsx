@@ -9,7 +9,6 @@ import { ironSessionOptions } from '../../../lib/helper';
 
 const CreateProduct = (props: any) => {
   const formRef = useRef<HTMLFormElement | null>(null);
-  // const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [product, setProduct] = useState({
     name: '',
     price: '',
