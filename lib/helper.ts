@@ -1,4 +1,6 @@
-import { IronSessionOptions } from "iron-session";
+import { IronSessionOptions } from 'iron-session';
+import { NextApiRequest, NextApiResponse } from 'next';
+import multiparty from 'multiparty';
 
 export const hashPassword = (password: string) => {
   const crypto = require('crypto');
@@ -14,3 +16,16 @@ export const ironSessionOptions = {
     secure: process.env.NODE_ENV === 'production',
   },
 } as IronSessionOptions;
+
+export const MultiPartyMiddleware = async (req: NextApiRequest, res: NextApiResponse, next: any) => {
+  const form = new multiparty.Form({
+    autoFiles: true,
+    uploadDir: './public/upload',
+  });
+
+  await form.parse(req, (err, fields, files) => {
+    if (err) next(console.log(err));
+    req.body = { ...fields, ...files };
+    next();
+  });
+};
