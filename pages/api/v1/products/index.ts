@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import nextConnect from 'next-connect';
 import multer from 'multer';
 import multiparty from 'multiparty';
 
@@ -15,41 +16,35 @@ export const config = {
   },
 };
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+const handler = nextConnect({
+  onNoMatch: (req: NextApiRequest, res: NextApiResponse) => {
+    res.status(405).json({ error: true, message: 'Request method not allowed' });
+  },
+});
+
+// middleware
+handler.use(async (req: NextApiRequest, res: NextApiResponse, next) => {
   const form = new multiparty.Form();
-  type DataType = {
-    fields: {
-      name: [string];
-      price: [string];
-      description: [string];
-      type: [string];
-    };
-    files: {
-      image: [
-        [
-          {
-            fieldName: string;
-            originalFilename: string;
-            path: string;
-            headers: {
-              'content-disposition': string;
-              'content-type': string;
-            };
-            size: number;
-          }
-        ]
-      ];
-    };
-  };
 
-  const data: DataType = await new Promise((resolve, reject) => {
-    form.parse(req, (err, fields, files) => {
-      if (err) reject({ err });
-      resolve({ fields, files });
-    });
+  await form.parse(req, (err, fields, files) => {
+    if (err) next({ err });
+    req.body = { ...fields, ...files };
+    next();
   });
+});
 
-  console.log('Form data: ', data.files.image);
+handler.post(async (req: NextApiRequest, res: NextApiResponse) => {
+  const { name, price, description, type, image } = req.body;
 
-  return res.status(200).json({ data });
-}
+  return res.status(200).json({
+    product: {
+      name,
+      price,
+      description,
+      type,
+      image,
+    },
+  });
+});
+
+export default handler;
