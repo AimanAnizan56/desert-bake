@@ -1,22 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { Customer } from '../../../../model/Customer.model';
+import nextConnect from 'next-connect';
+import CustomerController from '../../../../controller/Customer.controller';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { email } = req.body;
-  const customer = new Customer('', email, '');
-  const validate = await customer.validate();
+const validateRoute = nextConnect({
+  onNoMatch: (req: NextApiRequest, res: NextApiResponse) => {
+    res.status(405).json({ error: true, message: 'Request method not allowed' });
+  },
+});
 
-  // todo -- change for better message
-  if (!validate) {
-    res.status(200).json({
-      message: 'Email has already registered',
-      error: true,
-    });
-    return;
-  }
+validateRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
+  const { statusCode, body } = await CustomerController.validateEmail(req);
 
-  res.status(200).json({
-    message: 'Email not been registered yet',
-    error: false,
-  });
-}
+  res.status(statusCode).json(body);
+});
+
+export default validateRoute;

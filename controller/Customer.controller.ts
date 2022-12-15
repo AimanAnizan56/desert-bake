@@ -148,4 +148,28 @@ export default class CustomerController {
       },
     };
   };
+
+  static validateEmail = async (req: NextApiRequest) => {
+    const { email } = req.body;
+    const customer = new Customer('', email, '');
+    const validate = await customer.validate();
+
+    if (!validate) {
+      return {
+        statusCode: 200,
+        body: {
+          message: 'Email has already registered',
+          error: true,
+        },
+      };
+    }
+
+    return {
+      statusCode: 200,
+      body: {
+        message: 'Email not been registered yet',
+        error: false,
+      },
+    };
+  };
 }
