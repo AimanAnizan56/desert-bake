@@ -1,10 +1,11 @@
+import { makeQuery } from '../lib/mysql_config';
+
 export default class Product {
   private readonly id!: number;
   private name: string;
   private price: number;
   private description: string;
   private type: string;
-  private imageBlob!: Blob;
   private imagePath!: string;
 
   constructor(name: string, price: number, description: string, type: string) {
@@ -14,11 +15,27 @@ export default class Product {
     this.type = type;
   }
 
-  setImageBlob(imageBlob: Blob) {
-    this.imageBlob = imageBlob;
-  }
+  setImage = (image: any) => {
+    this.imagePath = (image.path as string).replaceAll('\\', '/').replace('public', '');
+  };
 
-  setImagePath(imagePath: string) {
-    this.imagePath = imagePath;
-  }
+  create = async () => {
+    const row = makeQuery('INSERT INTO product (product_name, product_price, product_type, product_description, product_image_path) VALUES (?,?,?,?,?)', [this.name, this.price, this.type, this.description, this.imagePath]);
+    const data = await row;
+
+    if (data.affectedRows == 1) {
+      return {
+        id: data.insertId,
+        name: this.name,
+        price: this.price,
+        type: this.type,
+        description: this.description,
+        imagePath: this.imagePath,
+      };
+    }
+
+    return {
+      error: 'Could not insert product',
+    };
+  };
 }
