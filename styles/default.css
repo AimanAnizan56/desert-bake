@@ -1,3 +1,7 @@
+:root {
+  --box-shadow: 0 8px 24px rgb(0 0 0 / 30%);
+}
+
 ::-webkit-file-upload-button {
   margin-left: 1rem;
   margin-top: 0.5rem;
