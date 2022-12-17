@@ -24,7 +24,17 @@ export const MultiPartyMiddleware = async (req: NextApiRequest, res: NextApiResp
   });
 
   await form.parse(req, (err, fields, files) => {
-    if (err) next(console.log(err));
+    if (err) {
+      console.log('====================================');
+      console.log('Multiparty Error');
+      console.log(err);
+      console.log('====================================');
+
+      res.status(500).json({
+        message: err.message,
+      });
+      res.end();
+    }
     req.body = { ...fields, ...files };
     next();
   });
