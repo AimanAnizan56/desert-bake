@@ -67,7 +67,7 @@ export default class ProductController {
 
     if (data == 0) {
       return {
-        statusCode: 200,
+        statusCode: 204,
         body: {
           message: 'Product not found',
         },
