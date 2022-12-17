@@ -108,13 +108,13 @@ const SignUp = () => {
         const serverError = err as AxiosError<ServerError>;
         if (serverError && serverError.response) {
           console.log('server error data', serverError.response.data);
-          const { detail, message } = serverError.response.data;
+          const { message } = serverError.response.data;
 
           if (message) {
             setAlertOn({
               trigger: true,
               status: 'error',
-              message: detail,
+              message: message,
             });
 
             setTimeout(() => {
