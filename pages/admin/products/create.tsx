@@ -1,13 +1,15 @@
-import { Box, Text, Container, Divider, Heading, Input, InputGroup, InputLeftElement, RadioGroup, Radio, Flex, Button } from '@chakra-ui/react';
+import { Box, Text, Container, Divider, Heading, Input, InputGroup, InputLeftElement, RadioGroup, Radio, Flex, Button, Alert, AlertIcon } from '@chakra-ui/react';
 import { ChartPieIcon, ChatBubbleOvalLeftEllipsisIcon, ClipboardDocumentListIcon, CurrencyDollarIcon, PhotoIcon } from '@heroicons/react/24/outline';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { withIronSessionSsr } from 'iron-session/next';
 import { GetServerSideProps } from 'next';
 import { useEffect, useRef, useState } from 'react';
 import Navbar from '../../../components/Navbar';
 import { ironSessionOptions } from '../../../lib/helper';
+import { useRouter } from 'next/router';
 
 const CreateProduct = (props: any) => {
+  const router = useRouter();
   const formRef = useRef<HTMLFormElement | null>(null);
   const [product, setProduct] = useState({
     name: '',
@@ -15,6 +17,11 @@ const CreateProduct = (props: any) => {
     description: '',
     type: 'dessert',
     image: undefined,
+  });
+  const [alertOn, setAlertOn] = useState({
+    status: undefined as 'success' | 'info' | 'warning' | 'error' | 'loading' | undefined,
+    trigger: false,
+    message: 'Alert',
   });
   const [buttonState, setButtonState] = useState({
     isLoading: false,
@@ -39,6 +46,11 @@ const CreateProduct = (props: any) => {
   };
 
   const handleSubmit = async () => {
+    setButtonState({
+      ...buttonState,
+      isLoading: true,
+    });
+
     const formData = new FormData();
     const config = {
       headers: {
@@ -61,8 +73,73 @@ const CreateProduct = (props: any) => {
       for (let pair of formData.entries()) {
         console.log(pair);
       }
-      const data = await axios.post(url, formData, config);
-    } catch (err) {}
+      const res = await axios.post(url, formData, config);
+
+      const { message, data } = res.data;
+
+      if (res.status == 201) {
+        setButtonState({
+          ...buttonState,
+          isLoading: false,
+        });
+
+        setAlertOn({
+          status: 'success',
+          trigger: true,
+          message: message,
+        });
+
+        setTimeout(() => {
+          setAlertOn({
+            ...alertOn,
+            trigger: false,
+          });
+
+          router.push('/admin/products');
+        }, 2500);
+
+        setProduct({
+          ...product,
+          name: '',
+          price: '',
+          description: '',
+          type: 'dessert',
+        });
+        console.log('Product Data', data);
+      }
+    } catch (err) {
+      type ServerError = {
+        message: string;
+      };
+      // *** Axios error catch
+      if (axios.isAxiosError(err)) {
+        const serverError = err as AxiosError<ServerError>;
+        if (serverError && serverError.response) {
+          console.log('server error data', serverError.response.data);
+          const { message } = serverError.response.data;
+
+          if (message) {
+            setButtonState({
+              ...buttonState,
+              isLoading: false,
+            });
+
+            setAlertOn({
+              trigger: true,
+              status: 'error',
+              message: message,
+            });
+
+            setTimeout(() => {
+              setAlertOn({
+                ...alertOn,
+                trigger: false,
+              });
+            }, 3000);
+          }
+        }
+      }
+    }
   };
 
   return (
@@ -138,7 +215,7 @@ const CreateProduct = (props: any) => {
                   <Text>Product Image</Text>
                 </Flex>
 
-                <input type={'file'} accept={'image/*'} placeholder="Basic usage" onChange={setImage} />
+                <input type={'file'} accept={'.jpg, .jpeg, .png'} placeholder="Basic usage" onChange={setImage} />
               </Box>
 
               <Divider border={'1px'} color={'gray.500'} opacity={1} mb={'1rem'} />
@@ -152,6 +229,13 @@ const CreateProduct = (props: any) => {
           </Box>
         </Container>
       </main>
+
+      {alertOn.trigger && (
+        <Alert status={alertOn.status} w="30vw" mx="auto" position={'fixed'} left={'50vw'} bottom={'2rem'} transform={'translateX(-50%)'}>
+          <AlertIcon />
+          {alertOn.message}
+        </Alert>
+      )}
     </>
   );
 };
