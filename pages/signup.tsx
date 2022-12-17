@@ -100,7 +100,6 @@ const SignUp = () => {
       }
     } catch (err) {
       type ServerError = {
-        detail: string;
         message: string;
       };
       // *** Axios error catch
