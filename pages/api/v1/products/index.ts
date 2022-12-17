@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import nextConnect from 'next-connect';
+import ProductController from '../../../../controller/Product.controller';
 import { MultiPartyMiddleware } from '../../../../lib/helper';
 
 export const config = {
@@ -16,17 +17,9 @@ const handler = nextConnect({
 
 // middleware - using multiparty (from lib)
 handler.use(MultiPartyMiddleware).post(async (req: NextApiRequest, res: NextApiResponse) => {
-  const { name, price, description, type, image } = req.body;
+  const { statusCode, body } = await ProductController.create(req);
 
-  return res.status(200).json({
-    product: {
-      name,
-      price,
-      description,
-      type,
-      image,
-    },
-  });
+  res.status(statusCode).json(body);
 });
 
 export default handler;
