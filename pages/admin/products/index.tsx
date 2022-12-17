@@ -12,6 +12,7 @@ import { EditIcon } from '@chakra-ui/icons';
 
 const Products = (props: any) => {
   const [products, setProducts] = useState<Array<any>>();
+  const [skeleton, setSkeleton] = useState(true);
 
   useEffect(() => {
     const callAPI = async () => {
@@ -20,6 +21,11 @@ const Products = (props: any) => {
 
       if (data) {
         setProducts(data);
+        setSkeleton(false);
+      }
+
+      if (res.status == 204) {
+        setSkeleton(false);
       }
     };
 
@@ -45,13 +51,15 @@ const Products = (props: any) => {
           </Flex>
 
           <Grid templateColumns={'repeat(3, 1fr)'} gap={5} my={'2.5rem'}>
-            {!products && (
+            {skeleton && (
               <>
                 <SkeletonProductGridItem />
                 <SkeletonProductGridItem />
                 <SkeletonProductGridItem />
               </>
             )}
+
+            {!products && <Box as="div">No product found!</Box>}
 
             {products &&
               products.map((product, i) => {
