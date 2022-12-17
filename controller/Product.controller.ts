@@ -60,6 +60,28 @@ export default class ProductController {
     };
   };
 
+  static getProductById = async (req: NextApiRequest) => {
+    const { id } = req.query;
+
+    const data = await makeQuery('SELECT * FROM product WHERE product_id=?', [id]);
+
+    if (data == 0) {
+      return {
+        statusCode: 200,
+        body: {
+          message: 'Product not found',
+        },
+      };
+    }
+
+    return {
+      statusCode: 200,
+      body: {
+        data: data[0],
+      },
+    };
+  };
+
   static updateProduct = async (req: NextApiRequest) => {
     // todo - update product using product id
   };
