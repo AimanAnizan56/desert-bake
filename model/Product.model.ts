@@ -19,7 +19,7 @@ export default class Product {
     this.imagePath = (image.path as string).replaceAll('\\', '/').replace('public', '');
   };
 
-  create = async () => {
+  createProduct = async () => {
     const row = makeQuery('INSERT INTO product (product_name, product_price, product_type, product_description, product_image_path) VALUES (?,?,?,?,?)', [this.name, this.price, this.type, this.description, this.imagePath]);
     const data = await row;
 
@@ -37,5 +37,13 @@ export default class Product {
     return {
       error: 'Could not insert product',
     };
+  };
+
+  static getProducts = async () => {
+    // todo - get all products in database
+  };
+
+  static getProduct = async (id: number) => {
+    // todo - get product by id
   };
 }

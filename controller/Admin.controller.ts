@@ -25,7 +25,7 @@ export default class AdminController {
       };
     }
 
-    const data = await Admin.getAdminData(email, password);
+    const data = await Admin.getAdmin(email, password);
 
     if (data.length == 0) {
       return {
@@ -73,5 +73,9 @@ export default class AdminController {
         message: 'Logout failed',
       },
     };
+  };
+
+  static updateAdmin = (req: NextApiRequest) => {
+    // todo -- update admin profile
   };
 }

@@ -23,7 +23,7 @@ export default class Customer {
     return false;
   };
 
-  insertDb = async () => {
+  createCustomer = async () => {
     const row = makeQuery('INSERT INTO customer(customer_name, customer_email, password) VALUES (?,?,?)', [this.name, this.email, this.password]);
     const data = await row;
 

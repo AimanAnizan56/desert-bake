@@ -9,7 +9,7 @@ const handler = nextConnect({
 });
 
 handler.post(async (req: NextApiRequest, res: NextApiResponse) => {
-  const { statusCode, body } = await CustomerController.create(req);
+  const { statusCode, body } = await CustomerController.createCustomer(req);
 
   res.status(statusCode).json(body);
 });
@@ -20,7 +20,7 @@ handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
   // todo --> research how to use session in next or nodejs
 
   // add to retrieve all customer data
-  const { statusCode, body } = await CustomerController.getAll(req);
+  const { statusCode, body } = await CustomerController.getCustomers(req);
 
   res.status(statusCode).json(body);
 });

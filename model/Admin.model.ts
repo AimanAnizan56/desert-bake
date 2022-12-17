@@ -13,7 +13,7 @@ export default class Admin {
     this.password = hashPassword(password);
   }
 
-  static getAdminData = async (email: string, password: string) => {
+  static getAdmin = async (email: string, password: string) => {
     const passwordHashed = hashPassword(password);
     const data = await makeQuery('SELECT admin_id, admin_name, admin_email FROM admin WHERE admin_email=? AND password=?', [email, passwordHashed]);
 

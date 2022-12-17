@@ -80,20 +80,7 @@ export default class CustomerController {
     };
   };
 
-  // get all customer - for admin
-  static getAll = async (req: NextApiRequest) => {
-    // todo - check if user is admin
-    const data = await Customer.getAllCustomerData();
-    return {
-      statusCode: 200,
-      body: {
-        length: data.length,
-        data,
-      },
-    };
-  };
-
-  static create = async (req: NextApiRequest) => {
+  static createCustomer = async (req: NextApiRequest) => {
     const { name, email, password } = req.body;
 
     if (name == undefined || email == undefined || password == undefined || name.length == 0 || email.length == 0 || password.length == 0) {
@@ -128,7 +115,7 @@ export default class CustomerController {
     }
 
     // insert into database
-    const row: any = await customer.insertDb();
+    const row: any = await customer.createCustomer();
 
     if (row.error) {
       return {
@@ -147,6 +134,23 @@ export default class CustomerController {
         data: row,
       },
     };
+  };
+
+  // get all customer - for admin
+  static getCustomers = async (req: NextApiRequest) => {
+    // todo - check if user is admin
+    const data = await Customer.getAllCustomerData();
+    return {
+      statusCode: 200,
+      body: {
+        length: data.length,
+        data,
+      },
+    };
+  };
+
+  static updateCustomer = async (req: NextApiRequest) => {
+    // todo -- update customer profile
   };
 
   static validateEmail = async (req: NextApiRequest) => {

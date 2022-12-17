@@ -17,7 +17,7 @@ const handler = nextConnect({
 
 // middleware - using multiparty (from lib)
 handler.use(MultiPartyMiddleware).post(async (req: NextApiRequest, res: NextApiResponse) => {
-  const { statusCode, body } = await ProductController.create(req);
+  const { statusCode, body } = await ProductController.createProduct(req);
 
   res.status(statusCode).json(body);
 });
