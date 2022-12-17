@@ -1,4 +1,5 @@
 import { NextApiRequest } from 'next';
+import { makeQuery } from '../lib/mysql_config';
 import Product from '../model/Product.model';
 
 export default class ProductController {
@@ -39,7 +40,24 @@ export default class ProductController {
   };
 
   static getProducts = async (req: NextApiRequest) => {
-    // todo - get all products
+    const data = await makeQuery('SELECT * FROM product');
+
+    if (data.length > 0) {
+      return {
+        statusCode: 200,
+        body: {
+          length: data.length,
+          data,
+        },
+      };
+    }
+
+    return {
+      statusCode: 204,
+      body: {
+        message: 'No products found',
+      },
+    };
   };
 
   static updateProduct = async (req: NextApiRequest) => {

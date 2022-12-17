@@ -22,4 +22,10 @@ handler.use(MultiPartyMiddleware).post(async (req: NextApiRequest, res: NextApiR
   res.status(statusCode).json(body);
 });
 
+handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
+  const { statusCode, body } = await ProductController.getProducts(req);
+
+  res.status(statusCode).json(body);
+});
+
 export default handler;
