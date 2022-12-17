@@ -118,7 +118,7 @@ const SignIn = () => {
       </Head>
 
       <Container>
-        <Box as="form" boxShadow={'0 8px 24px rgb(0 0 0 / 30%)'} borderRadius={'0.5rem'} px={8} py={5} mt={'5rem'}>
+        <Box as="form" boxShadow={'var(--box-shadow)'} borderRadius={'0.5rem'} px={8} py={5} mt={'5rem'}>
           <Heading as="h1" textAlign={'center'} mb="2rem" color={'brand.500'}>
             Sign In
           </Heading>
