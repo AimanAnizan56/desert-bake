@@ -1,4 +1,5 @@
 import { NextApiRequest } from 'next';
+import Product from '../model/Product.model';
 
 export default class ProductController {
   static create = async (req: NextApiRequest) => {
@@ -13,16 +14,26 @@ export default class ProductController {
       };
     }
 
-    return {
-      statusCode: 200,
-      body: {
-        product: {
-          name,
-          price,
-          description,
-          type,
-          image,
+    const product = new Product(name[0], parseFloat(price[0]), description[0], type[0]);
+    product.setImage(image[0]);
+
+    const row: any = await product.create();
+
+    if (row.error) {
+      return {
+        statusCode: 400,
+        body: {
+          message: row.error,
+          data: row,
         },
+      };
+    }
+
+    return {
+      statusCode: 201,
+      body: {
+        message: 'Successfully created',
+        data: row,
       },
     };
   };
