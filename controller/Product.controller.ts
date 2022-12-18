@@ -40,7 +40,7 @@ export default class ProductController {
   };
 
   static getProducts = async (req: NextApiRequest) => {
-    const data = await makeQuery('SELECT * FROM product');
+    const data = await Product.getProducts();
 
     if (data.length > 0) {
       return {

@@ -44,7 +44,9 @@ export default class Product {
   };
 
   static getProducts = async () => {
-    // todo - get all products in database
+    const data: any = await makeQuery('SELECT * FROM product');
+
+    return data;
   };
 
   static getProduct = async (id: number) => {
