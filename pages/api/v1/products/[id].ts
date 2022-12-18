@@ -27,4 +27,10 @@ productRoute.patch(MultiPartyMiddleware, async (req: NextApiRequest, res: NextAp
   res.status(statusCode).json(body);
 });
 
+productRoute.delete(async (req: NextApiRequest, res: NextApiResponse) => {
+  const { statusCode, body } = await ProductController.deleteProduct(req);
+
+  res.status(statusCode).json(body);
+});
+
 export default productRoute;
