@@ -1,5 +1,5 @@
-import { Box, Button, Container, Divider, Flex, Input, InputGroup, InputLeftElement, Radio, RadioGroup, Text } from '@chakra-ui/react';
-import axios from 'axios';
+import { Alert, AlertIcon, Box, Button, Container, Divider, Flex, Input, InputGroup, InputLeftElement, Radio, RadioGroup, Text } from '@chakra-ui/react';
+import axios, { AxiosError } from 'axios';
 import { withIronSessionSsr } from 'iron-session/next';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
@@ -21,6 +21,11 @@ const EditProduct = (props: any) => {
   const [buttonState, setButtonState] = useState({
     isDisabled: false,
     isLoading: false,
+  });
+  const [alertOn, setAlertOn] = useState({
+    status: undefined as 'success' | 'info' | 'warning' | 'error' | 'loading' | undefined,
+    trigger: false,
+    message: 'Alert',
   });
 
   useEffect(() => {
@@ -76,7 +81,7 @@ const EditProduct = (props: any) => {
     setProductImageObj(undefined);
   };
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     setButtonState({
       ...buttonState,
       isLoading: true,
@@ -94,7 +99,74 @@ const EditProduct = (props: any) => {
       return;
     }
 
-    // todo -- create variable to put all required input and image if exist
+    formData.append('name', product.product_name);
+    formData.append('description', product.product_description);
+    formData.append('type', product.product_type);
+    formData.append('price', product.product_price);
+
+    if (productImageObj != undefined) {
+      formData.append('image', productImageObj);
+    }
+
+    try {
+      const res = await axios.patch(url, formData, config);
+
+      const { message, data } = res.data;
+
+      if (res.status >= 200 && res.status < 300) {
+        setButtonState({
+          ...buttonState,
+          isLoading: false,
+        });
+
+        setAlertOn({
+          status: 'success',
+          trigger: true,
+          message: message,
+        });
+
+        setTimeout(() => {
+          setAlertOn({
+            ...alertOn,
+            trigger: false,
+          });
+        }, 2500);
+
+        console.log('Product Data', data);
+      }
+    } catch (err) {
+      type ServerError = {
+        message: string;
+      };
+      // *** Axios error catch
+      if (axios.isAxiosError(err)) {
+        const serverError = err as AxiosError<ServerError>;
+        if (serverError && serverError.response) {
+          console.log('server error data', serverError.response.data);
+          const { message } = serverError.response.data;
+
+          if (message) {
+            setButtonState({
+              ...buttonState,
+              isLoading: false,
+            });
+
+            setAlertOn({
+              trigger: true,
+              status: 'error',
+              message: message,
+            });
+
+            setTimeout(() => {
+              setAlertOn({
+                ...alertOn,
+                trigger: false,
+              });
+            }, 3000);
+          }
+        }
+      }
+    }
   };
 
   return (
@@ -106,7 +178,7 @@ const EditProduct = (props: any) => {
           {product && (
             <Box as={'form'} my={'2rem'} boxShadow={'var(--box-shadow)'} px={'3rem'} py={'1rem'} borderRadius={'5px'}>
               <Box as={'div'} position={'relative'} width={'100%'} height={'250px'} mb={'1rem'}>
-                <Image src={productImageSrc} fill alt={product.product_name} />
+                <Image src={productImageSrc} fill sizes="auto" alt={product.product_name} />
               </Box>
 
               <InputGroup mb={'1rem'}>
@@ -191,6 +263,13 @@ const EditProduct = (props: any) => {
           )}
         </Container>
       </main>
+
+      {alertOn.trigger && (
+        <Alert status={alertOn.status} w="30vw" mx="auto" position={'fixed'} left={'50vw'} bottom={'2rem'} transform={'translateX(-50%)'}>
+          <AlertIcon />
+          {alertOn.message}
+        </Alert>
+      )}
     </>
   );
 };
