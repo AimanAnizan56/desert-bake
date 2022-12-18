@@ -1,4 +1,4 @@
-import { Box, Button, Container, Flex, Grid, GridItem, Heading, Skeleton, SkeletonText } from '@chakra-ui/react';
+import { Box, Button, Container, Flex, Grid, GridItem, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@chakra-ui/react';
 import { withIronSessionSsr } from 'iron-session/next';
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
@@ -8,29 +8,42 @@ import { ironSessionOptions } from '../../../lib/helper';
 import { SkeletonProductGridItem } from '../../../components/Skeleton.component';
 import axios from 'axios';
 import Image from 'next/image';
-import { EditIcon } from '@chakra-ui/icons';
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 
 const Products = (props: any) => {
   const [products, setProducts] = useState<Array<any>>();
   const [skeleton, setSkeleton] = useState(true);
 
+  const [modalState, setModalState] = useState({
+    isOpen: false,
+    onClose: () => {},
+  });
+
   useEffect(() => {
-    const callAPI = async () => {
-      const res = await axios.get('/api/v1/products');
-      const { data } = res.data;
-
-      if (data) {
-        setProducts(data);
-        setSkeleton(false);
-      }
-
-      if (res.status == 204) {
-        setSkeleton(false);
-      }
-    };
-
-    callAPI();
+    callProductAPI();
   }, []);
+
+  const callProductAPI = async () => {
+    const res = await axios.get('/api/v1/products');
+    const { data } = res.data;
+
+    if (data) {
+      setProducts(data);
+      setSkeleton(false);
+    }
+
+    if (res.status == 204) {
+      setSkeleton(false);
+    }
+  };
+
+  const clickHandler = (e: any) => {
+    const id = e.target.dataset.currentId;
+    setModalState({
+      ...modalState,
+      isOpen: true,
+    });
+  };
 
   return (
     <>
@@ -76,11 +89,17 @@ const Products = (props: any) => {
                         RM {product.product_price}
                       </Box>
                       <Box as="div">
-                        <Link href={`/admin/products/edit/${product.product_id}`}>
-                          <Button leftIcon={<EditIcon />} colorScheme={'brand'} width={'100%'}>
-                            Edit
-                          </Button>
-                        </Link>
+                        <Box as="div" mb={'0.5rem'}>
+                          <Link href={`/admin/products/edit/${product.product_id}`}>
+                            <Button leftIcon={<EditIcon />} colorScheme={'brand'} width={'100%'}>
+                              Edit
+                            </Button>
+                          </Link>
+                        </Box>
+
+                        <Button leftIcon={<DeleteIcon />} colorScheme={'red'} variant={'outline'} width={'100%'} data-current-id={product.product_id} onClick={clickHandler}>
+                          Delete
+                        </Button>
                       </Box>
                     </GridItem>
                   </Fragment>
@@ -88,6 +107,26 @@ const Products = (props: any) => {
               })}
           </Grid>
         </Container>
+
+        <Modal isOpen={modalState.isOpen} onClose={modalState.onClose} isCentered>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Delete</ModalHeader>
+            <ModalCloseButton onClick={() => setModalState({ ...modalState, isOpen: false })} />
+
+            <ModalBody>Are you sure you want to delete this item?</ModalBody>
+
+            <ModalFooter>
+              <Button mx={2} colorScheme={'red'} width={'5rem'} variant={'outline'} onClick={() => setModalState({ ...modalState, isOpen: false })}>
+                Cancel
+              </Button>
+
+              <Button colorScheme={'red'} width={'5rem'}>
+                Yes
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </main>
     </>
   );
