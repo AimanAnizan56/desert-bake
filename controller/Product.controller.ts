@@ -63,7 +63,25 @@ export default class ProductController {
   static getProductById = async (req: NextApiRequest) => {
     const { id } = req.query;
 
-    const data = await makeQuery('SELECT * FROM product WHERE product_id=?', [id]);
+    if (id == undefined) {
+      return {
+        statusCode: 400,
+        body: {
+          message: 'Please provide product id',
+        },
+      };
+    }
+
+    if (isNaN(parseInt(id as string))) {
+      return {
+        statusCode: 400,
+        body: {
+          message: 'Product id is not a number',
+        },
+      };
+    }
+
+    const data = await Product.getProduct(parseInt(id as string));
 
     if (data == 0) {
       return {

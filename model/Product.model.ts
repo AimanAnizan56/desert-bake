@@ -1,7 +1,7 @@
 import { makeQuery } from '../lib/mysql_config';
 
 export default class Product {
-  private readonly id!: number;
+  private id!: number;
   private name: string;
   private price: number;
   private description: string;
@@ -44,6 +44,16 @@ export default class Product {
   };
 
   static getProduct = async (id: number) => {
-    // todo - get product by id
+    const data = await makeQuery('SELECT * FROM product WHERE product_id=?', [id]);
+
+    return data;
+  };
+
+  updateProduct = async () => {
+    // todo - update product detail without image
+  };
+
+  updateProductImage = async () => {
+    // todo - update product image only
   };
 }
