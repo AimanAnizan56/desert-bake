@@ -12,6 +12,7 @@ import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 
 const Products = (props: any) => {
   const [products, setProducts] = useState<Array<any>>();
+  const [currentSelectedId, setCurrentSelectedId] = useState();
   const [skeleton, setSkeleton] = useState(true);
 
   const [modalState, setModalState] = useState({
@@ -40,7 +41,7 @@ const Products = (props: any) => {
   };
 
   const clickHandler = (e: any) => {
-    const id = e.target.dataset.currentId;
+    setCurrentSelectedId(e.target.dataset.currentId);
     setModalState({
       ...modalState,
       isOpen: true,
@@ -49,6 +50,9 @@ const Products = (props: any) => {
 
   const deleteProduct = () => {
     // todo -- delete product using api call
+    console.log('====================================');
+    console.log('|deleteProduct| currentSelectedId: ', currentSelectedId);
+    console.log('====================================');
   };
 
   return (
@@ -127,7 +131,7 @@ const Products = (props: any) => {
                 Cancel
               </Button>
 
-              <Button colorScheme={'red'} width={'5rem'}>
+              <Button colorScheme={'red'} width={'5rem'} onClick={deleteProduct}>
                 Yes
               </Button>
             </ModalFooter>
