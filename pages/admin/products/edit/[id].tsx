@@ -42,6 +42,24 @@ const EditProduct = (props: any) => {
     callAPI();
   }, []);
 
+  useEffect(() => {
+    if (!product) {
+      return;
+    }
+    if (product.product_name == '' || product.product_price == '' || product.product_description == '' || product.product_type == '') {
+      setButtonState({
+        ...buttonState,
+        isDisabled: true,
+      });
+      return;
+    }
+
+    setButtonState({
+      ...buttonState,
+      isDisabled: false,
+    });
+  }, [product]);
+
   const setImage = (e: any) => {
     // @ts-ignore
     if (e.target.files.length > 0) {
@@ -92,7 +110,7 @@ const EditProduct = (props: any) => {
                   onBlur={() => {
                     setProduct({
                       ...product,
-                      price: parseFloat(product.product_price).toFixed(2),
+                      product_price: parseFloat(product.product_price).toFixed(2),
                     });
                   }}
                   value={product.product_price}
