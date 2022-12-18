@@ -101,7 +101,54 @@ export default class ProductController {
   };
 
   static updateProduct = async (req: NextApiRequest) => {
-    // todo - update product using product id
+    const { id } = req.query;
+    const { name, price, description, type, image } = req.body;
+
+    if (id == undefined || name == undefined || price == undefined || description == undefined || type == undefined) {
+      return {
+        statusCode: 400,
+        body: {
+          message: 'Please provide id, name, price and type of product',
+        },
+      };
+    }
+
+    if (isNaN(parseInt(id as string))) {
+      return {
+        statusCode: 400,
+        body: {
+          message: 'Product id is not a number',
+        },
+      };
+    }
+
+    const product = new Product(name[0], price[0], description[0], type[0]);
+    product.setId(parseInt(id as string));
+    let row: any = await product.updateProduct();
+
+    if (row.error) {
+      return {
+        statusCode: 500,
+        body: {
+          message: row.message,
+        },
+      };
+    }
+
+    if (image != undefined) {
+      product.setImage(image[0]);
+      row = await product.updateProductImage();
+
+      // todo - delete previous image
+    }
+
+    return {
+      statusCode: 200,
+      body: {
+        message: 'Successfully updated',
+        data: row,
+      },
+    };
   };
 
   static deleteProduct = async (req: NextApiRequest) => {
