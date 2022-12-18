@@ -15,6 +15,10 @@ export default class Product {
     this.type = type;
   }
 
+  setId = (id: number) => {
+    this.id = id;
+  };
+
   setImage = (image: any) => {
     this.imagePath = (image.path as string).replaceAll('\\', '/').replace('public', '');
   };
@@ -50,10 +54,39 @@ export default class Product {
   };
 
   updateProduct = async () => {
-    // todo - update product detail without image
+    const row: any = await makeQuery('UPDATE product SET product_name=?, product_price=?, product_description=?, product_type=? WHERE product_id=?', [this.name, this.price, this.description, this.type, this.id]);
+
+    if (row.affectedRows == 1) {
+      return {
+        id: this.id,
+        name: this.name,
+        price: this.price,
+        description: this.description,
+        type: this.type,
+      };
+    }
+
+    return {
+      error: 'Could not update product',
+    };
   };
 
   updateProductImage = async () => {
-    // todo - update product image only
+    const row: any = await makeQuery('UPDATE product SET product_image_path=? WHERE product_id=?', [this.imagePath, this.id]);
+
+    if (row.affectedRows == 1) {
+      return {
+        id: this.id,
+        name: this.name,
+        price: this.price,
+        description: this.description,
+        type: this.type,
+        image: this.imagePath,
+      };
+    }
+
+    return {
+      error: 'Could not update product image',
+    };
   };
 }
