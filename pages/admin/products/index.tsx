@@ -59,7 +59,7 @@ const Products = (props: any) => {
               </>
             )}
 
-            {!products && <Box as="div">No product found!</Box>}
+            {!products && !skeleton && <Box as="div">No product found!</Box>}
 
             {products &&
               products.map((product, i) => {
