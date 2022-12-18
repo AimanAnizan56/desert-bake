@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import Navbar from '../../../components/Navbar';
 import { ironSessionOptions } from '../../../lib/helper';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 const CreateProduct = (props: any) => {
   const router = useRouter();
@@ -18,6 +19,8 @@ const CreateProduct = (props: any) => {
     type: 'dessert',
     image: undefined,
   });
+  const [productImageSrc, setProductImageSrc] = useState('/');
+
   const [alertOn, setAlertOn] = useState({
     status: undefined as 'success' | 'info' | 'warning' | 'error' | 'loading' | undefined,
     trigger: false,
@@ -39,10 +42,20 @@ const CreateProduct = (props: any) => {
   const setImage = (e: any) => {
     // @ts-ignore
     if (e.target.files.length > 0) {
+      let reader = new FileReader();
+
+      reader.onload = (e) => {
+        // @ts-ignore
+        setProductImageSrc(e.target.result);
+      };
+
+      reader.readAsDataURL(e.target.files[0]);
       setProduct({ ...product, image: e.target.files[0] });
       return;
     }
+
     setProduct({ ...product, image: undefined });
+    setProductImageSrc('/');
   };
 
   const handleSubmit = async () => {
@@ -154,6 +167,21 @@ const CreateProduct = (props: any) => {
             </Heading>
 
             <form style={{ marginTop: '1rem' }} ref={formRef}>
+              {productImageSrc == '/' && (
+                <Box as={'div'} position={'relative'} bg={'gray'} color={'white'} width={'100%'} height={'250px'} mb={'1rem'}>
+                  <Flex justifyContent={'center'} alignItems={'center'} flexDirection={'column'} height={'100%'}>
+                    <PhotoIcon width={'100px'} height={'100px'} />
+                    <Text>No image insert</Text>
+                  </Flex>
+                </Box>
+              )}
+
+              {productImageSrc != '/' && (
+                <Box as={'div'} position={'relative'} width={'100%'} height={'250px'} mb={'1rem'}>
+                  <Image src={productImageSrc} fill sizes="auto" alt={product.name} />
+                </Box>
+              )}
+
               <InputGroup mb={'1rem'}>
                 <InputLeftElement pointerEvents="none" children={<ClipboardDocumentListIcon color={'var(--chakra-colors-gray-400)'} width={'20px'} height={'20px'} />} />
                 <Input type="text" placeholder="Product Name" value={product.name} onChange={(e) => setProduct({ ...product, name: e.target.value })} _focusVisible={{ borderColor: 'brand.400', boxShadow: '0 0 0 1px var(--chakra-colors-brand-400)' }} />
