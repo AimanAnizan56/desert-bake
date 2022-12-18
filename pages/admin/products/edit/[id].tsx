@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, Box, Button, Container, Divider, Flex, Input, InputGroup, InputLeftElement, Radio, RadioGroup, Text } from '@chakra-ui/react';
+import { Alert, AlertIcon, Box, Button, Container, Divider, Flex, Input, InputGroup, InputLeftElement, Radio, RadioGroup, Skeleton, Text } from '@chakra-ui/react';
 import axios, { AxiosError } from 'axios';
 import { withIronSessionSsr } from 'iron-session/next';
 import { GetServerSideProps } from 'next';
@@ -14,6 +14,7 @@ const EditProduct = (props: any) => {
   const router = useRouter();
   const { id } = router.query;
 
+  const [skeleton, setSkeleton] = useState(true);
   const [product, setProduct] = useState<any>();
   const [productImageSrc, setProductImageSrc] = useState('#');
   const [productImageObj, setProductImageObj] = useState<undefined>();
@@ -38,6 +39,9 @@ const EditProduct = (props: any) => {
           ...data,
         });
         setProductImageSrc(data.product_image_path);
+      }
+      if (res) {
+        setSkeleton(false);
       }
     };
 
@@ -175,6 +179,21 @@ const EditProduct = (props: any) => {
 
       <main>
         <Container size={'container.md'}>
+          {skeleton && (
+            <Box as={'form'} my={'2rem'} boxShadow={'var(--box-shadow)'} px={'3rem'} py={'1rem'} borderRadius={'5px'}>
+              <Skeleton height={'250px'} mb={'1rem'} />
+              <Skeleton height={'50px'} mb={'1rem'} />
+              <Skeleton height={'50px'} mb={'1rem'} />
+              <Skeleton height={'50px'} />
+            </Box>
+          )}
+
+          {!product && !skeleton && (
+            <Box as="div" my={'2rem'} boxShadow={'var(--box-shadow)'} px={'3rem'} py={'1rem'} borderRadius={'5px'} textAlign={'center'}>
+              No product found with current id!
+            </Box>
+          )}
+
           {product && (
             <Box as={'form'} my={'2rem'} boxShadow={'var(--box-shadow)'} px={'3rem'} py={'1rem'} borderRadius={'5px'}>
               <Box as={'div'} position={'relative'} width={'100%'} height={'250px'} mb={'1rem'}>
