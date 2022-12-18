@@ -15,7 +15,8 @@ const EditProduct = (props: any) => {
   const { id } = router.query;
 
   const [product, setProduct] = useState<any>();
-  const [productImage, setProductImage] = useState('#');
+  const [productImageSrc, setProductImageSrc] = useState('#');
+  const [productImageObj, setProductImageObj] = useState<undefined>();
 
   useEffect(() => {
     const callAPI = async () => {
@@ -26,7 +27,7 @@ const EditProduct = (props: any) => {
         setProduct({
           ...data,
         });
-        setProductImage(data.product_image_path);
+        setProductImageSrc(data.product_image_path);
       }
     };
 
@@ -40,14 +41,16 @@ const EditProduct = (props: any) => {
 
       reader.onload = (e) => {
         // @ts-ignore
-        setProductImage(e.target.result);
+        setProductImageSrc(e.target.result);
       };
 
       reader.readAsDataURL(e.target.files[0]);
+      setProductImageObj(e.target.files[0]);
       return;
     }
 
-    setProductImage(product.product_image_path);
+    setProductImageSrc(product.product_image_path);
+    setProductImageObj(undefined);
   };
 
   return (
@@ -59,7 +62,7 @@ const EditProduct = (props: any) => {
           {product && (
             <Box as={'form'} my={'2rem'} boxShadow={'var(--box-shadow)'} px={'3rem'} py={'1rem'} borderRadius={'5px'}>
               <Box as={'div'} position={'relative'} width={'100%'} height={'250px'} mb={'1rem'}>
-                <Image src={productImage} fill alt={product.product_name} />
+                <Image src={productImageSrc} fill alt={product.product_name} />
               </Box>
 
               <InputGroup mb={'1rem'}>
