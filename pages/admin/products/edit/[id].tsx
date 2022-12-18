@@ -21,9 +21,6 @@ const EditProduct = (props: any) => {
   const [buttonState, setButtonState] = useState({
     isDisabled: false,
     isLoading: false,
-    handleClick: (e: any) => {
-      console.log('handleClick executed');
-    },
   });
 
   useEffect(() => {
@@ -77,6 +74,27 @@ const EditProduct = (props: any) => {
 
     setProductImageSrc(product.product_image_path);
     setProductImageObj(undefined);
+  };
+
+  const handleUpdate = () => {
+    setButtonState({
+      ...buttonState,
+      isLoading: true,
+    });
+
+    const formData = new FormData();
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+    const url = `/api/v1/products/${id}`;
+
+    if (product.product_name == '' || product.product_description == '' || product.product_price == '' || product.product_type == '') {
+      return;
+    }
+
+    // todo -- create variable to put all required input and image if exist
   };
 
   return (
@@ -158,7 +176,7 @@ const EditProduct = (props: any) => {
               <Divider border={'1px'} color={'gray.500'} opacity={1} mb={'1rem'} />
 
               <Flex gap={2} alignItems={'center'} justifyContent={'space-evenly'} position={'relative'}>
-                <Button colorScheme={'brand'} width={'100%'} isLoading={buttonState.isLoading} isDisabled={buttonState.isDisabled} onClick={buttonState.handleClick}>
+                <Button colorScheme={'brand'} width={'100%'} isLoading={buttonState.isLoading} isDisabled={buttonState.isDisabled} onClick={handleUpdate}>
                   Update
                 </Button>
                 <Box as={'div'} width={'100%'}>
