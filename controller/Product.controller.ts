@@ -152,6 +152,42 @@ export default class ProductController {
   };
 
   static deleteProduct = async (req: NextApiRequest) => {
-    // todo - delete product using product id
+    const { id } = req.query;
+
+    if (id == undefined) {
+      return {
+        statusCode: 400,
+        body: {
+          message: 'Please provide product id',
+        },
+      };
+    }
+
+    if (isNaN(parseInt(id as string))) {
+      return {
+        statusCode: 400,
+        body: {
+          message: 'Product id is not a number',
+        },
+      };
+    }
+
+    const success = await Product.deleteProduct(parseInt(id as string));
+
+    if (success) {
+      return {
+        statusCode: 200,
+        body: {
+          message: 'Successfully deleted',
+        },
+      };
+    }
+
+    return {
+      statusCode: 500,
+      body: {
+        message: `Cannot delete product id: ${id}`,
+      },
+    };
   };
 }
