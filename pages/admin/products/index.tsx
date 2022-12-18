@@ -16,7 +16,9 @@ const Products = (props: any) => {
 
   const [modalState, setModalState] = useState({
     isOpen: false,
-    onClose: () => {},
+    onClose: () => {
+      setModalState({ ...modalState, isOpen: false });
+    },
   });
 
   useEffect(() => {
@@ -43,6 +45,10 @@ const Products = (props: any) => {
       ...modalState,
       isOpen: true,
     });
+  };
+
+  const deleteProduct = () => {
+    // todo -- delete product using api call
   };
 
   return (
@@ -112,12 +118,12 @@ const Products = (props: any) => {
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Delete</ModalHeader>
-            <ModalCloseButton onClick={() => setModalState({ ...modalState, isOpen: false })} />
+            <ModalCloseButton />
 
             <ModalBody>Are you sure you want to delete this item?</ModalBody>
 
             <ModalFooter>
-              <Button mx={2} colorScheme={'red'} width={'5rem'} variant={'outline'} onClick={() => setModalState({ ...modalState, isOpen: false })}>
+              <Button mx={2} colorScheme={'red'} width={'5rem'} variant={'outline'} onClick={modalState.onClose}>
                 Cancel
               </Button>
 
