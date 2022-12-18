@@ -91,4 +91,17 @@ export default class Product {
       error: 'Could not update product image',
     };
   };
+
+  static deleteProduct = async (id: number) => {
+    const row: any = await makeQuery('DELETE FROM product WHERE product_id=?', [id]);
+
+    console.log('====================================');
+    console.log('Row', row);
+    console.log('====================================');
+
+    if (row.affectedRows == 1) {
+      return true;
+    }
+    return false;
+  };
 }
