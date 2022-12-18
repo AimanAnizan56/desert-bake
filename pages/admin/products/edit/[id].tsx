@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, Box, Button, Container, Divider, Flex, Input, InputGroup, InputLeftElement, Radio, RadioGroup, Skeleton, Text } from '@chakra-ui/react';
+import { Alert, AlertIcon, Box, Button, Container, Divider, Flex, Heading, Input, InputGroup, InputLeftElement, Radio, RadioGroup, Skeleton, Text } from '@chakra-ui/react';
 import axios, { AxiosError } from 'axios';
 import { withIronSessionSsr } from 'iron-session/next';
 import { GetServerSideProps } from 'next';
@@ -181,6 +181,7 @@ const EditProduct = (props: any) => {
         <Container size={'container.md'}>
           {skeleton && (
             <Box as={'form'} my={'2rem'} boxShadow={'var(--box-shadow)'} px={'3rem'} py={'1rem'} borderRadius={'5px'}>
+              <Skeleton height={'25px'} mb={'1rem'} />
               <Skeleton height={'250px'} mb={'1rem'} />
               <Skeleton height={'50px'} mb={'1rem'} />
               <Skeleton height={'50px'} mb={'1rem'} />
@@ -196,6 +197,10 @@ const EditProduct = (props: any) => {
 
           {product && (
             <Box as={'form'} my={'2rem'} boxShadow={'var(--box-shadow)'} px={'3rem'} py={'1rem'} borderRadius={'5px'}>
+              <Heading as={'h1'} size={'md'} mb={'1rem'}>
+                Edit Product
+              </Heading>
+
               <Box as={'div'} position={'relative'} width={'100%'} height={'250px'} mb={'1rem'}>
                 <Image src={productImageSrc} fill sizes="auto" alt={product.product_name} />
               </Box>
