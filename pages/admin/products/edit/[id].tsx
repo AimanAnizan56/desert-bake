@@ -18,6 +18,14 @@ const EditProduct = (props: any) => {
   const [productImageSrc, setProductImageSrc] = useState('#');
   const [productImageObj, setProductImageObj] = useState<undefined>();
 
+  const [buttonState, setButtonState] = useState({
+    isDisabled: false,
+    isLoading: false,
+    handleClick: (e: any) => {
+      console.log('handleClick executed');
+    },
+  });
+
   useEffect(() => {
     const callAPI = async () => {
       const res = await axios.get(`/api/v1/products/${id}`);
@@ -132,7 +140,7 @@ const EditProduct = (props: any) => {
               <Divider border={'1px'} color={'gray.500'} opacity={1} mb={'1rem'} />
 
               <Flex gap={2} alignItems={'center'} justifyContent={'space-evenly'} position={'relative'}>
-                <Button colorScheme={'brand'} width={'100%'}>
+                <Button colorScheme={'brand'} width={'100%'} isLoading={buttonState.isLoading} isDisabled={buttonState.isDisabled} onClick={buttonState.handleClick}>
                   Update
                 </Button>
                 <Box as={'div'} width={'100%'}>
