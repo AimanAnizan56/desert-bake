@@ -1,4 +1,4 @@
-import { Box, Button, Container, Flex, Grid, GridItem, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@chakra-ui/react';
+import { Alert, AlertIcon, Box, Button, Container, Flex, Grid, GridItem, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@chakra-ui/react';
 import { withIronSessionSsr } from 'iron-session/next';
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
@@ -18,8 +18,18 @@ const Products = (props: any) => {
   const [modalState, setModalState] = useState({
     isOpen: false,
     onClose: () => {
+      console.log('closing modal');
       setModalState({ ...modalState, isOpen: false });
     },
+  });
+  const [alertOn, setAlertOn] = useState({
+    status: undefined as 'success' | 'info' | 'warning' | 'error' | 'loading' | undefined,
+    trigger: false,
+    message: 'Alert',
+  });
+
+  const [deleteButton, setDeleteButton] = useState({
+    isLoading: false,
   });
 
   useEffect(() => {
@@ -48,11 +58,38 @@ const Products = (props: any) => {
     });
   };
 
-  const deleteProduct = () => {
-    // todo -- delete product using api call
-    console.log('====================================');
-    console.log('|deleteProduct| currentSelectedId: ', currentSelectedId);
-    console.log('====================================');
+  const deleteProduct = async () => {
+    setDeleteButton({ ...deleteButton, isLoading: true });
+
+    try {
+      const res: any = await axios.delete(`/api/v1/products/${currentSelectedId}`);
+      const { message } = res.data;
+
+      if (res.status == 200) {
+        console.log('if in deleteProduct executed');
+        callProductAPI();
+        modalState.onClose();
+
+        setAlertOn({
+          status: 'success',
+          trigger: true,
+          message: message,
+        });
+
+        setTimeout(() => {
+          setAlertOn({
+            ...alertOn,
+            trigger: false,
+          });
+        }, 2500);
+      }
+    } catch (err) {
+      console.log('====================================');
+      console.log('|deleteProduct| Error : ', err);
+      console.log('====================================');
+    } finally {
+      setDeleteButton({ ...deleteButton, isLoading: false });
+    }
   };
 
   return (
@@ -131,13 +168,20 @@ const Products = (props: any) => {
                 Cancel
               </Button>
 
-              <Button colorScheme={'red'} width={'5rem'} onClick={deleteProduct}>
+              <Button isLoading={deleteButton.isLoading} colorScheme={'red'} width={'5rem'} onClick={deleteProduct}>
                 Yes
               </Button>
             </ModalFooter>
           </ModalContent>
         </Modal>
       </main>
+
+      {alertOn.trigger && (
+        <Alert status={alertOn.status} w="30vw" mx="auto" position={'fixed'} left={'50vw'} bottom={'2rem'} transform={'translateX(-50%)'}>
+          <AlertIcon />
+          {alertOn.message}
+        </Alert>
+      )}
     </>
   );
 };
