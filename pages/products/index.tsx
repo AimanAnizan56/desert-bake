@@ -67,7 +67,7 @@ const Products = (props: any) => {
 
       <main>
         <Container maxW={'container.lg'}>
-          <Box as="div" mt={'2rem'}>
+          <Box as="div" my={'2rem'}>
             <Flex alignItems={'center'} justifyContent="space-between">
               <Heading as="h1" fontSize={'1.5rem'}>
                 {filter}
@@ -144,8 +144,6 @@ const Products = (props: any) => {
           </Box>
         </Container>
       </main>
-
-      <footer>footer </footer>
     </>
   );
 };
