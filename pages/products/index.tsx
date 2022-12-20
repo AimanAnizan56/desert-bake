@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import Navbar from '../../components/Navbar';
 import { ironSessionOptions } from '../../lib/helper';
 import Image from 'next/image';
+import { SkeletonProductCustomerGrid } from '../../components/Skeleton.component';
 
 const Products = (props: any) => {
   const [user, setUser] = useState<{
@@ -17,6 +18,7 @@ const Products = (props: any) => {
   }>();
   const [products, setProducts] = useState<Array<any>>();
   const [filterProducts, setFilterProducts] = useState<Array<any>>();
+  const [skeletonLoading, setSkeletonLoading] = useState(true);
 
   const [filter, setFilter] = useState<'All Products' | 'Dessert' | 'Beverage' | 'Bread'>('All Products');
 
@@ -40,8 +42,13 @@ const Products = (props: any) => {
     const { data } = res.data;
 
     if (data) {
+      setSkeletonLoading(false);
       setProducts(data);
       setFilterProducts(data);
+    }
+
+    if (!data) {
+      setSkeletonLoading(false);
     }
   };
 
@@ -90,7 +97,15 @@ const Products = (props: any) => {
             </Flex>
 
             <Grid mt={'1.5rem'} templateColumns={'repeat(3, 1fr)'} gap={5}>
-              {!filterProducts && <div>No product yet! Stay tuned.</div>}
+              {skeletonLoading && (
+                <>
+                  <SkeletonProductCustomerGrid />
+                  <SkeletonProductCustomerGrid />
+                  <SkeletonProductCustomerGrid />
+                </>
+              )}
+
+              {!filterProducts && !skeletonLoading && <div>No product yet! Stay tuned.</div>}
 
               {filterProducts &&
                 filterProducts!.map((product, i) => {
