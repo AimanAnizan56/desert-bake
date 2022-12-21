@@ -67,6 +67,10 @@ const SignIn = () => {
           ...buttonState,
           isLoading: false,
         });
+        if (router.query.from) {
+          router.push(`/${router.query.from}`);
+          return;
+        }
         router.push('/');
       }
     } catch (err) {

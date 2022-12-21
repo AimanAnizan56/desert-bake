@@ -8,8 +8,10 @@ import Navbar from '../../components/Navbar';
 import { ironSessionOptions } from '../../lib/helper';
 import Image from 'next/image';
 import { SkeletonProductCustomerGrid } from '../../components/Skeleton.component';
+import { useRouter } from 'next/router';
 
 const Products = (props: any) => {
+  const router = useRouter();
   const [user, setUser] = useState<{
     id: number;
     name: string;
@@ -35,6 +37,21 @@ const Products = (props: any) => {
       return product_type == value.toLowerCase();
     });
     setFilterProducts(temp);
+  };
+
+  const handleAddToCart = async (e: any) => {
+    if (Object.keys(props.user).length == 0) {
+      router.push({
+        pathname: '/signin',
+        query: {
+          from: 'products',
+        },
+      });
+      return;
+    }
+
+    const { productId } = e.target.dataset;
+    alert(`have login: the product is ${productId}`);
   };
 
   const callProductsAPI = async () => {
@@ -108,29 +125,31 @@ const Products = (props: any) => {
               {!filterProducts && !skeletonLoading && <div>No product yet! Stay tuned.</div>}
 
               {filterProducts &&
-                filterProducts!.map((product, i) => {
+                filterProducts!.map((product: any, i) => {
+                  const { product_id, product_name, product_price, product_description, product_type, product_image_path } = product;
+
                   return (
                     <GridItem key={i} boxShadow={'var(--box-shadow)'} borderRadius={'5px'} px={'0.5rem'} py={'1rem'}>
                       <Box as="div" mb={'0.5rem'} position={'relative'} width={'100%'} height={'200px'}>
-                        <Image fill sizes="auto" src={product.product_image_path} alt={product.product_id} />
+                        <Image fill sizes="auto" src={product_image_path} alt={product_name} />
                       </Box>
 
                       <Flex alignItems={'center'} mb={'0.5rem'} justifyContent={'space-between'} gap={3}>
                         <Box as="div" fontWeight={'bold'}>
-                          {product.product_name}
+                          {product_name}
                         </Box>
                         <Box as="div" fontWeight={'bold'} width={'100px'} textAlign={'right'}>
-                          RM {product.product_price}
+                          RM {product_price}
                         </Box>
                       </Flex>
 
                       <Box as="div" mb={'1rem'} color={'gray.400'}>
-                        {product.product_description}
+                        {product_description}
                       </Box>
 
                       <Box as="div">
                         <Box as="div" mb={'0.5rem'}>
-                          <Button colorScheme={'brand'} width={'100%'}>
+                          <Button colorScheme={'brand'} width={'100%'} data-product-id={product_id} onClick={handleAddToCart}>
                             Add to Cart
                           </Button>
                         </Box>
