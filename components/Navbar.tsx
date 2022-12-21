@@ -88,7 +88,7 @@ const Navbar = ({ pageTitle, pageDescription, user, currentPage }: { pageTitle: 
               {pages.map((page, index) => (
                 <Fragment key={index}>
                   <Link href={page.link}>
-                    <Text _hover={{ color: 'brand.400' }} color={page.title == currentPage ? 'brand.400' : ''}>
+                    <Text _hover={{ color: 'brand.400' }} color={page.title == currentPage ? 'brand.400' : 'black'} fontWeight={page.title == currentPage ? 'bold' : 'normal'}>
                       {page.title}
                     </Text>
                   </Link>
@@ -99,7 +99,7 @@ const Navbar = ({ pageTitle, pageDescription, user, currentPage }: { pageTitle: 
             <Box display="flex" gap="1rem" alignItems={'center'} justifySelf={'end'}>
               {Icons.map((icon, i) => (
                 <Tooltip key={i} placement={'bottom'} label={icon.label}>
-                  <Box boxSize="1.3rem" _hover={{ color: 'brand.400' }} color={icon.label == currentPage ? 'brand.400' : ''}>
+                  <Box boxSize="1.3rem" _hover={{ color: 'brand.400' }} color={icon.label == currentPage ? 'brand.400' : 'black'} fontWeight={icon.label == currentPage ? 'bold' : 'normal'}>
                     <Link
                       href={icon.href}
                       onClick={(e: Event) => {
@@ -203,7 +203,7 @@ const Navbar = ({ pageTitle, pageDescription, user, currentPage }: { pageTitle: 
             {pages.map((page, index) => (
               <Fragment key={index}>
                 <Link href={page.link}>
-                  <Text _hover={{ color: 'brand.400' }} color={page.title == currentPage ? 'brand.400' : ''}>
+                  <Text _hover={{ color: 'brand.400' }} color={page.title == currentPage ? 'brand.400' : 'black'} fontWeight={page.title == currentPage ? 'bold' : 'normal'}>
                     {page.title}
                   </Text>
                 </Link>
@@ -216,7 +216,7 @@ const Navbar = ({ pageTitle, pageDescription, user, currentPage }: { pageTitle: 
               <>
                 {Icons.map((icon, i) => (
                   <Tooltip key={i} placement={'bottom'} label={icon.label}>
-                    <Box boxSize="1.3rem" _hover={{ color: 'brand.400' }} color={icon.label == currentPage ? 'brand.400' : ''}>
+                    <Box boxSize="1.3rem" _hover={{ color: 'brand.400' }} color={icon.label == currentPage ? 'brand.400' : 'black'} fontWeight={icon.label == currentPage ? 'bold' : 'normal'}>
                       <Link
                         href={icon.href}
                         onClick={(e: Event) => {
