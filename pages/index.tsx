@@ -68,8 +68,6 @@ export default function Home(props: any) {
           </SwiperSlide>
         </Swiper>
       </main>
-
-      <footer>Footer</footer>
     </>
   );
 }
