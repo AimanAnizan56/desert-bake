@@ -44,13 +44,13 @@ export default class Product {
   };
 
   static getProducts = async () => {
-    const data: any = await makeQuery('SELECT * FROM product');
+    const data: any = await makeQuery('SELECT * FROM product WHERE status="active"');
 
     return data;
   };
 
   static getProduct = async (id: number) => {
-    const data = await makeQuery('SELECT * FROM product WHERE product_id=?', [id]);
+    const data = await makeQuery('SELECT * FROM product WHERE product_id=? AND status="active"', [id]);
 
     return data;
   };
@@ -93,7 +93,7 @@ export default class Product {
   };
 
   static deleteProduct = async (id: number) => {
-    const row: any = await makeQuery('DELETE FROM product WHERE product_id=?', [id]);
+    const row: any = await makeQuery('UPDATE product SET status = "inactive" WHERE product_id=?', [id]);
 
     console.log('====================================');
     console.log('Row', row);
