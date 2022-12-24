@@ -113,7 +113,7 @@ const Products = (props: any) => {
               </Box>
             </Flex>
 
-            <Grid mt={'1.5rem'} templateColumns={'repeat(3, 1fr)'} gap={5}>
+            <Grid mt={'1.5rem'} templateColumns={['repeat(1, 1fr)', 'repeat(2, 1fr)', 'repeat(3, 1fr)']} gap={5}>
               {skeletonLoading && (
                 <>
                   <SkeletonProductCustomerGrid />
