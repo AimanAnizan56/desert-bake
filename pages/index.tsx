@@ -47,7 +47,9 @@ export default function Home(props: any) {
         <Swiper pagination={{ dynamicBullets: true }} modules={[Pagination]} style={{ background: 'gray' }}>
           <SwiperSlide>
             <Box as="div" position={'relative'} cursor={'default'}>
-              <Image src={'/img/carousel-1.jpg'} style={{ filter: 'blur(2px)' }} width={1500} height={500} alt={'caraousel image 1'} />
+              <Box as="div" w={'100vw'} h={'80vh'}>
+                <Image src={'/img/carousel-1.jpg'} style={{ filter: 'blur(2px)' }} fill alt={'caraousel image 1'} />
+              </Box>
 
               <Box as="span" textShadow={'1px 1px 1px rgb(0,0,0)'} color={'white'} position={'absolute'} top={'50%'} right={'50%'} transform={'translate(50%,-50%)'}>
                 <Text fontSize={'2xl'} color={'brand.500'} fontWeight={'600'}>
