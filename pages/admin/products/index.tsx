@@ -127,7 +127,7 @@ const Products = (props: any) => {
                   <Fragment key={i}>
                     <GridItem boxShadow={'var(--box-shadow)'} borderRadius={'5px'} px={'0.5rem'} py={'1rem'}>
                       <Box as="div" mb={'0.5rem'} position={'relative'} width={'100%'} height={'150px'}>
-                        <Image fill sizes="auto" src={product.product_image_path} alt={product.product_id} />
+                        <Image fill sizes="auto" src={product.product_image_path} alt={product.product_name} />
                       </Box>
                       <Box as="div" fontWeight={'bold'}>
                         {product.product_name}
