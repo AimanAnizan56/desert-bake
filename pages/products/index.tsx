@@ -130,30 +130,32 @@ const Products = (props: any) => {
 
                   return (
                     <GridItem key={i} boxShadow={'var(--box-shadow)'} borderRadius={'5px'} px={'0.5rem'} py={'1rem'}>
-                      <Box as="div" mb={'0.5rem'} position={'relative'} width={'100%'} height={'200px'}>
-                        <Image fill sizes="auto" src={product_image_path} alt={product_name} />
-                      </Box>
-
-                      <Flex alignItems={'center'} mb={'0.5rem'} justifyContent={'space-between'} gap={3}>
-                        <Box as="div" fontWeight={'bold'}>
-                          {product_name}
+                      <Flex flexDirection={'column'} height={'100%'} justifyContent={'space-between'}>
+                        <Box as="div" mb={'0.5rem'} position={'relative'} width={'100%'} height={'200px'}>
+                          <Image fill sizes="auto" src={product_image_path} alt={product_name} />
                         </Box>
-                        <Box as="div" fontWeight={'bold'} width={'100px'} textAlign={'right'}>
-                          RM {product_price}
+
+                        <Flex alignItems={'center'} mb={'0.5rem'} justifyContent={'space-between'} gap={3}>
+                          <Box as="div" fontWeight={'bold'}>
+                            {product_name}
+                          </Box>
+                          <Box as="div" fontWeight={'bold'} width={'100px'} textAlign={'right'}>
+                            RM {product_price}
+                          </Box>
+                        </Flex>
+
+                        <Box as="div" mb={'1rem'} color={'gray.400'}>
+                          {product_description}
+                        </Box>
+
+                        <Box as="div">
+                          <Box as="div" mb={'0.5rem'}>
+                            <Button colorScheme={'brand'} width={'100%'} data-product-id={product_id} onClick={handleAddToCart}>
+                              Add to Cart
+                            </Button>
+                          </Box>
                         </Box>
                       </Flex>
-
-                      <Box as="div" mb={'1rem'} color={'gray.400'}>
-                        {product_description}
-                      </Box>
-
-                      <Box as="div">
-                        <Box as="div" mb={'0.5rem'}>
-                          <Button colorScheme={'brand'} width={'100%'} data-product-id={product_id} onClick={handleAddToCart}>
-                            Add to Cart
-                          </Button>
-                        </Box>
-                      </Box>
                     </GridItem>
                   );
                 })}
