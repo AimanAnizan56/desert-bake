@@ -108,9 +108,22 @@ export default class ProductController {
 
     if (image != undefined) {
       product.setImage(image[0]);
+      const { imagePath }: any = await product.getImagePath();
       row = await product.updateProductImage();
+      const realPath = `./public${imagePath}`;
 
-      // todo - delete previous image
+      unlink(realPath, (err) => {
+        if (err) {
+          console.log('====================================');
+          console.log('Error deleting file: ', err);
+          console.log('====================================');
+          throw err;
+        }
+
+        console.log('====================================');
+        console.log(`Image ${name[0]} path has been deleted: ${realPath}`);
+        console.log('====================================');
+      });
     }
 
     res.status(200).json({

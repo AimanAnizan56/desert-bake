@@ -55,6 +55,16 @@ export default class Product {
     return data;
   };
 
+  getImagePath = async () => {
+    const row: any = await makeQuery('SELECT product_image_path FROM product WHERE product_id=?', [this.id]);
+
+    if (row) {
+      return {
+        imagePath: row[0].product_image_path,
+      };
+    }
+  };
+
   updateProduct = async () => {
     const row: any = await makeQuery('UPDATE product SET product_name=?, product_price=?, product_description=?, product_type=? WHERE product_id=?', [this.name, this.price, this.description, this.type, this.id]);
 
