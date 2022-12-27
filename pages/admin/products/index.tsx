@@ -137,7 +137,7 @@ const Products = (props: any) => {
                       </Box>
                       <Box as="div">
                         <Box as="div" mb={'0.5rem'}>
-                          <Link href={`/admin/products/edit/${product.product_id}`}>
+                          <Link href={`/admin/products/${product.product_id}/edit`}>
                             <Button leftIcon={<EditIcon />} colorScheme={'brand'} width={'100%'}>
                               Edit
                             </Button>
