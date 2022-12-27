@@ -10,8 +10,8 @@ const cartHandler = nextConnect({
   },
 });
 
-cartHandler.post(async (req: NextApiRequest, res: NextApiResponse) => {
-  await CartItemController.addToCart(req, res);
+cartHandler.get(async (req: NextApiRequest, res: NextApiResponse) => {
+  await CartItemController.getCart(req, res);
 });
 
 export default withIronSessionApiRoute(cartHandler, ironSessionOptions);

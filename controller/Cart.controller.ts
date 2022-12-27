@@ -11,4 +11,8 @@ export default class CartItemController {
 
     res.send('cart item controller');
   };
+
+  static getCart = async (req: NextApiRequest, res: NextApiResponse) => {
+    // get customer cart
+  };
 }
