@@ -22,7 +22,7 @@ const Products = (props: any) => {
   const [filterProducts, setFilterProducts] = useState<Array<any>>();
   const [skeletonLoading, setSkeletonLoading] = useState(true);
 
-  const [filter, setFilter] = useState<'All Products' | 'Dessert' | 'Beverage' | 'Bread'>('All Products');
+  const [filter, setFilter] = useState<'All Products' | 'Cake' | 'Dessert' | 'Beverage'>('All Products');
 
   const filterHandler = (e: any) => {
     const { value } = e.target.dataset;
@@ -99,14 +99,14 @@ const Products = (props: any) => {
                     <MenuItem onClick={filterHandler} data-value={'All Products'}>
                       All
                     </MenuItem>
+                    <MenuItem onClick={filterHandler} data-value={'Cake'}>
+                      Cake
+                    </MenuItem>
                     <MenuItem onClick={filterHandler} data-value={'Dessert'}>
                       Dessert
                     </MenuItem>
                     <MenuItem onClick={filterHandler} data-value={'Beverage'}>
                       Beverage
-                    </MenuItem>
-                    <MenuItem onClick={filterHandler} data-value={'Bread'}>
-                      Bread
                     </MenuItem>
                   </MenuList>
                 </Menu>

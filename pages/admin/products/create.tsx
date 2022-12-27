@@ -16,7 +16,7 @@ const CreateProduct = (props: any) => {
     name: '',
     price: '',
     description: '',
-    type: 'dessert',
+    type: 'cake',
     image: undefined,
   });
   const [productImageSrc, setProductImageSrc] = useState('/');
@@ -223,14 +223,14 @@ const CreateProduct = (props: any) => {
                 </Flex>
 
                 <RadioGroup ml={'1rem'} mt={'0.3rem'} colorScheme={'brand'} onChange={(value) => setProduct({ ...product, type: value })} value={product.type}>
+                  <Radio mr={'1rem'} value={'cake'}>
+                    Cake
+                  </Radio>
                   <Radio mr={'1rem'} value={'dessert'}>
                     Dessert
                   </Radio>
                   <Radio mr={'1rem'} value={'beverage'}>
                     Beverage
-                  </Radio>
-                  <Radio mr={'1rem'} value={'bread'}>
-                    Bread
                   </Radio>
                 </RadioGroup>
               </Box>
