@@ -1,40 +1,35 @@
-import { NextApiRequest } from 'next';
+import { NextApiRequest, NextApiResponse } from 'next';
 import Admin from '../model/Admin.model';
 
 export default class AdminController {
-  static login = async (req: NextApiRequest) => {
+  static login = async (req: NextApiRequest, res: NextApiResponse) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return {
-        statusCode: 400,
-        body: {
-          error: true,
-          message: 'Email or password field is empty',
-        },
-      };
+      res.status(400).json({
+        error: true,
+        message: 'Email or password field is empty',
+      });
+      return;
     }
 
     if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-      return {
-        statusCode: 400,
-        body: {
-          error: true,
-          message: 'Email is invalid',
-        },
-      };
+      res.status(400).json({
+        error: true,
+        message: 'Email is invalid',
+      });
+      return;
     }
 
     const data = await Admin.getAdmin(email, password);
 
     if (data.length == 0) {
-      return {
-        statusCode: 401,
-        body: {
-          error: true,
-          message: 'Login failed',
-        },
-      };
+      res.status(401).json({
+        error: true,
+
+        message: 'Login failed',
+      });
+      return;
     }
 
     req.session.user = {
@@ -45,34 +40,25 @@ export default class AdminController {
     };
 
     await req.session.save();
-    return {
-      statusCode: 200,
-      body: {
-        error: false,
-        message: 'Login success',
-      },
-    };
+    res.status(200).json({
+      error: false,
+      message: 'Login success',
+    });
   };
 
-  static logout = (req: NextApiRequest) => {
+  static logout = (req: NextApiRequest, res: NextApiResponse) => {
     req.session.destroy();
     if (req.session.user == undefined) {
-      return {
-        statusCode: 200,
-        body: {
-          logout: true,
-          message: 'Logout success',
-        },
-      };
+      res.status(200).json({
+        logout: true,
+        message: 'Logout success',
+      });
+      return;
     }
-
-    return {
-      statusCode: 500,
-      body: {
-        error: true,
-        message: 'Logout failed',
-      },
-    };
+    res.status(500).json({
+      error: true,
+      message: 'Logout failed',
+    });
   };
 
   static updateAdmin = (req: NextApiRequest) => {

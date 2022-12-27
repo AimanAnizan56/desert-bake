@@ -22,9 +22,7 @@ const loginRoute = nextConnect({
 });
 
 loginRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
-  const { statusCode, body } = await CustomerController.login(req);
-
-  res.status(statusCode).json(body);
+  await CustomerController.login(req, res);
 });
 
 export default withIronSessionApiRoute(loginRoute, ironSessionOptions);

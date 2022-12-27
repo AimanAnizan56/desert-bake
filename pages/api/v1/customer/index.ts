@@ -1,6 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import CustomerController from '../../../../controller/Customer.controller';
 import nextConnect from 'next-connect';
+import { withIronSessionApiRoute } from 'iron-session/next';
+import { ironSessionOptions } from '../../../../lib/helper';
 
 const handler = nextConnect({
   onNoMatch: (req: NextApiRequest, res: NextApiResponse) => {
@@ -9,20 +11,11 @@ const handler = nextConnect({
 });
 
 handler.post(async (req: NextApiRequest, res: NextApiResponse) => {
-  const { statusCode, body } = await CustomerController.createCustomer(req);
-
-  res.status(statusCode).json(body);
+  await CustomerController.createCustomer(req, res);
 });
 
 handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
-  // ! only for admin
-  // todo - check if the user is admin
-  // todo --> research how to use session in next or nodejs
-
-  // add to retrieve all customer data
-  const { statusCode, body } = await CustomerController.getCustomers(req);
-
-  res.status(statusCode).json(body);
+  await CustomerController.getCustomers(req, res);
 });
 
-export default handler;
+export default withIronSessionApiRoute(handler, ironSessionOptions);

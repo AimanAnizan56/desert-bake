@@ -11,14 +11,7 @@ const loginRoute = nextConnect({
 });
 
 loginRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
-  const { statusCode, body } = await AdminController.login(req);
-
-  res.status(statusCode).json(body);
-});
-
-loginRoute.get((req: NextApiRequest, res: NextApiResponse) => {
-  res.status(405).json({ error: true, message: 'Request method not allowed' });
-  return;
+  await AdminController.login(req, res);
 });
 
 export default withIronSessionApiRoute(loginRoute, ironSessionOptions);

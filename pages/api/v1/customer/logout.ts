@@ -4,9 +4,7 @@ import CustomerController from '../../../../controller/Customer.controller';
 import { ironSessionOptions } from '../../../../lib/helper';
 
 const logoutHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { statusCode, body } = await CustomerController.logout(req);
-
-  res.status(statusCode).json(body);
+  await CustomerController.logout(req, res);
 };
 
 export default withIronSessionApiRoute(logoutHandler, ironSessionOptions);

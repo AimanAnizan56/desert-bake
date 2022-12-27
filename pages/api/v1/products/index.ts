@@ -1,7 +1,8 @@
+import { withIronSessionApiRoute } from 'iron-session/next';
 import { NextApiRequest, NextApiResponse } from 'next';
 import nextConnect from 'next-connect';
 import ProductController from '../../../../controller/Product.controller';
-import { MultiPartyMiddleware } from '../../../../lib/helper';
+import { ironSessionOptions, MultiPartyMiddleware } from '../../../../lib/helper';
 
 export const config = {
   api: {
@@ -17,20 +18,11 @@ const handler = nextConnect({
 
 // middleware - using multiparty (from lib)
 handler.post(MultiPartyMiddleware, async (req: NextApiRequest, res: NextApiResponse) => {
-  const { statusCode, body } = await ProductController.createProduct(req);
-
-  res.status(statusCode).json(body);
+  await ProductController.createProduct(req, res);
 });
 
 handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
-  const { statusCode, body } = await ProductController.getProducts(req);
-
-  if (statusCode == 204) {
-    res.status(statusCode).end();
-    return;
-  }
-
-  res.status(statusCode).json(body);
+  await ProductController.getProducts(req, res);
 });
 
-export default handler;
+export default withIronSessionApiRoute(handler, ironSessionOptions);

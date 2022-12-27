@@ -1,7 +1,8 @@
+import { withIronSessionApiRoute } from 'iron-session/next';
 import { NextApiRequest, NextApiResponse } from 'next';
 import nextConnect from 'next-connect';
 import ProductController from '../../../../controller/Product.controller';
-import { MultiPartyMiddleware } from '../../../../lib/helper';
+import { ironSessionOptions, MultiPartyMiddleware } from '../../../../lib/helper';
 
 export const config = {
   api: {
@@ -16,21 +17,15 @@ const productRoute = nextConnect({
 });
 
 productRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
-  const { statusCode, body } = await ProductController.getProductById(req);
-
-  res.status(statusCode).json(body);
+  await ProductController.getProductById(req, res);
 });
 
 productRoute.patch(MultiPartyMiddleware, async (req: NextApiRequest, res: NextApiResponse) => {
-  const { statusCode, body } = await ProductController.updateProduct(req);
-
-  res.status(statusCode).json(body);
+  await ProductController.updateProduct(req, res);
 });
 
 productRoute.delete(async (req: NextApiRequest, res: NextApiResponse) => {
-  const { statusCode, body } = await ProductController.deleteProduct(req);
-
-  res.status(statusCode).json(body);
+  await ProductController.deleteProduct(req, res);
 });
 
-export default productRoute;
+export default withIronSessionApiRoute(productRoute, ironSessionOptions);

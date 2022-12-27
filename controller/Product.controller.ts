@@ -1,17 +1,16 @@
-import { NextApiRequest } from 'next';
+import { unlink } from 'node:fs';
+import { NextApiRequest, NextApiResponse } from 'next';
 import Product from '../model/Product.model';
 
 export default class ProductController {
-  static createProduct = async (req: NextApiRequest) => {
+  static createProduct = async (req: NextApiRequest, res: NextApiResponse) => {
     const { name, price, description, type, image } = req.body;
 
     if (name == undefined || price == undefined || description == undefined || type == undefined || image == undefined) {
-      return {
-        statusCode: 400,
-        body: {
-          message: 'Please provide name, price, description, type and image for the product',
-        },
-      };
+      res.status(400).json({
+        message: 'Please provide name, price, description, type and image for the product',
+      });
+      return;
     }
 
     const product = new Product(name[0], parseFloat(price[0]), description[0], type[0]);
@@ -20,105 +19,80 @@ export default class ProductController {
     const row: any = await product.createProduct();
 
     if (row.error) {
-      return {
-        statusCode: 400,
-        body: {
-          message: row.error,
-          data: row,
-        },
-      };
+      res.status(400).json({
+        message: row.error,
+        data: row,
+      });
+      return;
     }
 
-    return {
-      statusCode: 201,
-      body: {
-        message: 'Successfully created',
-        data: row,
-      },
-    };
+    res.status(201).json({
+      message: 'Successfully created',
+      data: row,
+    });
   };
 
-  static getProducts = async (req: NextApiRequest) => {
+  static getProducts = async (req: NextApiRequest, res: NextApiResponse) => {
     const data = await Product.getProducts();
 
     if (data.length > 0) {
-      return {
-        statusCode: 200,
-        body: {
-          length: data.length,
-          data,
-        },
-      };
+      res.status(200).json({
+        length: data.length,
+        data,
+      });
+      return;
     }
 
-    return {
-      statusCode: 204,
-      body: {
-        message: 'No products found',
-      },
-    };
+    res.status(204).end();
   };
 
-  static getProductById = async (req: NextApiRequest) => {
+  static getProductById = async (req: NextApiRequest, res: NextApiResponse) => {
     const { id } = req.query;
 
     if (id == undefined) {
-      return {
-        statusCode: 400,
-        body: {
-          message: 'Please provide product id',
-        },
-      };
+      res.status(400).json({
+        message: 'Please provide product id',
+      });
+      return;
     }
 
     if (isNaN(parseInt(id as string))) {
-      return {
-        statusCode: 400,
-        body: {
-          message: 'Product id is not a number',
-        },
-      };
+      res.status(400).json({
+        message: 'Product id is not a number',
+      });
+      return;
     }
 
     const data = await Product.getProduct(parseInt(id as string));
 
     if (data == 0) {
-      return {
-        statusCode: 204,
-        body: {
-          message: 'Product not found',
-        },
-      };
+      res.status(204).json({
+        message: 'Product not found',
+      });
+      return;
     }
 
-    return {
-      statusCode: 200,
-      body: {
-        data: data[0],
-      },
-    };
+    res.status(200).json({
+      data: data[0],
+    });
   };
 
-  static updateProduct = async (req: NextApiRequest) => {
+  static updateProduct = async (req: NextApiRequest, res: NextApiResponse) => {
     const { id } = req.query;
     const { name, price, description, type, image } = req.body;
 
     if (id == undefined || name == undefined || price == undefined || description == undefined || type == undefined) {
-      return {
-        statusCode: 400,
-        body: {
-          message: 'Please provide id, name, price and type of product',
-        },
-      };
+      res.status(400).json({
+        message: 'Please provide id, name, price and type of product',
+      });
+      return;
     }
 
     if (isNaN(parseInt(id as string))) {
-      return {
-        statusCode: 400,
-        body: {
-          message: 'Product id is not a number',
-        },
-      };
+      res.status(400).json({
+        message: 'Product id is not a number',
+      });
+      return;
     }
 
     const product = new Product(name[0], price[0], description[0], type[0]);
@@ -126,12 +100,10 @@ export default class ProductController {
     let row: any = await product.updateProduct();
 
     if (row.error) {
-      return {
-        statusCode: 500,
-        body: {
-          message: row.message,
-        },
-      };
+      res.status(500).json({
+        message: row.message,
+      });
+      return;
     }
 
     if (image != undefined) {
@@ -141,52 +113,40 @@ export default class ProductController {
       // todo - delete previous image
     }
 
-    return {
-      statusCode: 200,
-      body: {
-        message: 'Successfully updated',
-        data: row,
-      },
-    };
+    res.status(200).json({
+      message: 'Successfully updated',
+      data: row,
+    });
   };
 
-  static deleteProduct = async (req: NextApiRequest) => {
+  static deleteProduct = async (req: NextApiRequest, res: NextApiResponse) => {
     const { id } = req.query;
 
     if (id == undefined) {
-      return {
-        statusCode: 400,
-        body: {
-          message: 'Please provide product id',
-        },
-      };
+      res.status(400).json({
+        message: 'Please provide product id',
+      });
+      return;
     }
 
     if (isNaN(parseInt(id as string))) {
-      return {
-        statusCode: 400,
-        body: {
-          message: 'Product id is not a number',
-        },
-      };
+      res.status(400).json({
+        message: 'Product id is not a number',
+      });
+      return;
     }
 
     const success = await Product.deleteProduct(parseInt(id as string));
 
     if (success) {
-      return {
-        statusCode: 200,
-        body: {
-          message: 'Successfully deleted',
-        },
-      };
+      res.status(200).json({
+        message: 'Successfully deleted',
+      });
+      return;
     }
 
-    return {
-      statusCode: 500,
-      body: {
-        message: `Cannot delete product id: ${id}`,
-      },
-    };
+    res.status(500).json({
+      message: `Cannot delete product id: ${id}`,
+    });
   };
 }
