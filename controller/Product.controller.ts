@@ -1,5 +1,4 @@
 import { NextApiRequest } from 'next';
-import { makeQuery } from '../lib/mysql_config';
 import Product from '../model/Product.model';
 
 export default class ProductController {
