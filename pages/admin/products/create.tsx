@@ -109,7 +109,7 @@ const CreateProduct = (props: any) => {
           });
 
           router.push('/admin/products');
-        }, 2500);
+        }, 1500);
 
         setProduct({
           ...product,
