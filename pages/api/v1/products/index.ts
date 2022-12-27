@@ -25,6 +25,11 @@ handler.post(MultiPartyMiddleware, async (req: NextApiRequest, res: NextApiRespo
 handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
   const { statusCode, body } = await ProductController.getProducts(req);
 
+  if (statusCode == 204) {
+    res.status(statusCode).end();
+    return;
+  }
+
   res.status(statusCode).json(body);
 });
 
