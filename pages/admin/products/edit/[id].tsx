@@ -246,14 +246,14 @@ const EditProduct = (props: any) => {
                 </Flex>
 
                 <RadioGroup ml={'1rem'} mt={'0.3rem'} colorScheme={'brand'} onChange={(value) => setProduct({ ...product, product_type: value })} value={product.product_type}>
+                  <Radio mr={'1rem'} value={'cake'}>
+                    Cake
+                  </Radio>
                   <Radio mr={'1rem'} value={'dessert'}>
                     Dessert
                   </Radio>
                   <Radio mr={'1rem'} value={'beverage'}>
                     Beverage
-                  </Radio>
-                  <Radio mr={'1rem'} value={'bread'}>
-                    Bread
                   </Radio>
                 </RadioGroup>
               </Box>
