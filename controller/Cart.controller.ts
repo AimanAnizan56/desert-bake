@@ -9,10 +9,12 @@ export default class CartItemController {
     // get new created cart id (cart model)
     // use cart id to add into item - use method in item model (item model)
 
-    res.send('cart item controller');
+    res.send('post cart item controller');
   };
 
   static getCart = async (req: NextApiRequest, res: NextApiResponse) => {
     // get customer cart
+
+    res.send('get cart item controller');
   };
 }
