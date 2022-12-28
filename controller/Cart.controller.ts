@@ -29,10 +29,7 @@ export default class CartItemController {
     const { cartId }: any = await userCart.getUserCartId();
 
     if (cartId == -99) {
-      res.status(500).json({
-        message: 'Internal server error',
-      });
-      return;
+      await userCart.createCartId();
     }
 
     // use cart id to add into item - use method in item model (item model)
@@ -91,8 +88,8 @@ export default class CartItemController {
     const { cartId }: any = await userCart.getUserCartId();
 
     if (cartId == -99) {
-      res.status(500).json({
-        message: 'Internal server error',
+      res.status(400).json({
+        message: 'Cart id not found',
       });
       return;
     }
@@ -121,10 +118,12 @@ export default class CartItemController {
 
     const success = await item.removeFromCart();
 
-    if (!success) {
+    if (!success || success == 'error') {
       res.status(500).json({
         message: 'Internal server error. Cannot add to cart',
+        cause: success == 'error' ? 'Quantity error' : 'No affected row',
       });
+      return;
     }
 
     res.status(200).json({
