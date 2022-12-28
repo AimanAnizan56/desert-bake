@@ -48,7 +48,6 @@ export default class CartItemController {
 
     // check product id exist or not
     const product = await Product.getProduct(product_id);
-    console.log('product', product);
 
     if (product.length == 0) {
       res.status(400).json({
@@ -59,9 +58,18 @@ export default class CartItemController {
 
     const item = new Item();
     await item.setItem(product_id, cartId);
-    item.output();
 
-    res.send(`post cart item controller ${customerId}, cart id: ${cartId}, product_id: ${product_id}`);
+    const success = await item.addToCart();
+
+    if (!success) {
+      res.status(500).json({
+        message: 'Internal server error. Cannot add to cart',
+      });
+    }
+
+    res.status(200).json({
+      message: 'Successfully add to cart',
+    });
   };
 
   static getCart = async (req: NextApiRequest, res: NextApiResponse) => {
