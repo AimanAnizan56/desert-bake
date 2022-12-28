@@ -20,16 +20,29 @@ export default class Item {
       if (temp.length > 0) {
         this.item_id = temp[0].item_id;
         this.item_quantity = temp[0].item_quantity;
-        return;
+        return {
+          message: 'Item id exist',
+        };
       }
 
-      this.item_quantity = 0;
-      row = await makeQuery('INSERT INTO items(product_id, cart_id, item_price, item_quantity) VALUES (?,?,?,?)', [this.product_id, this.cart_id, this.item_price, this.item_quantity]);
-      this.item_id = row.insertId;
+      return {
+        message: 'Item id not exist',
+      };
     } catch (err) {
       console.log('====================================');
       console.log('setItem Err: ', err);
       console.log('====================================');
+    }
+  };
+
+  createItem = async () => {
+    try {
+      this.item_quantity = 0;
+      const row: any = await makeQuery('INSERT INTO items(product_id, cart_id, item_price, item_quantity) VALUES (?,?,?,?)', [this.product_id, this.cart_id, this.item_price, this.item_quantity]);
+      this.item_id = row.insertId;
+      return true;
+    } catch (err) {
+      return false;
     }
   };
 
