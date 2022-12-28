@@ -52,7 +52,11 @@ export default class CartItemController {
     }
 
     const item = new Item();
-    await item.setItem(product_id, cartId);
+    const { message }: any = await item.setItem(product_id, cartId);
+
+    if (message == 'Item id not exist') {
+      await item.createItem();
+    }
 
     const success = await item.addToCart();
 
@@ -114,7 +118,14 @@ export default class CartItemController {
     }
 
     const item = new Item();
-    await item.setItem(product_id, cartId);
+    const { message }: any = await item.setItem(product_id, cartId);
+
+    if (message == 'Item id not exist') {
+      res.status(400).json({
+        message,
+      });
+      return;
+    }
 
     const success = await item.removeFromCart();
 
