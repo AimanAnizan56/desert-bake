@@ -42,6 +42,37 @@ export default class Item {
     return false;
   };
 
+  removeFromCart = async () => {
+    let row: any = await makeQuery('SELECT item_quantity FROM items WHERE item_id=?', [this.item_id]);
+    let quantity = -99;
+
+    if (row.length != 0) {
+      quantity = row[0].item_quantity;
+    }
+
+    if (quantity == -99) {
+      console.log('====================================');
+      console.log('removeFromCart Error');
+      console.log('====================================');
+      return;
+    }
+
+    let sql = 'UPDATE items SET item_quantity=item_quantity-1 WHERE item_id=?';
+
+    if (quantity == 1) {
+      // delete the items
+      sql = 'DELETE FROM items WHERE item_id=?';
+    }
+
+    row = await makeQuery(sql, [this.item_id]);
+
+    if (row.affectedRows == 1) {
+      return true;
+    }
+
+    return false;
+  };
+
   output = () => {
     console.log('====================================');
     console.log('item_id: ', this.item_id);
