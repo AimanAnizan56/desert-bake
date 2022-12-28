@@ -1,5 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Cart from '../model/Cart.model';
+import Item from '../model/Items.model';
+import Product from '../model/Product.model';
 
 export default class CartItemController {
   static addToCart = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -36,8 +38,30 @@ export default class CartItemController {
     }
 
     // use cart id to add into item - use method in item model (item model)
+    const { product_id } = req.body;
 
-    res.send(`post cart item controller ${customerId}, cart id: ${cartId}`);
+    if (product_id == undefined) {
+      res.status(400).json({
+        message: 'Please include product id',
+      });
+    }
+
+    // check product id exist or not
+    const product = await Product.getProduct(product_id);
+    console.log('product', product);
+
+    if (product.length == 0) {
+      res.status(400).json({
+        message: 'Product with such id not exist',
+      });
+      return;
+    }
+
+    const item = new Item();
+    await item.setItem(product_id, cartId);
+    item.output();
+
+    res.send(`post cart item controller ${customerId}, cart id: ${cartId}, product_id: ${product_id}`);
   };
 
   static getCart = async (req: NextApiRequest, res: NextApiResponse) => {
