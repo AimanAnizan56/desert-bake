@@ -27,6 +27,15 @@ export default class Item {
     this.item_id = row.insertId;
   };
 
+  addToCart = async () => {
+    const row: any = await makeQuery('UPDATE items SET item_quantity=item_quantity+1 WHERE item_id=?', [this.item_id]);
+
+    if (row.affectedRows == 1) {
+      return true;
+    }
+    return false;
+  };
+
   output = () => {
     console.log('====================================');
     console.log('item_id: ', this.item_id);
