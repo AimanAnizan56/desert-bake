@@ -97,7 +97,7 @@ const Products = (props: any) => {
       <Navbar pageTitle="Products" pageDescription="Product page" user={props.user} currentPage={'Products'} />
 
       <main>
-        <Container maxW={'container.md'}>
+        <Container maxW={'container.lg'}>
           <Flex mt={'2rem'} justifyContent={'space-between'} alignItems={'center'}>
             <Heading as="h1" size={'lg'} color={'brand.400'}>
               Products
@@ -126,7 +126,7 @@ const Products = (props: any) => {
                 return (
                   <Fragment key={i}>
                     <GridItem boxShadow={'var(--box-shadow)'} borderRadius={'5px'} px={'0.5rem'} py={'1rem'}>
-                      <Box as="div" mb={'0.5rem'} position={'relative'} width={'100%'} height={'150px'}>
+                      <Box as="div" mb={'0.5rem'} position={'relative'} width={'100%'} height={'200px'}>
                         <Image fill sizes="auto" src={product.product_image_path} alt={product.product_name} />
                       </Box>
                       <Box as="div" fontWeight={'bold'}>
