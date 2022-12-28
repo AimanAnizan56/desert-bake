@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import Cart from '../model/Cart.model';
 
 export default class CartItemController {
   static addToCart = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -17,13 +18,26 @@ export default class CartItemController {
       return;
     }
 
+    const customerId = req.session.user.id;
     // check if cart already exist by status (cart model)
-    // get cart is if cart exist (cart model)
+    // get cart id if cart exist (cart model)
     // if not exist, create new cart with params customer id (cart model)
+    const userCart = new Cart();
+    userCart.setCustomerId(parseInt(req.session.user.id));
+
     // get new created cart id (cart model)
+    const { cartId }: any = await userCart.getUserCartId();
+
+    if (cartId == -99) {
+      res.status(500).json({
+        message: 'Internal server error',
+      });
+      return;
+    }
+
     // use cart id to add into item - use method in item model (item model)
 
-    res.send('post cart item controller');
+    res.send(`post cart item controller ${customerId}, cart id: ${cartId}`);
   };
 
   static getCart = async (req: NextApiRequest, res: NextApiResponse) => {

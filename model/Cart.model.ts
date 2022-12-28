@@ -1,3 +1,5 @@
+import { makeQuery } from '../lib/mysql_config';
+
 export default class Cart {
   private cart_id!: number;
   private cart_total!: number;
@@ -9,5 +11,30 @@ export default class Cart {
     this.cart_total = cart_total;
     this.customer_id = customer_id;
     this.cart_status = cart_status;
+  };
+
+  setCustomerId = (customer_id: number) => {
+    this.customer_id = customer_id;
+  };
+
+  getUserCartId = async () => {
+    let row: any = await makeQuery('SELECT cart_id FROM cart WHERE cart_status="in use" AND customer_id=?', [this.customer_id]);
+
+    if (row.length > 0) {
+      return {
+        cartId: row[0].cart_id,
+      };
+    }
+
+    // create new cart id with current customer id
+    row = await makeQuery('INSERT INTO cart(customer_id) VALUES (?)', [this.customer_id]);
+
+    if (row.affectedRows == 1) {
+      return {
+        cartId: row.insertId,
+      };
+    }
+
+    return -99;
   };
 }
