@@ -17,21 +17,23 @@ export default class Cart {
     this.customer_id = customer_id;
   };
 
+  createCartId = async () => {
+    // create new cart id with current customer id
+    const row: any = await makeQuery('INSERT INTO cart(customer_id) VALUES (?)', [this.customer_id]);
+
+    if (row.affectedRows == 1) {
+      return {
+        cartId: row.insertId,
+      };
+    }
+  };
+
   getUserCartId = async () => {
     let row: any = await makeQuery('SELECT cart_id FROM cart WHERE cart_status="in use" AND customer_id=?', [this.customer_id]);
 
     if (row.length > 0) {
       return {
         cartId: row[0].cart_id,
-      };
-    }
-
-    // create new cart id with current customer id
-    row = await makeQuery('INSERT INTO cart(customer_id) VALUES (?)', [this.customer_id]);
-
-    if (row.affectedRows == 1) {
-      return {
-        cartId: row.insertId,
       };
     }
 
