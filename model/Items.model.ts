@@ -54,7 +54,7 @@ export default class Item {
       console.log('====================================');
       console.log('removeFromCart Error');
       console.log('====================================');
-      return;
+      return 'error';
     }
 
     let sql = 'UPDATE items SET item_quantity=item_quantity-1 WHERE item_id=?';
