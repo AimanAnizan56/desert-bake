@@ -41,7 +41,7 @@ export default class Item {
 
   getItem = async () => {
     // get item
-    const row: any = await makeQuery('SELECT items.product_id, item_quantity, item_price, product_name, product_image_path FROM items, product WHERE items.product_id = product.product_id AND cart_id=?', [this.cart_id]);
+    const row: any = await makeQuery('SELECT item_id, items.product_id, item_quantity, item_price, product_name, product_image_path FROM items, product WHERE items.product_id = product.product_id AND cart_id=?', [this.cart_id]);
 
     if (row.length > 0) {
       return {
