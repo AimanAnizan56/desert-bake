@@ -26,10 +26,11 @@ export default class CartItemController {
     userCart.setCustomerId(parseInt(req.session.user.id));
 
     // get new created cart id (cart model)
-    const { cartId }: any = await userCart.getUserCartId();
+    let { cartId }: any = await userCart.getUserCartId();
 
     if (cartId == -99) {
-      await userCart.createCartId();
+      const temp = await userCart.createCartId();
+      cartId = temp?.cartId;
     }
 
     // use cart id to add into item - use method in item model (item model)

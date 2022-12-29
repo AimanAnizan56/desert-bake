@@ -37,6 +37,8 @@ export default class Cart {
       };
     }
 
-    return -99;
+    return {
+      cartId: -99,
+    };
   };
 }
