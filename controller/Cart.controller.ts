@@ -145,7 +145,47 @@ export default class CartItemController {
 
   static getCart = async (req: NextApiRequest, res: NextApiResponse) => {
     // get customer cart
+    if (!req.session.user) {
+      res.status(400).json({
+        message: 'Please login first',
+      });
+      return;
+    }
 
-    res.send('get cart item controller');
+    if (req.session.user && req.session.user.admin) {
+      res.status(400).json({
+        message: 'Only customer can view cart',
+      });
+      return;
+    }
+
+    const userCart = new Cart();
+    userCart.setCustomerId(parseInt(req.session.user.id));
+
+    const { cartId }: any = await userCart.getUserCartId();
+
+    if (cartId == -99) {
+      // response cart is empty
+      res.status(200).json({
+        message: 'Cart empty',
+      });
+      return;
+    }
+
+    const item = new Item();
+    item.setCartId(cartId);
+    const { data, message }: any = await item.getItem();
+
+    if (message == 'Empty row') {
+      res.status(200).json({
+        message: 'Cart empty',
+      });
+      return;
+    }
+
+    res.status(200).json({
+      message: 'Cart retrieve',
+      cart: data,
+    });
   };
 }
