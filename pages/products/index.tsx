@@ -1,5 +1,5 @@
 import { ChevronDownIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
-import { Box, Button, Container, Flex, Grid, GridItem, Heading, Link, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
+import { Alert, AlertIcon, Box, Button, Container, Flex, Grid, GridItem, Heading, Link, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
 import axios from 'axios';
 import { withIronSessionSsr } from 'iron-session/next';
 import { GetServerSideProps } from 'next';
@@ -21,6 +21,11 @@ const Products = (props: any) => {
   const [products, setProducts] = useState<Array<any>>();
   const [filterProducts, setFilterProducts] = useState<Array<any>>();
   const [skeletonLoading, setSkeletonLoading] = useState(true);
+  const [alertOn, setAlertOn] = useState({
+    trigger: false,
+    status: undefined as 'success' | 'info' | 'warning' | 'error' | 'loading' | undefined,
+    message: '',
+  });
 
   const [filter, setFilter] = useState<'All Products' | 'Cake' | 'Dessert' | 'Beverage'>('All Products');
 
@@ -50,8 +55,37 @@ const Products = (props: any) => {
       return;
     }
 
+    const url = '/api/v1/cart/add';
+
     const { productId } = e.target.dataset;
-    alert(`have login: the product is ${productId}`);
+
+    try {
+      const res: any = await axios.post(url, {
+        product_id: productId,
+      });
+
+      const { message } = res.data;
+
+      console.log('res status', res.status);
+      console.log('res messaege', message);
+
+      if (res.status == 200 && message == 'Successfully add to cart') {
+        setAlertOn({
+          status: 'success',
+          trigger: true,
+          message: message,
+        });
+
+        setTimeout(() => {
+          setAlertOn({
+            ...alertOn,
+            trigger: false,
+          });
+        }, 1500);
+      }
+    } catch (err) {
+      console.log('err', err);
+    }
   };
 
   const callProductsAPI = async () => {
@@ -164,6 +198,13 @@ const Products = (props: any) => {
             </Grid>
           </Box>
         </Container>
+
+        {alertOn.trigger && (
+          <Alert status={alertOn.status} w="30vw" mx="auto" position={'fixed'} left={'50vw'} bottom={'2rem'} transform={'translateX(-50%)'}>
+            <AlertIcon />
+            {alertOn.message}
+          </Alert>
+        )}
       </main>
     </>
   );
