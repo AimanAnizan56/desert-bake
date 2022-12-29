@@ -185,7 +185,7 @@ export default class CartItemController {
 
     res.status(200).json({
       message: 'Cart retrieve',
-      cart: data,
+      user_cart: data,
     });
   };
 }
