@@ -25,8 +25,17 @@ const Cart = (props: any) => {
   const removeItemHandler = async (e: any) => {
     e.preventDefault();
     const { itemId } = e.target.dataset;
-    alert(itemId);
-    // todo - remove item by item id
+
+    try {
+      const res = await axios.delete(`/api/v1/cart/remove/${itemId}`);
+      const { message } = res.data;
+
+      if (res.status == 200 && message == 'Item id deleted successfully') {
+        getCustomerCartAPI();
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const getCustomerCartAPI = async () => {
