@@ -160,8 +160,8 @@ export default class CartItemController {
       return;
     }
 
-    // get item id from request body
-    const { item_id } = req.body;
+    // get item id from request bod
+    const { item_id }: any = req.query;
 
     if (item_id == undefined || item_id.length == 0) {
       res.status(400).json({
