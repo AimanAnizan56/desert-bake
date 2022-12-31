@@ -1,7 +1,8 @@
-import { Box, Container } from '@chakra-ui/react';
+import { Box, Container, Flex, Grid, GridItem } from '@chakra-ui/react';
 import axios from 'axios';
 import { withIronSessionSsr } from 'iron-session/next';
 import { GetServerSideProps } from 'next';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
@@ -16,6 +17,17 @@ const Cart = (props: any) => {
     admin: boolean;
   }>();
   const [carts, setCarts] = useState<Array<any>>();
+  const [itemDetail, setItemDetail] = useState({
+    totalQuantity: 0,
+    totalPrice: 0,
+  });
+
+  const removeItemHandler = async (e: any) => {
+    e.preventDefault();
+    const { itemId } = e.target.dataset;
+    alert(itemId);
+    // todo - remove item by item id
+  };
 
   const getCustomerCartAPI = async () => {
     const url = '/api/v1/cart';
@@ -23,8 +35,22 @@ const Cart = (props: any) => {
     try {
       const res: any = await axios.get(url);
       const { message, user_cart } = await res.data;
+      let temp = {
+        totalPrice: 0,
+        totalQuantity: 0,
+      };
 
       if (message == 'Cart retrieve' && user_cart) {
+        user_cart.map((uc: any, i: any) => {
+          temp.totalQuantity += uc.item_quantity;
+          temp.totalPrice += uc.item_quantity * parseFloat(uc.item_price);
+        });
+
+        setItemDetail({
+          ...itemDetail,
+          totalQuantity: temp.totalQuantity,
+          totalPrice: temp.totalPrice,
+        });
         setCarts(user_cart);
       }
     } catch (err) {
@@ -64,12 +90,45 @@ const Cart = (props: any) => {
 
             {carts && (
               <>
-                <div>Cart ada</div>
-                {carts.map((cart, i) => (
-                  <Box as={'div'} key={i} my={'1rem'}>
-                    <div>Product name: {cart.product_name}</div>
-                  </Box>
-                ))}
+                <Box as="div" bg="brand.400" color={'white'}>
+                  <Grid py={'0.5rem'} px={'1rem'} gridTemplateColumns="3fr repeat(2,1fr)">
+                    <GridItem>Product</GridItem>
+                    <GridItem>Quantity</GridItem>
+                    <GridItem>Subtotal</GridItem>
+                  </Grid>
+                </Box>
+                <Flex flexDirection={'column'} gap={3} my={'0.5rem'}>
+                  {carts.map((cart, i) => (
+                    <Grid py={'0.5rem'} px={'1rem'} gridTemplateColumns="3fr repeat(2,1fr)" key={i}>
+                      <GridItem>
+                        <Flex gap={3}>
+                          <Box as="div" position={'relative'} w="10vw" h="15vh">
+                            <Image src={cart.product_image_path} fill alt={cart.product_name} />
+                          </Box>
+                          <Box as="div" py="0.3rem">
+                            <Box as="div" fontWeight={'bold'}>
+                              {cart.product_name}
+                            </Box>
+                            <Box as="div" color={'gray.400'}>
+                              Price: RM {cart.item_price}
+                            </Box>
+                            <Box as="button" color="red.400" data-item-id={cart.item_id} onClick={removeItemHandler}>
+                              Remove
+                            </Box>
+                          </Box>
+                        </Flex>
+                      </GridItem>
+                      <GridItem>{cart.item_quantity}</GridItem>
+                      <GridItem>RM {(parseInt(cart.item_quantity) * parseFloat(cart.item_price)).toFixed(2)}</GridItem>
+                    </Grid>
+                  ))}
+
+                  <Grid py={'0.5rem'} px={'1rem'} gridTemplateColumns="3fr repeat(2,1fr)" fontWeight={'bold'}>
+                    <GridItem></GridItem>
+                    <GridItem>{itemDetail.totalQuantity}</GridItem>
+                    <GridItem>Total: RM {itemDetail.totalPrice.toFixed(2)}</GridItem>
+                  </Grid>
+                </Flex>
               </>
             )}
           </Box>
