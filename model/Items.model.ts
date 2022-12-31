@@ -35,13 +35,17 @@ export default class Item {
     }
   };
 
+  setItemId = async (item_id: number) => {
+    this.item_id = item_id;
+  };
+
   setCartId = (cart_id: number) => {
     this.cart_id = cart_id;
   };
 
   getItem = async () => {
     // get item
-    const row: any = await makeQuery('SELECT item_id, items.product_id, item_quantity, item_price, product_name, product_image_path FROM items, product WHERE items.product_id = product.product_id AND cart_id=?', [this.cart_id]);
+    const row: any = await makeQuery('SELECT item_id, items.product_id, item_quantity, item_price, product_name, product_image_path FROM items, product WHERE items.product_id = product.product_id AND product.status="active" AND cart_id=?', [this.cart_id]);
 
     if (row.length > 0) {
       return {
