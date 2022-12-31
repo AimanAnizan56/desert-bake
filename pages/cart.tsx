@@ -1,4 +1,5 @@
-import { Box, Container, Flex, Grid, GridItem } from '@chakra-ui/react';
+import { AddIcon, MinusIcon } from '@chakra-ui/icons';
+import { Box, Container, Divider, Flex, Grid, GridItem } from '@chakra-ui/react';
 import axios from 'axios';
 import { withIronSessionSsr } from 'iron-session/next';
 import { GetServerSideProps } from 'next';
@@ -21,6 +22,52 @@ const Cart = (props: any) => {
     totalQuantity: 0,
     totalPrice: 0,
   });
+
+  const addQuantity = async (e: any) => {
+    // add quantity
+    e.preventDefault();
+    const { productId } = e.target.dataset;
+    console.log('productId', productId);
+    const url = '/api/v1/cart/add';
+
+    try {
+      const res: any = await axios.post(url, {
+        product_id: productId,
+      });
+
+      const { message } = res.data;
+
+      if (res.status == 200 && message == 'Successfully add to cart') {
+        // call api
+        getCustomerCartAPI();
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const removeQuantity = async (e: any) => {
+    // remove quantity
+    e.preventDefault();
+    const { productId } = e.target.dataset;
+    console.log('productId', productId);
+    const url = '/api/v1/cart/remove';
+
+    try {
+      const res: any = await axios.post(url, {
+        product_id: productId,
+      });
+
+      const { message } = res.data;
+
+      if (res.status == 200 && message == 'Successfully remove from cart') {
+        // call api
+        getCustomerCartAPI();
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const removeItemHandler = async (e: any) => {
     e.preventDefault();
@@ -129,16 +176,30 @@ const Cart = (props: any) => {
                           </Box>
                         </Flex>
                       </GridItem>
-                      <GridItem>{cart.item_quantity}</GridItem>
+                      <GridItem>
+                        <Flex gap={5} flexDirection="row" alignItems="center">
+                          <Box as="button" color={'white'} bg={'brand.400'} w={'1.5rem'} h={'1.5rem'} data-product-id={cart.product_id} onClick={removeQuantity}>
+                            -
+                          </Box>
+                          <Box as="span">{cart.item_quantity}</Box>
+                          <Box as="button" color={'white'} bg={'brand.400'} w={'1.5rem'} h={'1.5rem'} data-product-id={cart.product_id} onClick={addQuantity}>
+                            +
+                          </Box>
+                        </Flex>
+                      </GridItem>
                       <GridItem>RM {(parseInt(cart.item_quantity) * parseFloat(cart.item_price)).toFixed(2)}</GridItem>
                     </Grid>
                   ))}
+
+                  <Divider borderBottomWidth={'0.2rem'} />
 
                   <Grid py={'0.5rem'} px={'1rem'} gridTemplateColumns="3fr repeat(2,1fr)" fontWeight={'bold'}>
                     <GridItem></GridItem>
                     <GridItem>{itemDetail.totalQuantity}</GridItem>
                     <GridItem>Total: RM {itemDetail.totalPrice.toFixed(2)}</GridItem>
                   </Grid>
+
+                  <Divider borderBottomWidth={'0.2rem'} />
                 </Flex>
               </>
             )}
