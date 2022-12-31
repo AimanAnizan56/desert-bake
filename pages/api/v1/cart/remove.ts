@@ -14,4 +14,8 @@ cartHandler.post(async (req: NextApiRequest, res: NextApiResponse) => {
   await CartItemController.removeFromCart(req, res);
 });
 
+cartHandler.delete(async (req: NextApiRequest, res: NextApiResponse) => {
+  await CartItemController.removeItem(req, res);
+});
+
 export default withIronSessionApiRoute(cartHandler, ironSessionOptions);
