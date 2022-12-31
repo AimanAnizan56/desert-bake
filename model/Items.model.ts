@@ -109,6 +109,14 @@ export default class Item {
     return false;
   };
 
+  deleteItem = async () => {
+    const row: any = await makeQuery('DELETE FROM items WHERE item_id=?', [this.item_id]);
+
+    if (row.affectedRows == 1) {
+      return true;
+    } else return false;
+  };
+
   output = () => {
     console.log('====================================');
     console.log('item_id: ', this.item_id);
