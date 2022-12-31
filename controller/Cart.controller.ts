@@ -139,7 +139,7 @@ export default class CartItemController {
     }
 
     res.status(200).json({
-      message: 'Successfully remove to cart',
+      message: 'Successfully remove from cart',
     });
   };
 
