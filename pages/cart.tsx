@@ -181,7 +181,9 @@ const Cart = (props: any) => {
                           <Box as="button" color={'white'} bg={'brand.400'} w={'1.5rem'} h={'1.5rem'} data-product-id={cart.product_id} onClick={removeQuantity}>
                             -
                           </Box>
-                          <Box as="span">{cart.item_quantity}</Box>
+                          <Box as="span" w={'1.5rem'} textAlign={'center'}>
+                            {cart.item_quantity}
+                          </Box>
                           <Box as="button" color={'white'} bg={'brand.400'} w={'1.5rem'} h={'1.5rem'} data-product-id={cart.product_id} onClick={addQuantity}>
                             +
                           </Box>
