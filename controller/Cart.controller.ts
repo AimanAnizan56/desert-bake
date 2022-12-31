@@ -143,6 +143,59 @@ export default class CartItemController {
     });
   };
 
+  static removeItem = async (req: NextApiRequest, res: NextApiResponse) => {
+    // delete item completely
+    // get customer cart
+    if (!req.session.user) {
+      res.status(400).json({
+        message: 'Please login first',
+      });
+      return;
+    }
+
+    if (req.session.user && req.session.user.admin) {
+      res.status(400).json({
+        message: 'Only customer can delete cart',
+      });
+      return;
+    }
+
+    // get item id from request body
+    const { item_id } = req.body;
+
+    if (item_id == undefined || item_id.length == 0) {
+      res.status(400).json({
+        message: 'Please include item id',
+      });
+      return;
+    }
+
+    if (isNaN(item_id)) {
+      res.status(400).json({
+        message: 'Item id must be a number',
+      });
+      return;
+    }
+
+    // set item id (item model)
+    const item = new Item();
+    item.setItemId(parseInt(item_id));
+
+    // delete item id
+    const success = await item.deleteItem();
+
+    if (!success) {
+      res.status(500).json({
+        message: 'Cannot delete item. Item id might not exist',
+      });
+      return;
+    }
+
+    res.status(200).json({
+      message: 'Item id deleted successfully',
+    });
+  };
+
   static getCart = async (req: NextApiRequest, res: NextApiResponse) => {
     // get customer cart
     if (!req.session.user) {
