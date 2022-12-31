@@ -61,6 +61,8 @@ const Cart = (props: any) => {
           totalPrice: temp.totalPrice,
         });
         setCarts(user_cart);
+      } else {
+        setCarts(undefined);
       }
     } catch (err) {
       console.log('err getCustomerCart', err);
