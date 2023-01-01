@@ -1,4 +1,3 @@
-import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 import { Box, Button, Container, Divider, Flex, Grid, GridItem } from '@chakra-ui/react';
 import axios from 'axios';
 import { withIronSessionSsr } from 'iron-session/next';
@@ -131,7 +130,7 @@ const Cart = (props: any) => {
 
   return (
     <>
-      {user ? <Navbar pageTitle="List of Products" pageDescription="This is page that display all available products" currentPage={'View Cart'} user={user} /> : <Navbar pageTitle="List of Products" pageDescription="This is page that display all available products" currentPage="View Cart" />}
+      {user ? <Navbar pageTitle="View Cart" pageDescription="This is page that display all available products" currentPage={'View Cart'} user={user} /> : <Navbar pageTitle="List of Products" pageDescription="This is page that display all available products" currentPage="View Cart" />}
 
       <main>
         <Container maxW={'container.lg'}>
@@ -204,7 +203,7 @@ const Cart = (props: any) => {
                   <Divider borderBottomWidth={'0.2rem'} />
                 </Flex>
                 <Box as="div" textAlign={'right'}>
-                  <Button colorScheme={'brand'} onClick={() => router.push('/checkout')}>
+                  <Button colorScheme={'brand'} onClick={() => router.push('/cart/checkout')}>
                     Checkout
                   </Button>
                 </Box>
