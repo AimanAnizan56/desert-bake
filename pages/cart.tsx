@@ -1,5 +1,5 @@
 import { AddIcon, MinusIcon } from '@chakra-ui/icons';
-import { Box, Container, Divider, Flex, Grid, GridItem } from '@chakra-ui/react';
+import { Box, Button, Container, Divider, Flex, Grid, GridItem } from '@chakra-ui/react';
 import axios from 'axios';
 import { withIronSessionSsr } from 'iron-session/next';
 import { GetServerSideProps } from 'next';
@@ -203,6 +203,11 @@ const Cart = (props: any) => {
 
                   <Divider borderBottomWidth={'0.2rem'} />
                 </Flex>
+                <Box as="div" textAlign={'right'}>
+                  <Button colorScheme={'brand'} onClick={() => router.push('/checkout')}>
+                    Checkout
+                  </Button>
+                </Box>
               </>
             )}
           </Box>
