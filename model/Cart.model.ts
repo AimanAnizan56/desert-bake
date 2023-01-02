@@ -13,6 +13,10 @@ export default class Cart {
     this.cart_status = cart_status;
   };
 
+  setCartId = (cart_id: number) => {
+    this.cart_id = cart_id;
+  };
+
   setCustomerId = (customer_id: number) => {
     this.customer_id = customer_id;
   };
@@ -32,6 +36,7 @@ export default class Cart {
     let row: any = await makeQuery('SELECT cart_id FROM cart WHERE cart_status="in use" AND customer_id=?', [this.customer_id]);
 
     if (row.length > 0) {
+      this.cart_id = row[0].cart_id;
       return {
         cartId: row[0].cart_id,
       };
@@ -40,5 +45,15 @@ export default class Cart {
     return {
       cartId: -99,
     };
+  };
+
+  static recalculateTotal = async () => {
+    const row: any = await makeQuery('UPDATE cart ct  SET cart_total = (SELECT sum(it.item_price * it.item_quantity) FROM items it WHERE it.cart_id = ct.cart_id)');
+
+    if (row.affected > 0) {
+      return true;
+    }
+
+    return false;
   };
 }

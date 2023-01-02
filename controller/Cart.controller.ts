@@ -67,6 +67,8 @@ export default class CartItemController {
       });
     }
 
+    await Cart.recalculateTotal();
+
     res.status(200).json({
       message: 'Successfully add to cart',
     });
@@ -138,6 +140,8 @@ export default class CartItemController {
       return;
     }
 
+    await Cart.recalculateTotal();
+
     res.status(200).json({
       message: 'Successfully remove from cart',
     });
@@ -190,6 +194,8 @@ export default class CartItemController {
       });
       return;
     }
+
+    await Cart.recalculateTotal();
 
     res.status(200).json({
       message: 'Item id deleted successfully',
