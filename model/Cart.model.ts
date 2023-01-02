@@ -16,6 +16,9 @@ export default class Cart {
   setCartId = (cart_id: number) => {
     this.cart_id = cart_id;
   };
+  setCartStatus = (cart_status: string) => {
+    this.cart_status = cart_status;
+  };
 
   setCustomerId = (customer_id: number) => {
     this.customer_id = customer_id;
@@ -45,6 +48,16 @@ export default class Cart {
     return {
       cartId: -99,
     };
+  };
+
+  updateStatus = async () => {
+    const row: any = await makeQuery('UPDATE cart SET cart_status=? WHERE cart_id=?', [this.cart_status, this.cart_id]);
+
+    if (row.affectedRows == 1) {
+      return true;
+    }
+
+    return false;
   };
 
   static recalculateTotal = async () => {

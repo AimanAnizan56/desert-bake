@@ -248,4 +248,42 @@ export default class CartItemController {
       user_cart: data,
     });
   };
+
+  static updateCartStatus = async (req: NextApiRequest, res: NextApiResponse) => {
+    const { status } = req.body;
+    const { cart_id } = req.query;
+
+    if (status == undefined || status == '' || cart_id == undefined || cart_id == '') {
+      res.status(400).json({
+        message: 'Please provide cart status and cart id',
+      });
+      return;
+    }
+
+    if (isNaN(parseInt(cart_id as string))) {
+      res.status(400).json({
+        message: 'Cart id must be a number',
+      });
+      return;
+    }
+
+    const cartId = parseInt(cart_id as string);
+
+    const cart = new Cart();
+    cart.setCartId(cartId);
+    cart.setCartStatus(status);
+
+    const succeed = await cart.updateStatus();
+
+    if (!succeed) {
+      res.status(500).json({
+        message: 'Could not update cart status',
+      });
+      return;
+    }
+
+    res.status(200).json({
+      message: 'Cart status updated',
+    });
+  };
 }
