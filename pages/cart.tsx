@@ -20,6 +20,7 @@ const Cart = (props: any) => {
   const [itemDetail, setItemDetail] = useState({
     totalQuantity: 0,
     totalPrice: 0,
+    cartId: undefined,
   });
 
   const [modalState, setModalState] = useState({
@@ -100,10 +101,24 @@ const Cart = (props: any) => {
     });
   };
 
-  const performCheckout = () => {
+  const performCheckout = async () => {
     // to change cart status
     // if succeed - redirect checkout page
-    router.push('/cart/checkout');
+    const url = `/api/v1/cart/status/${itemDetail.cartId}`;
+
+    try {
+      const res: any = await axios.put(url, {
+        status: 'complete',
+      });
+      const { message } = res.data;
+
+      if (res.status == 200 && message == 'Cart status updated') {
+        // todo -- create order and insert into db
+        // router.push(`/cart/checkout/${itemDetail.cartId}`);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const getCustomerCartAPI = async () => {
@@ -111,7 +126,7 @@ const Cart = (props: any) => {
 
     try {
       const res: any = await axios.get(url);
-      const { message, user_cart } = await res.data;
+      const { message, user_cart, cart_id } = await res.data;
       let temp = {
         totalPrice: 0,
         totalQuantity: 0,
@@ -127,6 +142,7 @@ const Cart = (props: any) => {
           ...itemDetail,
           totalQuantity: temp.totalQuantity,
           totalPrice: temp.totalPrice,
+          cartId: cart_id,
         });
         setCarts(user_cart);
       } else {
