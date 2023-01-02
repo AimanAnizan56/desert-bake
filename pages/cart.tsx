@@ -1,4 +1,4 @@
-import { Box, Button, Container, Divider, Flex, Grid, GridItem } from '@chakra-ui/react';
+import { Box, Button, Container, Divider, Flex, Grid, GridItem, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@chakra-ui/react';
 import axios from 'axios';
 import { withIronSessionSsr } from 'iron-session/next';
 import { GetServerSideProps } from 'next';
@@ -20,6 +20,14 @@ const Cart = (props: any) => {
   const [itemDetail, setItemDetail] = useState({
     totalQuantity: 0,
     totalPrice: 0,
+  });
+
+  const [modalState, setModalState] = useState({
+    isOpen: false,
+    onClose: () => {
+      console.log('closing modal');
+      setModalState({ ...modalState, isOpen: false });
+    },
   });
 
   const addQuantity = async (e: any) => {
@@ -82,6 +90,20 @@ const Cart = (props: any) => {
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const handleCheckout = () => {
+    // to popup modal for confirmation
+    setModalState({
+      ...modalState,
+      isOpen: true,
+    });
+  };
+
+  const performCheckout = () => {
+    // to change cart status
+    // if succeed - redirect checkout page
+    router.push('/cart/checkout');
   };
 
   const getCustomerCartAPI = async () => {
@@ -148,15 +170,19 @@ const Cart = (props: any) => {
             {carts && (
               <>
                 <Box as="div" bg="brand.400" color={'white'}>
-                  <Grid py={'0.5rem'} px={'1rem'} gridTemplateColumns="3fr repeat(2,1fr)">
+                  <Grid py={'0.5rem'} px={'1rem'} gridTemplateColumns="3fr 2fr 1fr">
                     <GridItem>Product</GridItem>
-                    <GridItem>Quantity</GridItem>
+                    <GridItem>
+                      <Box as="div" textAlign={'center'}>
+                        Quantity
+                      </Box>
+                    </GridItem>
                     <GridItem>Subtotal</GridItem>
                   </Grid>
                 </Box>
                 <Flex flexDirection={'column'} gap={3} my={'0.5rem'}>
                   {carts.map((cart, i) => (
-                    <Grid py={'0.5rem'} px={'1rem'} gridTemplateColumns="3fr repeat(2,1fr)" key={i}>
+                    <Grid py={'0.5rem'} px={'1rem'} gridTemplateColumns="3fr 2fr 1fr" key={i}>
                       <GridItem>
                         <Flex gap={3}>
                           <Box as="div" position={'relative'} w="10vw" h="15vh">
@@ -176,7 +202,7 @@ const Cart = (props: any) => {
                         </Flex>
                       </GridItem>
                       <GridItem>
-                        <Flex gap={5} flexDirection="row" alignItems="center">
+                        <Flex gap={5} flexDirection="row" alignItems="center" justifyContent={'center'}>
                           <Box as="button" color={'white'} bg={'brand.400'} w={'1.5rem'} h={'1.5rem'} data-product-id={cart.product_id} onClick={removeQuantity}>
                             -
                           </Box>
@@ -194,16 +220,20 @@ const Cart = (props: any) => {
 
                   <Divider borderBottomWidth={'0.2rem'} />
 
-                  <Grid py={'0.5rem'} px={'1rem'} gridTemplateColumns="3fr repeat(2,1fr)" fontWeight={'bold'}>
+                  <Grid py={'0.5rem'} px={'1rem'} gridTemplateColumns="3fr 2fr 1fr" fontWeight={'bold'}>
                     <GridItem></GridItem>
-                    <GridItem>{itemDetail.totalQuantity}</GridItem>
+                    <GridItem>
+                      <Box as="div" textAlign={'center'}>
+                        {itemDetail.totalQuantity}
+                      </Box>
+                    </GridItem>
                     <GridItem>Total: RM {itemDetail.totalPrice.toFixed(2)}</GridItem>
                   </Grid>
 
                   <Divider borderBottomWidth={'0.2rem'} />
                 </Flex>
                 <Box as="div" textAlign={'right'}>
-                  <Button colorScheme={'brand'} onClick={() => router.push('/cart/checkout')}>
+                  <Button colorScheme={'brand'} onClick={handleCheckout}>
                     Checkout
                   </Button>
                 </Box>
@@ -211,6 +241,26 @@ const Cart = (props: any) => {
             )}
           </Box>
         </Container>
+
+        <Modal isOpen={modalState.isOpen} onClose={modalState.onClose} isCentered>
+          <ModalOverlay />
+          <ModalContent maxW={'max-content'}>
+            <ModalHeader>Checkout</ModalHeader>
+            <ModalCloseButton />
+
+            <ModalBody>Are you sure you want to proceed? </ModalBody>
+
+            <ModalFooter>
+              <Button mx={2} colorScheme={'green'} width={'5rem'} variant={'outline'} onClick={modalState.onClose}>
+                No
+              </Button>
+
+              <Button colorScheme={'green'} width={'5rem'} onClick={performCheckout}>
+                Yes
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </main>
     </>
   );
