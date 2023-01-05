@@ -249,6 +249,53 @@ export default class CartItemController {
     });
   };
 
+  static getCompleteCartById = async (req: NextApiRequest, res: NextApiResponse) => {
+    const { cart_id } = req.query;
+
+    // get customer cart
+    if (!req.session.user) {
+      res.status(400).json({
+        message: 'Please login first',
+      });
+      return;
+    }
+
+    if (req.session.user && req.session.user.admin) {
+      res.status(400).json({
+        message: 'Only customer can view cart',
+      });
+      return;
+    }
+
+    if (cart_id == undefined || cart_id == '') {
+      res.status(400).json({
+        message: 'Please include cart id',
+      });
+      return;
+    }
+
+    if (isNaN(parseInt(cart_id as string))) {
+      res.status(400).json({
+        message: 'Cart id must be a number',
+      });
+      return;
+    }
+
+    // get complete cart items by cart id (use item model)
+    const items = await Item.getCompleteCartItemById(parseInt(cart_id as string));
+
+    if (items.length == 0) {
+      res.status(500).json({
+        message: 'Item not exist on this cart_id',
+      });
+    }
+
+    res.status(200).json({
+      message: 'Item retrieve',
+      data: items,
+    });
+  };
+
   static updateCartStatus = async (req: NextApiRequest, res: NextApiResponse) => {
     const { status } = req.body;
     const { cart_id } = req.query;

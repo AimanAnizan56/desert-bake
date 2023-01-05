@@ -117,6 +117,16 @@ export default class Item {
     } else return false;
   };
 
+  static getCompleteCartItemById = async (cartId: number) => {
+    const row: any = await makeQuery('SELECT item_quantity, item_price, product_name, cart_total FROM items, cart, product WHERE cart.cart_id=items.cart_id AND items.product_id = product.product_id AND cart.cart_status="complete" AND cart.cart_id=?', [cartId]);
+
+    if (row.length > 0) {
+      return row;
+    }
+
+    return [];
+  };
+
   output = () => {
     console.log('====================================');
     console.log('item_id: ', this.item_id);
