@@ -107,14 +107,19 @@ const Cart = (props: any) => {
     const url = `/api/v1/cart/status/${itemDetail.cartId}`;
 
     try {
-      const res: any = await axios.put(url, {
+      let res: any = await axios.put(url, {
         status: 'complete',
       });
       const { message } = res.data;
 
       if (res.status == 200 && message == 'Cart status updated') {
-        // todo -- create order and insert into db
-        // router.push(`/cart/checkout/${itemDetail.cartId}`);
+        res = await axios.post('/api/v1/order', {
+          cart_id: itemDetail.cartId,
+        });
+
+        if (res.status == 200 && res.data.message == 'Order successfully created') {
+          router.push(`/cart/checkout/${itemDetail.cartId}`);
+        }
       }
     } catch (err) {
       console.log(err);
