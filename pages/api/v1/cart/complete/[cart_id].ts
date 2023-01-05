@@ -10,7 +10,7 @@ const cartHandler = nextConnect({
   },
 });
 
-cartHandler.post(async (req: NextApiRequest, res: NextApiResponse) => {
+cartHandler.get(async (req: NextApiRequest, res: NextApiResponse) => {
   await CartItemController.getCompleteCartById(req, res);
 });
 
