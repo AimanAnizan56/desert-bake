@@ -62,6 +62,23 @@ const Checkout = (props: any) => {
     }
   };
 
+  const getCustomerPaymentAPI = async () => {
+    // customer payment api
+    if (cart_id == undefined || cart_id == '') {
+      return;
+    }
+
+    const url = `/api/v1/payment?cart-id=${cart_id}`;
+
+    try {
+      const res = await axios.get(url);
+    } catch (err) {
+      console.log('====================================');
+      console.log('Err: ', err);
+      console.log('====================================');
+    }
+  };
+
   useEffect(() => {
     if (Object.keys(props.user).length != 0) {
       setUser({
@@ -73,6 +90,7 @@ const Checkout = (props: any) => {
     }
 
     getCustomerCartAPI();
+    getCustomerPaymentAPI();
   }, []);
 
   return (
