@@ -37,4 +37,5 @@ next-env.d.ts
 
 test/*
 *test*
-public/upload*
+public/upload/*.jpg
+public/upload/*.png
