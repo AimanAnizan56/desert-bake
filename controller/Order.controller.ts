@@ -63,6 +63,31 @@ export default class OrderController {
   };
 
   static getOrders = async (req: NextApiRequest, res: NextApiResponse) => {
+    const cart_id = req.query['cart-id'];
+
+    if (cart_id == undefined) {
+      await this.getAllOrders(req, res);
+      return;
+    }
+
+    if (cart_id != undefined) {
+      if (cart_id == '') {
+        res.status(400).json({
+          message: 'Please include value for cart-id',
+        });
+        return;
+      }
+
+      await this.getOrderByCartId(req, res);
+    }
+  };
+
+  private static getAllOrders = async (req: NextApiRequest, res: NextApiResponse) => {
     // get all orders
+  };
+
+  private static getOrderByCartId = async (req: NextApiRequest, res: NextApiResponse) => {
+    // get order by cart id (for the payment, related etc)
+    const cart_id = req.query['cart-id'];
   };
 }
