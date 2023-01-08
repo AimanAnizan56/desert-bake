@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Order from '../model/Order.model';
+import Payment from '../model/Payment.model';
 
 export class PaymentController {
   static createPaymentIntent = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -106,6 +107,8 @@ export class PaymentController {
     }
 
     // step 2 - get payment id by order id (if not exist, create one)
+    let payment = await Payment.getPaymentByOrderId(order_id as number);
+
     // step 3 - return client secret (stripe payment id)
   };
 }
