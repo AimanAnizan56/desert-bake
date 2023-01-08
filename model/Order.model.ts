@@ -29,6 +29,20 @@ export default class Order {
     return this.order_id;
   };
 
+  static getOrderIdByCartId = async (cart_id: number) => {
+    const row: any = await makeQuery('SELECT order_id FROM orders WHERE cart_id=?', [cart_id]);
+
+    if (row.length == 0) {
+      return {
+        message: 'No order id found',
+      };
+    }
+
+    return {
+      order_id: row[0].order_id as number,
+    };
+  };
+
   getOrderStatus = () => {
     return this.order_status;
   };
