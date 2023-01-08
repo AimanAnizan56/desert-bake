@@ -1,0 +1,3 @@
+this folder is for image uploading when development
+-- for production: use image object from third party
+-- eg. aws s3, cloudinary, freeimage.host
