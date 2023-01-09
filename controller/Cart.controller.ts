@@ -262,7 +262,7 @@ export default class CartItemController {
 
     if (req.session.user && req.session.user.admin) {
       res.status(400).json({
-        message: 'Only customer can view cart',
+        message: 'Only customer can retrieve cart',
       });
       return;
     }
@@ -282,7 +282,7 @@ export default class CartItemController {
     }
 
     // get complete cart items by cart id (use item model)
-    const items = await Item.getCompleteCartItemById(parseInt(cart_id as string));
+    const items = await Item.getCompleteCartItemById(parseInt(cart_id as string), req.session.user.id);
 
     if (items.length == 0) {
       res.status(500).json({
