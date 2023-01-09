@@ -177,11 +177,12 @@ export class PaymentController {
 
     // step 3 - return client secret (stripe payment id)
     if (!(client_secret != undefined && client_secret != '')) {
-      res.status(200).send('make request from stripe api to get client secret');
-      return;
+      const paymentIntent = await stripe.paymentIntents.retrieve(payment.getPaymentId());
+
+      client_secret = paymentIntent.client_secret;
     }
     res.status(200).json({
-      message: 'Sucess',
+      message: 'Success',
       data: {
         client_secret: client_secret,
       },
