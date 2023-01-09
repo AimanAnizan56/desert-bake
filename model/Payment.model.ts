@@ -15,6 +15,16 @@ export default class Payment {
     this.order_id = order_id;
   };
 
+  createPayment = async () => {
+    const row: any = await makeQuery('INSERT INTO payment VALUES (?,?,?,?,?)', [this.payment_id, this.payment_status, this.payment_date, this.payment_total, this.order_id]);
+
+    if (row.affectedRows == 1) {
+      return true;
+    }
+
+    return false;
+  };
+
   static getPaymentByOrderId = async (order_id: number) => {
     const row: any = await makeQuery('SELECT * FROM payment WHERE order_id=?', [order_id]);
 
@@ -27,6 +37,9 @@ export default class Payment {
     const payment = new Payment();
     payment.setPayment(row[0].payment_id, row[0].payment_status, row[0].payment_date, row[0].payment_total, row[0].order_id);
 
-    return payment;
+    return {
+      message: 'Payment found',
+      data: payment,
+    };
   };
 }
