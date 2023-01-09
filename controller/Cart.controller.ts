@@ -282,7 +282,7 @@ export default class CartItemController {
     }
 
     // get complete cart items by cart id (use item model)
-    const items = await Item.getCompleteCartItemById(parseInt(cart_id as string), req.session.user.id);
+    const items = await Item.getCompleteCartItemById(parseInt(cart_id as string), parseInt(req.session.user.id));
 
     if (items.length == 0) {
       res.status(500).json({
