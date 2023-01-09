@@ -7,6 +7,7 @@ import axios from 'axios';
 import { Box, Container, Divider, Flex, Grid } from '@chakra-ui/react';
 import Payment from '../../../components/Payment';
 import products from '../../api/v1/products';
+import Head from 'next/head';
 
 const Checkout = (props: any) => {
   const router = useRouter();
@@ -95,6 +96,11 @@ const Checkout = (props: any) => {
 
   return (
     <>
+      <Head>
+        <title>Dessert Bake | Checkout</title>
+        <meta name="description" content="Checkout page for the payment" />
+        <link rel="icon" href="/favicon.jpg" />
+      </Head>
       <main>
         <Container maxW={'container.lg'} my={'3rem'}>
           {carts && (
