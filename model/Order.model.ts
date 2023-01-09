@@ -29,8 +29,8 @@ export default class Order {
     return this.order_id;
   };
 
-  static getOrderIdByCartId = async (cart_id: number) => {
-    const row: any = await makeQuery('SELECT order_id FROM orders WHERE cart_id=?', [cart_id]);
+  static getOrderIdByCartId = async (cart_id: number, customer_id: number) => {
+    const row: any = await makeQuery('SELECT order_id FROM orders, cart WHERE orders.cart_id=cart.cart_id AND cart.cart_id=? AND cart.customer_id=?', [cart_id, customer_id]);
 
     if (row.length == 0) {
       return {
