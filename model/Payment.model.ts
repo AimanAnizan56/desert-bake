@@ -25,6 +25,10 @@ export default class Payment {
     return false;
   };
 
+  getPaymentId = () => {
+    return this.payment_id;
+  };
+
   static getPaymentByOrderId = async (order_id: number) => {
     const row: any = await makeQuery('SELECT * FROM payment WHERE order_id=?', [order_id]);
 
