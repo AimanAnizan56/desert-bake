@@ -16,7 +16,9 @@ export class WebhookPaymentController {
       console.log('====================================');
       console.log(`Cannot update payment id: ${payment_id}`);
       console.log('====================================');
-      res.status(400).send(`Cannot update payment id: ${payment_id}`);
+      res.status(400).json({
+        message: `Cannot update payment id: ${payment_id}`,
+      });
       return;
     }
 
@@ -27,11 +29,16 @@ export class WebhookPaymentController {
       console.log('====================================');
       console.log(`Cannot update order id: ${order_id}`);
       console.log('====================================');
-      res.status(400).send(`Cannot update order id: ${order_id}`);
+      res.status(400).json({
+        message: `Cannot update order id: ${order_id}`,
+      });
       return;
     }
 
-    res.status(200).send(`Payment updated`);
+    res.status(200).send({
+      success: true,
+      message: `Payment updated`,
+    });
   };
 
   static handleCanceled = async (charge: any, res: NextApiResponse) => {
