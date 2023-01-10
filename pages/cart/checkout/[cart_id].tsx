@@ -14,8 +14,7 @@ const Checkout = (props: any) => {
   const { cart_id } = router.query;
 
   // use when retrieve cart detail in db if exist -- remove later
-  const [cartId, setCartId] = useState();
-  const [paymentId, setPaymentId] = useState();
+  const [clientSecret, setClientSecret] = useState();
 
   const [user, setUser] = useState<{
     id: number;
@@ -73,6 +72,8 @@ const Checkout = (props: any) => {
 
     try {
       const res = await axios.get(url);
+      const { data } = res.data;
+      setClientSecret(data.client_secret);
     } catch (err) {
       console.log('====================================');
       console.log('Err: ', err);
@@ -142,7 +143,11 @@ const Checkout = (props: any) => {
                   </Grid>
                 </Box>
               </Box>
-              {cartId && <Box as="div">{/* <Payment /> */}</Box>}
+              {clientSecret && (
+                <Box as="div">
+                  <Payment clientSecret={clientSecret} />
+                </Box>
+              )}
             </Grid>
           )}
         </Container>
