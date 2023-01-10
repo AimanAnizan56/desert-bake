@@ -1,17 +1,21 @@
 import { Elements, useStripe, useElements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { PaymentElement } from '@stripe/react-stripe-js';
-import { Box, Button } from '@chakra-ui/react';
+import { Box, Button, Divider, Flex, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@chakra-ui/react';
 import { useState } from 'react';
+
+import { CheckCircleIcon } from '@heroicons/react/24/solid';
+import { useRouter } from 'next/router';
 
 const stripePromise = loadStripe('pk_test_51MLMB4Iojr912iY5E3Zoy28Lr8HCl9wPlHoBOfa1Qyf1AbQqIv0xc2QFgHrVk4hEpOUBnrCBJnyNC6bemvd7ZAYn005BlMRmLU');
 
-const CheckoutForm = () => {
+const CheckoutForm = ({ modalSuccessState, setModalSuccessState }: any) => {
   const stripe = useStripe();
   const elements = useElements();
 
   const [buttonState, setButtonState] = useState({
     isLoading: false,
+    isDisabled: true,
   });
 
   const handleSubmit = async (event: any) => {
@@ -55,10 +59,13 @@ const CheckoutForm = () => {
 
       if (stripeRes?.paymentIntent.status == 'succeeded') {
         // todo - redirect to success page
-        console.log('succeed');
         setButtonState({
           ...buttonState,
           isLoading: false,
+        });
+        setModalSuccessState({
+          ...modalSuccessState,
+          isOpen: true,
         });
       }
     } catch (err) {
@@ -69,17 +76,34 @@ const CheckoutForm = () => {
     }
   };
 
+  const handleFormChange = (event: any) => {
+    console.log('element type ', event.value.type);
+    if (event.value.type == 'grabpay' || !(event.empty || !event.complete)) {
+      setButtonState({ ...buttonState, isDisabled: false });
+      return;
+    }
+    setButtonState({ ...buttonState, isDisabled: true });
+  };
+
   return (
     <form>
-      <PaymentElement />
-      <Button onClick={handleSubmit} colorScheme={'brand'} mt={'1rem'} w={'100%'} disabled={!stripe} isLoading={buttonState.isLoading}>
+      <PaymentElement onChange={handleFormChange} />
+      <Button onClick={handleSubmit} colorScheme={'brand'} mt={'1rem'} w={'100%'} disabled={buttonState.isDisabled} isLoading={buttonState.isLoading}>
         Pay Now
       </Button>
     </form>
   );
 };
 
-const Payment = ({ clientSecret }: any) => {
+const Payment = ({ clientSecret, totalPrice, paymentId }: any) => {
+  const router = useRouter();
+  const [modalSuccessState, setModalSuccessState] = useState({
+    isOpen: false,
+    onClose: () => {
+      console.log('do nothing');
+    },
+  });
+
   return (
     <>
       {clientSecret && (
@@ -89,11 +113,48 @@ const Payment = ({ clientSecret }: any) => {
               Payment Details
             </Box>
             <Elements stripe={stripePromise} options={{ clientSecret: clientSecret }}>
-              <CheckoutForm />
+              <CheckoutForm modalSuccessState={modalSuccessState} setModalSuccessState={setModalSuccessState} />
             </Elements>
           </Box>
         </>
       )}
+
+      <Modal isOpen={modalSuccessState.isOpen} onClose={modalSuccessState.onClose} isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader pb={0}>
+            <Box as="div" color={'green.400'}>
+              <CheckCircleIcon width={'10rem'} height={'10rem'} style={{ margin: '0 auto' }} />
+            </Box>
+            <Box as="div" color={'green.400'} textAlign={'center'}>
+              Payment Successful
+            </Box>
+            <Flex gap={2} fontWeight={'normal'} fontSize={'0.9rem'} color="gray.500" justifyContent={'center'}>
+              <Box as="span">{paymentId}</Box>
+            </Flex>
+          </ModalHeader>
+          <ModalBody>
+            <Divider borderBottomWidth={'0.2rem'} />
+            <Box as="div" maxW={'70%'} m={'0 auto'} mt={'0.5rem'} color={'gray.500'}>
+              <Flex alignItems={'center'} justifyContent={'space-between'}>
+                <Box as="span">Amount paid</Box>
+                <Box as="span">RM {totalPrice}</Box>
+              </Flex>
+            </Box>
+          </ModalBody>
+
+          <ModalFooter justifyContent={'center'}>
+            <Button
+              colorScheme={'green'}
+              onClick={() => {
+                router.push('/order');
+              }}
+            >
+              Go to Orders
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 };
