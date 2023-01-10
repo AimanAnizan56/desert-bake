@@ -41,7 +41,7 @@ export default class OrderController {
     const order = new Order();
     order.setCartId(cart_id);
     order.setCustomerId(cust_id);
-    order.setOrderStatus('ongoing');
+    order.setOrderStatus('pending');
     const succeed = await order.createOrder();
 
     if (!succeed) {
