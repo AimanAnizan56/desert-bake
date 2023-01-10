@@ -71,9 +71,7 @@ export class PaymentController {
     const paymentIntent = await stripe.paymentIntents.create({
       amount: stripeAmount,
       currency: 'myr',
-      automatic_payment_methods: {
-        enabled: true,
-      },
+      payment_method_types: ['card', 'grabpay'],
       metadata: {
         customer_id: customer.id,
         customer_email: customer.email,
