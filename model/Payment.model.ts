@@ -4,19 +4,20 @@ export default class Payment {
   private payment_id!: string;
   private payment_status!: string;
   private payment_date!: string;
+  private payment_created!: string;
   private payment_total!: number;
   private order_id!: number;
 
-  setPayment = (payment_id: string, payment_status: string, payment_date: string, payment_total: number, order_id: number) => {
+  setPayment = (payment_id: string, payment_status: string, payment_created: string, payment_total: number, order_id: number) => {
     this.payment_id = payment_id;
     this.payment_status = payment_status;
-    this.payment_date = payment_date;
+    this.payment_created = payment_created;
     this.payment_total = payment_total;
     this.order_id = order_id;
   };
 
   createPayment = async () => {
-    const row: any = await makeQuery('INSERT INTO payment VALUES (?,?,?,?,?)', [this.payment_id, this.payment_status, this.payment_date, this.payment_total, this.order_id]);
+    const row: any = await makeQuery('INSERT INTO payment (payment_id, payment_status, payment_created, payment_total, order_id) VALUES (?,?,?,?,?)', [this.payment_id, this.payment_status, this.payment_created, this.payment_total, this.order_id]);
 
     if (row.affectedRows == 1) {
       return true;
