@@ -82,6 +82,10 @@ export class PaymentController {
       },
     });
 
+    console.log('====================================');
+    console.log('paymentintent', paymentIntent);
+    console.log('====================================');
+
     return paymentIntent;
   };
 
@@ -185,6 +189,7 @@ export class PaymentController {
       message: 'Success',
       data: {
         client_secret: client_secret,
+        payment_id: payment.getPaymentId,
       },
     });
   };
