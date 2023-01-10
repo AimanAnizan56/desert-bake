@@ -158,11 +158,18 @@ export class PaymentController {
       // store payment intent id in payment db
       payment = new Payment();
       // payment.setPayment(paymentIntent.id, paymentIntent.status);
-      payment.setPayment(paymentIntent.id, paymentIntent.status, paymentIntent.created, paymentIntent.amount / 100, paymentIntent.metadata.order_id);
+      payment.setPayment(paymentIntent.id, 'awaiting_payment', paymentIntent.created, paymentIntent.amount / 100, paymentIntent.metadata.order_id);
       client_secret = paymentIntent.client_secret;
 
-      const succeed = await payment.createPayment();
+      let succeed = await Order.updateOrderStatus(order_id as number, 'awaiting_payment');
+      if (!succeed) {
+        res.status(500).json({
+          message: 'Cannot update order status',
+        });
+        return;
+      }
 
+      succeed = await payment.createPayment();
       if (!succeed) {
         res.status(500).json({
           message: 'Cannot create payment',
