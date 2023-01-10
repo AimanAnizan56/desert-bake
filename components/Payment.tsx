@@ -1,30 +1,46 @@
-import { useState, useEffect } from 'react';
-
-import { Elements } from '@stripe/react-stripe-js';
+import { Elements, useStripe, useElements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { PaymentElement } from '@stripe/react-stripe-js';
-import axios from 'axios';
-import { Box, Button, Container } from '@chakra-ui/react';
+import { Box, Button } from '@chakra-ui/react';
 
 const stripePromise = loadStripe('pk_test_51MLMB4Iojr912iY5E3Zoy28Lr8HCl9wPlHoBOfa1Qyf1AbQqIv0xc2QFgHrVk4hEpOUBnrCBJnyNC6bemvd7ZAYn005BlMRmLU');
 
-const Payment = (props: any) => {
-  const [clientSecret, setClientSecret] = useState();
+const CheckoutForm = () => {
+  const stripe = useStripe();
+  const elements = useElements();
 
-  const callStripeClientSecret = async () => {
-    const res: any = await axios.post('/api/stripe/payment-intent', {
-      amount: 30,
+  const handleSubmit = async (event: any) => {
+    event.preventDefault();
+    console.log('handlesubmit');
+
+    if (elements == null) {
+      return;
+    }
+
+    const stripeRes = await stripe?.confirmPayment({
+      elements,
+      confirmParams: {
+        // todo -- find the way to use localhost
+        return_url: `https://google.com`,
+      },
     });
 
-    const { client_secret } = res.data;
-
-    setClientSecret(client_secret);
+    console.log('====================================');
+    console.log('stripe res', stripeRes);
+    console.log('====================================');
   };
 
-  useEffect(() => {
-    callStripeClientSecret();
-  }, []);
+  return (
+    <form>
+      <PaymentElement />
+      <Button onClick={handleSubmit} colorScheme={'brand'} mt={'1rem'} w={'100%'} disabled={!stripe}>
+        Pay Now
+      </Button>
+    </form>
+  );
+};
 
+const Payment = ({ clientSecret }: any) => {
   return (
     <>
       {clientSecret && (
@@ -34,12 +50,7 @@ const Payment = (props: any) => {
               Payment Details
             </Box>
             <Elements stripe={stripePromise} options={{ clientSecret: clientSecret }}>
-              <form>
-                <PaymentElement />
-                <Button colorScheme={'brand'} mt={'1rem'} w={'100%'}>
-                  Pay Now
-                </Button>
-              </form>
+              <CheckoutForm />
             </Elements>
           </Box>
         </>
