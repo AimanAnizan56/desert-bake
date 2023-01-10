@@ -6,7 +6,6 @@ import { ironSessionOptions } from '../../../lib/helper';
 import axios from 'axios';
 import { Box, Container, Divider, Flex, Grid } from '@chakra-ui/react';
 import Payment from '../../../components/Payment';
-import products from '../../api/v1/products';
 import Head from 'next/head';
 
 const Checkout = (props: any) => {
@@ -15,6 +14,7 @@ const Checkout = (props: any) => {
 
   // use when retrieve cart detail in db if exist -- remove later
   const [clientSecret, setClientSecret] = useState();
+  const [paymentId, setPaymentId] = useState();
 
   const [user, setUser] = useState<{
     id: number;
@@ -74,6 +74,8 @@ const Checkout = (props: any) => {
       const res = await axios.get(url);
       const { data } = res.data;
       setClientSecret(data.client_secret);
+      console.log('payment id', data.payment_id);
+      setPaymentId(data.payment_id);
     } catch (err) {
       console.log('====================================');
       console.log('Err: ', err);
@@ -145,7 +147,7 @@ const Checkout = (props: any) => {
               </Box>
               {clientSecret && (
                 <Box as="div">
-                  <Payment clientSecret={clientSecret} />
+                  <Payment clientSecret={clientSecret} totalPrice={itemDetail.totalPrice} paymentId={paymentId} />
                 </Box>
               )}
             </Grid>
