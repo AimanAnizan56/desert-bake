@@ -190,7 +190,7 @@ export class PaymentController {
       message: 'Success',
       data: {
         client_secret: client_secret,
-        payment_id: payment.getPaymentId,
+        payment_id: payment.getPaymentId(),
       },
     });
   };
