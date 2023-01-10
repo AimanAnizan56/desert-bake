@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "stripe-listen": "stripe listen --events payment_intent.succeeded,charge.succeeded,payment_intent.canceled,charge.failed,payment_intent.payment_failed --forward-to localhost:3000/api/webhook/payment"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.11",
