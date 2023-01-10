@@ -66,4 +66,14 @@ export default class Order {
 
     return false;
   };
+
+  static updateOrderStatus = async (order_id: number, order_status: string) => {
+    const row = await makeQuery('UPDATE orders SET order_status=? WHERE order_id=?', [order_status, order_id]);
+
+    if (row.affectedRows == 1) {
+      return true;
+    }
+
+    return false;
+  };
 }
