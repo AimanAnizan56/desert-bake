@@ -82,10 +82,6 @@ export class PaymentController {
       },
     });
 
-    console.log('====================================');
-    console.log('paymentintent', paymentIntent);
-    console.log('====================================');
-
     return paymentIntent;
   };
 
