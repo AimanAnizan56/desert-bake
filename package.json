@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "stripe-listen": "stripe listen --events payment_intent.succeeded,charge.succeeded,payment_intent.canceled,charge.failed,payment_intent.payment_failed --forward-to localhost:3000/api/webhook/payment"
+    "stripe-listen": "stripe listen --events payment_intent.succeeded,payment_intent.canceled --forward-to localhost:3000/api/webhook/payment"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.11",
@@ -23,6 +23,7 @@
     "framer-motion": "^6",
     "iron-session": "^6.3.1",
     "jsonwebtoken": "^8.5.1",
+    "micro": "^10.0.1",
     "multiparty": "^4.2.3",
     "mysql2": "^2.3.3",
     "next": "13.0.0",
