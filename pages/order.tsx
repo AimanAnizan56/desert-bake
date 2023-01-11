@@ -1,4 +1,5 @@
-import { Box, Button, Container, Flex, Grid, GridItem } from '@chakra-ui/react';
+import { ChevronDownIcon } from '@chakra-ui/icons';
+import { Box, Button, Container, Flex, Grid, GridItem, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
 import axios from 'axios';
 import { withIronSessionSsr } from 'iron-session/next';
 import { GetServerSideProps } from 'next';
@@ -13,6 +14,38 @@ const Order = (props: any) => {
   const [pageLoad, setPageLoad] = useState(true);
 
   const [orders, setOrders] = useState<Array<any>>();
+  const [filteredOrders, setFilteredOrders] = useState<Array<any>>();
+
+  const changeStatusHandler = async (e: any) => {
+    // change status handler
+    const { orderId } = e.target.dataset;
+    try {
+      const res = await axios.put(`/api/v1/order/status/${orderId}`, {
+        order_status: 'complete',
+      });
+      const { message } = res.data;
+
+      if (message == 'Order status updated') {
+        callCustomerOrderApi();
+      }
+    } catch (err) {
+      console.log('error in changeStatusHandler', err);
+    }
+  };
+
+  const filterHandler = (e: any) => {
+    // change state
+    if (!orders) return;
+    const filterStatus = e.target.dataset.value;
+
+    if (filterStatus == 'all') {
+      setFilteredOrders(orders);
+      return;
+    }
+
+    const temp = orders.filter((order) => order.order_status == filterStatus);
+    setFilteredOrders(temp.length > 0 ? temp : undefined);
+  };
 
   const callCustomerOrderApi = async () => {
     const url = `/api/v1/order`;
@@ -23,11 +56,13 @@ const Order = (props: any) => {
 
       if (message == 'You do not have order yet' || data.length == 0) {
         setOrders(undefined);
+        setFilteredOrders(undefined);
         setPageLoad(false);
         return;
       }
 
       setOrders(data);
+      setFilteredOrders(data);
       setPageLoad(false);
     } catch (err) {
       console.log(err);
@@ -45,9 +80,36 @@ const Order = (props: any) => {
       <main>
         <Container maxW={'container.lg'}>
           <Box my={'2rem'}>
-            <Box as="h1" fontSize={'1.5rem'} fontWeight={'bold'} mb={'1rem'}>
-              My Order
-            </Box>
+            <Flex alignItems={'center'} justifyContent={'space-between'}>
+              <Box as="h1" fontSize={'1.5rem'} fontWeight={'bold'} mb={'1rem'}>
+                My Orders
+              </Box>
+
+              <Box as="div">
+                <Menu>
+                  <MenuButton as={Button} rightIcon={<ChevronDownIcon />} colorScheme={'brand'} variant="outline">
+                    Filter
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem onClick={filterHandler} data-value={'all'}>
+                      All Orders
+                    </MenuItem>
+                    <MenuItem onClick={filterHandler} data-value={'complete'}>
+                      Complete
+                    </MenuItem>
+                    <MenuItem onClick={filterHandler} data-value={'ready_for_pickup'}>
+                      Ready for pickup
+                    </MenuItem>
+                    <MenuItem onClick={filterHandler} data-value={'preparing'}>
+                      Preparing
+                    </MenuItem>
+                    <MenuItem onClick={filterHandler} data-value={'awaiting_payment'}>
+                      Awaiting Payment
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
+              </Box>
+            </Flex>
 
             {!pageLoad && !orders && (
               <Box as="div" textAlign={'center'}>
@@ -55,9 +117,15 @@ const Order = (props: any) => {
               </Box>
             )}
 
-            {!pageLoad && orders && (
+            {!pageLoad && !filteredOrders && (
+              <Box as="div" textAlign={'center'}>
+                No orders found within this status.
+              </Box>
+            )}
+
+            {!pageLoad && filteredOrders && (
               <Grid gap={'1rem'} gridTemplateColumns={'1fr'} maxW={'50vw'} m={'0 auto'}>
-                {orders.map((order, i) => {
+                {filteredOrders.map((order, i) => {
                   const orderStatus = order.order_status.split('_').map((temp: any) => {
                     return `${temp.charAt(0).toUpperCase()}${temp.slice(1)} `;
                   });
@@ -93,7 +161,7 @@ const Order = (props: any) => {
 
                           <Box as="div">
                             <Flex alignItems={'center'}>
-                              <Box as="span" display={'inline-block'} w={'0.8rem'} h={'0.8rem'} bg={order.order_status == 'complete' ? 'green.500' : order.order_status == 'preparing' ? 'orange.400' : 'red.500'} borderRadius={'50%'}></Box>
+                              <Box as="span" display={'inline-block'} w={'0.8rem'} h={'0.8rem'} bg={order.order_status == 'complete' ? 'green.500' : order.order_status == 'awaiting_payment' ? 'red.500' : 'orange.400'} borderRadius={'50%'}></Box>
                               <Box as="span" ml={'0.3rem'} fontWeight={'bold'} color={'gray.700'}>
                                 {orderStatus}
                               </Box>
@@ -150,6 +218,14 @@ const Order = (props: any) => {
                         </Box>
                       )}
 
+                      {order.order_status == 'ready_for_pickup' && (
+                        <Box as="div" mt={'1rem'} textAlign={'center'}>
+                          <Button colorScheme={'brand'} data-order-id={order.order_id} onClick={changeStatusHandler}>
+                            Click if complete
+                          </Button>
+                        </Box>
+                      )}
+
                       {order.order_status == 'preparing' && (
                         <Box as="div" mt={'1rem'} textAlign="center">
                           Your order will be process soon.
@@ -157,7 +233,7 @@ const Order = (props: any) => {
                       )}
 
                       {order.order_status == 'complete' && (
-                        <Box as="div" mt={'1rem'} textAlign="center">
+                        <Box as="div" mt={'1rem'} textAlign="center" color={'green.500'} fontWeight={'bold'}>
                           Your order is complete.
                         </Box>
                       )}
