@@ -134,7 +134,7 @@ export default class Product {
   };
 
   static getTotalProduct = async () => {
-    const row: any = await makeQuery('SELECT count(product_id) as total_product FROM product WHERE product_status="active"');
+    const row: any = await makeQuery('SELECT count(product_id) as total_product FROM product WHERE status="active"');
 
     if (row.length > 0) {
       return row[0].total_product;
