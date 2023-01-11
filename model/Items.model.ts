@@ -127,6 +127,16 @@ export default class Item {
     return [];
   };
 
+  static getAllCartItemByCartId = async (cart_id: number) => {
+    const row: any = await makeQuery('SELECT item_id, item_price, item_quantity, product.product_id, product_name, product_image_path FROM items, product WHERE product.product_id=items.product_id AND items.cart_id=?', [cart_id]);
+
+    if (row.length > 0) {
+      return row;
+    }
+
+    return [];
+  };
+
   output = () => {
     console.log('====================================');
     console.log('item_id: ', this.item_id);
