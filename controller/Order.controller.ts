@@ -93,29 +93,18 @@ export default class OrderController {
       return;
     }
 
+    let orders;
+
     if (req.session.user && req.session.user.admin) {
-      await this.getAllOrdersForAdmin(req, res);
-      return;
+      orders = await Order.getAllOrders();
+    } else {
+      const customer_id: number = parseInt(req.session.user?.id as string);
+      orders = await Order.getOrdersByCustomerId(customer_id);
     }
-
-    await this.getAllOrdersForCustomer(req, res);
-  };
-
-  private static getAllOrdersForAdmin = async (req: NextApiRequest, res: NextApiResponse) => {
-    // for admin
-  };
-
-  private static getAllOrdersForCustomer = async (req: NextApiRequest, res: NextApiResponse) => {
-    // for customer
-    // retrieve customer id
-    const customer_id: number = parseInt(req.session.user?.id as string);
-
-    // make query from order model
-    let orders = await Order.getOrdersByCustomerId(customer_id);
 
     if (orders.length == 0) {
       res.status(200).json({
-        message: 'You do not have order yet',
+        message: req.session.user.admin ? 'No order found' : 'You do not have order yet',
       });
       return;
     }
