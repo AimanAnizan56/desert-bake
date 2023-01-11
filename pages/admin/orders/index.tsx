@@ -128,6 +128,8 @@ const Orders = (props: any) => {
                   });
                   const orderId = order.order_id.toString().padStart(4, '0');
                   const totalPrice = order.payment_total;
+                  const customerName = order.customer_name;
+                  const customerEmail = order.customer_email;
 
                   let dateCheckout;
                   let datePayment;
@@ -200,6 +202,22 @@ const Orders = (props: any) => {
                             <GridItem textAlign={'center'}>{item.item_quantity}</GridItem>
                           </Grid>
                         ))}
+                      </Box>
+
+                      <Box as="div" mt={'0.5rem'} fontWeight={'bold'}>
+                        <Grid gridTemplateColumns={'1.7fr 3fr'} gap={'0.3rem'} w={'25rem'}>
+                          <Box as="span">Customer Name </Box>
+                          <Box as="span" color={'gray.500'}>
+                            {customerName}
+                          </Box>
+                        </Grid>
+
+                        <Grid gridTemplateColumns={'1.7fr 3fr'} gap={'0.3rem'} w={'25rem'}>
+                          <Box as="span">Customer Email </Box>
+                          <Box as="span" color={'gray.500'}>
+                            {customerEmail}
+                          </Box>
+                        </Grid>
                       </Box>
 
                       {order.order_status == 'preparing' && (
