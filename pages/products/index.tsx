@@ -103,7 +103,7 @@ const Products = (props: any) => {
 
   return (
     <>
-      {props.user ? (
+      {props.user.id ? (
         <Navbar pageTitle="List of Products" pageDescription="This is page that display all available products" currentPage={'Products'} user={props.user} />
       ) : (
         <Navbar pageTitle="List of Products" pageDescription="This is page that display all available products" currentPage="Products" />

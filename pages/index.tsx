@@ -26,8 +26,7 @@ export default function Home(props: any) {
 
   return (
     <>
-      {props.user ? <Navbar pageTitle="Homepage" pageDescription="Desert Bake Homepage" currentPage={'Home'} user={props.user} /> : <Navbar pageTitle="Homepage" pageDescription="Desert Bake Homepage" currentPage={'Home'} />}
-
+      {props.user.id ? <Navbar pageTitle="Homepage" pageDescription="Desert Bake Homepage" currentPage={'Home'} user={props.user} /> : <Navbar pageTitle="Homepage" pageDescription="Desert Bake Homepage" currentPage={'Home'} />}
       <main>
         <Swiper pagination={{ dynamicBullets: true }} modules={[Pagination]} style={{ background: 'gray' }}>
           <SwiperSlide>
