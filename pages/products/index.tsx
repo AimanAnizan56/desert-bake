@@ -12,12 +12,6 @@ import { useRouter } from 'next/router';
 
 const Products = (props: any) => {
   const router = useRouter();
-  const [user, setUser] = useState<{
-    id: number;
-    name: string;
-    email: string;
-    admin: boolean;
-  }>();
   const [products, setProducts] = useState<Array<any>>();
   const [filterProducts, setFilterProducts] = useState<Array<any>>();
   const [skeletonLoading, setSkeletonLoading] = useState(true);
@@ -105,16 +99,15 @@ const Products = (props: any) => {
 
   useEffect(() => {
     callProductsAPI();
-    if (Object.keys(props.user).length != 0) {
-      setUser({
-        ...props.user,
-      });
-    }
   }, []);
 
   return (
     <>
-      {user ? <Navbar pageTitle="List of Products" pageDescription="This is page that display all available products" currentPage={'Products'} user={user} /> : <Navbar pageTitle="List of Products" pageDescription="This is page that display all available products" currentPage="Products" />}
+      {props.user ? (
+        <Navbar pageTitle="List of Products" pageDescription="This is page that display all available products" currentPage={'Products'} user={props.user} />
+      ) : (
+        <Navbar pageTitle="List of Products" pageDescription="This is page that display all available products" currentPage="Products" />
+      )}
 
       <main>
         <Container maxW={'container.lg'}>

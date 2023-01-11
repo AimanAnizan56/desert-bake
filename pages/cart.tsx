@@ -10,12 +10,6 @@ import { ironSessionOptions } from '../lib/helper';
 
 const Cart = (props: any) => {
   const router = useRouter();
-  const [user, setUser] = useState<{
-    id: number;
-    name: string;
-    email: string;
-    admin: boolean;
-  }>();
   const [pageLoad, setPageLoad] = useState(true);
 
   const [carts, setCarts] = useState<Array<any>>();
@@ -162,21 +156,12 @@ const Cart = (props: any) => {
   };
 
   useEffect(() => {
-    if (Object.keys(props.user).length != 0) {
-      setUser({
-        ...props.user,
-      });
-    } else {
-      router.push('/signin');
-      return;
-    }
-
     getCustomerCartAPI();
   }, []);
 
   return (
     <>
-      {user ? <Navbar pageTitle="View Cart" pageDescription="This is page that display all available products" currentPage={'View Cart'} user={user} /> : <Navbar pageTitle="List of Products" pageDescription="This is page that display all available products" currentPage="View Cart" />}
+      {props.user ? <Navbar pageTitle="View Cart" pageDescription="This is page that display all available products" currentPage={'View Cart'} user={props.user} /> : <Navbar pageTitle="List of Products" pageDescription="This is page that display all available products" currentPage="View Cart" />}
 
       <main>
         <Container maxW={'container.lg'}>

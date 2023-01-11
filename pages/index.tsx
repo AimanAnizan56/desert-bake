@@ -14,13 +14,6 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 
 export default function Home(props: any) {
-  const [user, setUser] = useState<{
-    id: number;
-    name: string;
-    email: string;
-    admin: boolean;
-  }>();
-
   const bounceKayframes = keyframes`
   0% { transform: translateY(5px) }
   25% { transform: translateY(-5px) }
@@ -31,17 +24,9 @@ export default function Home(props: any) {
 
   const bounceAnimation = `${bounceKayframes} 2s ease-in-out infinite`;
 
-  useEffect(() => {
-    if (Object.keys(props.user).length != 0) {
-      setUser({
-        ...props.user,
-      });
-    }
-  }, []);
-
   return (
     <>
-      {user ? <Navbar pageTitle="Homepage" pageDescription="Desert Bake Homepage" currentPage={'Home'} user={user} /> : <Navbar pageTitle="Homepage" pageDescription="Desert Bake Homepage" currentPage={'Home'} />}
+      {props.user ? <Navbar pageTitle="Homepage" pageDescription="Desert Bake Homepage" currentPage={'Home'} user={props.user} /> : <Navbar pageTitle="Homepage" pageDescription="Desert Bake Homepage" currentPage={'Home'} />}
 
       <main>
         <Swiper pagination={{ dynamicBullets: true }} modules={[Pagination]} style={{ background: 'gray' }}>
