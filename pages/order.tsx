@@ -71,7 +71,7 @@ const Order = (props: any) => {
             )}
 
             {!pageLoad && orders && (
-              <Grid gap={'1rem'} gridTemplateColumns={['1fr', 'repeat(2, 1fr)']}>
+              <Grid gap={'1rem'} gridTemplateColumns={'1fr'} maxW={'50vw'} m={'0 auto'}>
                 {orders.map((order, i) => {
                   const orderStatus = order.order_status.split('_').map((temp: any) => {
                     return `${temp.charAt(0).toUpperCase()}${temp.slice(1)} `;
@@ -91,7 +91,7 @@ const Order = (props: any) => {
                   }
 
                   return (
-                    <GridItem key={i} px={'1rem'} py={'1rem'} bg={'gray.100'} h={'min-content'}>
+                    <GridItem key={i} px={'1rem'} py={'1rem'} bg={'gray.200'} h={'min-content'}>
                       <Box as="h1" mb={'0.5rem'}>
                         <Flex alignItems={'center'} justifyContent={'space-between'}>
                           <Box as="div" fontWeight={'bold'} w={'11.5rem'}>
