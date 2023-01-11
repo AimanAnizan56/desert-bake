@@ -131,4 +131,81 @@ export default class OrderController {
     // get order by cart id (for the payment, related etc)
     const cart_id = req.query['cart-id'];
   };
+
+  static updateOrderByOrderId = async (req: NextApiRequest, res: NextApiResponse) => {
+    // for update
+    const { order_id } = req.query;
+    const { order_status } = req.body;
+
+    if (!req.session.user) {
+      res.status(400).json({
+        message: 'Please login first',
+      });
+      return;
+    }
+
+    if (isNaN(parseInt(order_id as string))) {
+      res.status(400).json({
+        message: 'order_id must be a number',
+      });
+      return;
+    }
+
+    if (order_status != undefined) {
+      await this.updateOrderStatus(req, res);
+      return;
+    }
+
+    res.status(400).json({
+      message: 'Please provide body payload',
+    });
+  };
+
+  private static updateOrderStatus = async (req: NextApiRequest, res: NextApiResponse) => {
+    const { order_status } = req.body;
+    const { order_id } = req.query;
+
+    const updateStatusExecute = async () => {
+      const succeed = await Order.updateOrderStatus(parseInt(order_id as string), order_status);
+
+      if (succeed) {
+        res.status(200).json({
+          message: 'Order status updated',
+          order_id: parseInt(order_id as string),
+        });
+        return;
+      }
+
+      res.status(500).json({
+        message: 'Order status cannot be updated',
+        order_id: parseInt(order_id as string),
+      });
+    };
+
+    // admin only if status is ready for pickup
+    if (order_status == 'ready_for_pickup') {
+      if (!req.session.user?.admin) {
+        res.status(400).json({
+          message: 'Only admin can update order with this status',
+        });
+        return;
+      }
+
+      updateStatusExecute();
+      return;
+    }
+
+    // customer only if status if change to complete
+    if (order_status == 'complete') {
+      if (req.session.user?.admin) {
+        res.status(400).json({
+          message: 'Only customer can update order with this status',
+        });
+        return;
+      }
+
+      updateStatusExecute();
+      return;
+    }
+  };
 }
