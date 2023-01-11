@@ -47,4 +47,14 @@ export default class Payment {
       data: payment,
     };
   };
+
+  static getTotalSales = async () => {
+    const row: any = await makeQuery('SELECT SUM(payment_total) as total_sales FROM payment WHERE payment_status="succeeded"');
+
+    if (row.length > 0) {
+      return row[0].total_sales;
+    }
+
+    return 0;
+  };
 }

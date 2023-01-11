@@ -114,4 +114,42 @@ export default class Product {
     }
     return false;
   };
+
+  //
+  // FOR SALES
+  //
+  static getTopProduct = async () => {
+    //     SELECT product.product_id, product_name ,
+    // count(product.product_id) AS total_sold
+    // FROM items, product
+    // WHERE product.product_id=items.product_id
+    // group by product.product_id
+    const row: any = await makeQuery('SELECT product.product_id, product_name, count(product.product_id) AS total_sold FROM items, product WHERE product.product_id=items.product_id group by product.product_id ORDER BY total_sold desc LIMIT 5');
+
+    if (row.length > 0) {
+      return row;
+    }
+
+    return [];
+  };
+
+  static getTotalProduct = async () => {
+    const row: any = await makeQuery('SELECT count(product_id) as total_product FROM product');
+
+    if (row.length > 0) {
+      return row[0].total_product;
+    }
+
+    return 0;
+  };
+
+  static getTotalProductSold = async () => {
+    const row: any = await makeQuery('SELECT SUM(item_quantity) as total_product_sold FROM items');
+
+    if (row.length > 0) {
+      return row[0].total_product_sold;
+    }
+
+    return 0;
+  };
 }

@@ -58,4 +58,17 @@ export default class Customer {
     }
     return data[0];
   };
+
+  // FOR SALES
+  static getMostSpendUser = async () => {
+    const row: any = await makeQuery(
+      'SELECT customer.customer_id, customer_name, SUM(cart_total) as total_spend FROM customer, cart, orders WHERE customer.customer_id=cart.customer_id AND orders.customer_id = customer.customer_id AND orders.cart_id=cart.cart_id AND (orders.order_status="complete" OR orders.order_status="preparing" OR orders.order_status="ready_for_pickup") GROUP BY customer.customer_id ORDER BY total_spend DESC'
+    );
+
+    if (row.length > 0) {
+      return row;
+    }
+
+    return [];
+  };
 }
