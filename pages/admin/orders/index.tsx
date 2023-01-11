@@ -12,6 +12,7 @@ const Orders = (props: any) => {
 
   const [orders, setOrders] = useState<Array<any>>();
   const [filteredOrders, setFilteredOrders] = useState<Array<any>>();
+  const [currentFilterStatus, setCurrentFilterStatus] = useState('all');
 
   const changeStatusHandler = async (e: any) => {
     // change status handler
@@ -34,6 +35,7 @@ const Orders = (props: any) => {
     // change state
     if (!orders) return;
     const filterStatus = e.target.dataset.value;
+    setCurrentFilterStatus(filterStatus);
 
     if (filterStatus == 'all') {
       setFilteredOrders(orders);
@@ -59,7 +61,13 @@ const Orders = (props: any) => {
       }
 
       setOrders(data);
-      setFilteredOrders(data);
+      if (currentFilterStatus == 'all') {
+        setFilteredOrders(data);
+        return;
+      }
+
+      const temp = data.filter((order: any) => order.order_status == currentFilterStatus);
+      setFilteredOrders(temp.length > 0 ? temp : undefined);
       setPageLoad(false);
     } catch (err) {
       console.log(err);
