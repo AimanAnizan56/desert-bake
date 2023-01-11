@@ -53,6 +53,18 @@ export default class Order {
     return [];
   };
 
+  static getAllOrders = async () => {
+    const row: any = await makeQuery(
+      'SELECT orders.customer_id, customer.customer_name, customer.customer_email, orders.order_id, order_status, payment_id, payment_status, payment_date, payment_created, payment_total, cart_id FROM orders, payment, customer WHERE payment.order_id=orders.order_id AND customer.customer_id = orders.customer_id'
+    );
+
+    if (row.length > 0) {
+      return row;
+    }
+
+    return [];
+  };
+
   getOrderStatus = () => {
     return this.order_status;
   };
