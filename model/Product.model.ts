@@ -119,11 +119,6 @@ export default class Product {
   // FOR SALES
   //
   static getTopProduct = async () => {
-    //     SELECT product.product_id, product_name ,
-    // count(product.product_id) AS total_sold
-    // FROM items, product
-    // WHERE product.product_id=items.product_id
-    // group by product.product_id
     const row: any = await makeQuery('SELECT product.product_id, product_name, count(product.product_id) AS total_sold FROM items, product WHERE product.product_id=items.product_id group by product.product_id ORDER BY total_sold desc LIMIT 5');
 
     if (row.length > 0) {
