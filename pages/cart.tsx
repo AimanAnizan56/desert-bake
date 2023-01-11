@@ -16,6 +16,8 @@ const Cart = (props: any) => {
     email: string;
     admin: boolean;
   }>();
+  const [pageLoad, setPageLoad] = useState(true);
+
   const [carts, setCarts] = useState<Array<any>>();
   const [itemDetail, setItemDetail] = useState({
     totalQuantity: 0,
@@ -153,6 +155,7 @@ const Cart = (props: any) => {
       } else {
         setCarts(undefined);
       }
+      setPageLoad(false);
     } catch (err) {
       console.log('err getCustomerCart', err);
     }
@@ -182,7 +185,7 @@ const Cart = (props: any) => {
               My Cart
             </Box>
 
-            {!carts && (
+            {!pageLoad && !carts && (
               <Box as="div" textAlign={'center'}>
                 Your cart is currently empty.
               </Box>

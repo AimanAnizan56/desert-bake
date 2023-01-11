@@ -16,6 +16,8 @@ const Order = (props: any) => {
     admin: boolean;
   }>();
 
+  const [pageLoad, setPageLoad] = useState(true);
+
   const [orders, setOrders] = useState<Array<any>>();
 
   const callCustomerOrderApi = async () => {
@@ -27,10 +29,12 @@ const Order = (props: any) => {
 
       if (message == 'You do not have order yet' || data.length == 0) {
         setOrders(undefined);
+        setPageLoad(false);
         return;
       }
 
       setOrders(data);
+      setPageLoad(false);
     } catch (err) {
       console.log(err);
     }
@@ -60,13 +64,13 @@ const Order = (props: any) => {
               My Order
             </Box>
 
-            {!orders && (
+            {!pageLoad && !orders && (
               <Box as="div" textAlign={'center'}>
                 No orders found.
               </Box>
             )}
 
-            {orders && (
+            {!pageLoad && orders && (
               <Grid gap={'1rem'} gridTemplateColumns={['1fr', 'repeat(2, 1fr)']}>
                 {orders.map((order, i) => {
                   const orderStatus = order.order_status.split('_').map((temp: any) => {
