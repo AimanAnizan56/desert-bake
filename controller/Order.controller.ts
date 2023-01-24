@@ -182,30 +182,13 @@ export default class OrderController {
       });
     };
 
-    // admin only if status is ready for pickup
-    if (order_status == 'ready_for_pickup') {
-      if (!req.session.user?.admin) {
-        res.status(400).json({
-          message: 'Only admin can update order with this status',
-        });
-        return;
-      }
-
-      updateStatusExecute();
+    if (!req.session.user?.admin) {
+      res.status(400).json({
+        message: 'Only admin can update order the order status',
+      });
       return;
     }
 
-    // customer only if status if change to complete
-    if (order_status == 'complete') {
-      if (req.session.user?.admin) {
-        res.status(400).json({
-          message: 'Only customer can update order with this status',
-        });
-        return;
-      }
-
-      updateStatusExecute();
-      return;
-    }
+    updateStatusExecute();
   };
 }

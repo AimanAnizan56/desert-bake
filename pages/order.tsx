@@ -224,9 +224,7 @@ const Order = (props: any) => {
 
                       {order.order_status == 'ready_for_pickup' && (
                         <Box as="div" mt={'1rem'} textAlign={'center'}>
-                          <Button colorScheme={'brand'} data-order-id={order.order_id} onClick={changeStatusHandler}>
-                            Click if complete
-                          </Button>
+                          Your order is ready for pickup.
                         </Box>
                       )}
 

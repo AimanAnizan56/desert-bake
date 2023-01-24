@@ -15,10 +15,10 @@ const Orders = (props: any) => {
 
   const changeStatusHandler = async (e: any) => {
     // change status handler
-    const { orderId } = e.target.dataset;
+    const { orderId, action } = e.target.dataset;
     try {
       const res = await axios.put(`/api/v1/order/status/${orderId}`, {
-        order_status: 'ready_for_pickup',
+        order_status: action,
       });
       const { message } = res.data;
 
@@ -222,8 +222,8 @@ const Orders = (props: any) => {
 
                       {order.order_status == 'preparing' && (
                         <Box as="div" mt={'1rem'} textAlign={'center'}>
-                          <Button colorScheme={'brand'} data-order-id={order.order_id} onClick={changeStatusHandler}>
-                            Click if ready for pickup
+                          <Button colorScheme={'brand'} data-action={'ready_for_pickup'} data-order-id={order.order_id} onClick={changeStatusHandler}>
+                            Ready for Pickup
                           </Button>
                         </Box>
                       )}
@@ -236,7 +236,13 @@ const Orders = (props: any) => {
 
                       {order.order_status == 'ready_for_pickup' && (
                         <Box as="div" mt={'1rem'} textAlign="center">
-                          This order is ready for pickup.
+                          <Box as="div" mb={'1rem'}>
+                            This order is ready for pickup.
+                          </Box>
+
+                          <Button colorScheme={'brand'} data-action={'complete'} data-order-id={order.order_id} onClick={changeStatusHandler}>
+                            Complete
+                          </Button>
                         </Box>
                       )}
 
