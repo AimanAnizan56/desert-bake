@@ -178,7 +178,7 @@ const CreateProduct = (props: any) => {
       <Navbar pageTitle="Create Product" pageDescription="Create new product by admin" user={props.user} currentPage={'Products'} />
 
       <main>
-        <Container size={'container.md'}>
+        <Container size={'container.md'} mb={'2rem'}>
           <Box as={'div'} mt={'2rem'} boxShadow={'var(--box-shadow)'} px={'3rem'} py={'1rem'}>
             <Heading as="h3" size={'md'}>
               New Product
