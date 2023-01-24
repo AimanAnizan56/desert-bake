@@ -1,6 +1,7 @@
 import { unlink } from 'node:fs';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Product from '../model/Product.model';
+import emailHandler from '../lib/mailtrap';
 
 export default class ProductController {
   static createProduct = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -22,6 +23,17 @@ export default class ProductController {
       res.status(400).json({
         message: row.error,
         data: row,
+      });
+      return;
+    }
+
+    const emailRes: any = await emailHandler(product);
+
+    if (!emailRes.success) {
+      const noCust = emailRes.message == 'No customer has register yet';
+
+      res.status(noCust ? 201 : 400).json({
+        message: noCust ? emailRes.message : 'Cannot send email to the user',
       });
       return;
     }
