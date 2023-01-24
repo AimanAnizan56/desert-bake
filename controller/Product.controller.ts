@@ -1,7 +1,7 @@
 import { unlink } from 'node:fs';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Product from '../model/Product.model';
-import emailHandler from '../lib/mailtrap';
+import { emailAnnounceProduct } from '../lib/mailtrap';
 
 export default class ProductController {
   static createProduct = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -27,7 +27,7 @@ export default class ProductController {
       return;
     }
 
-    const emailRes: any = await emailHandler(product);
+    const emailRes: any = await emailAnnounceProduct(product);
 
     if (!emailRes.success) {
       const noCust = emailRes.message == 'No customer has register yet';

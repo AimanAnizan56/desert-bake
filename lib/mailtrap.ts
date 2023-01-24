@@ -5,7 +5,7 @@ import path from 'path';
 import Product from '../model/Product.model';
 import { emailTemplate } from './email-template';
 
-const emailHandler = async (product: Product) => {
+export const emailAnnounceProduct = async (product: Product) => {
   const index = __dirname.split('\\').findIndex((elem) => elem == 'dessert-bake');
   const tempPath = __dirname.split('\\');
 
@@ -79,5 +79,3 @@ const emailHandler = async (product: Product) => {
     };
   }
 };
-
-export default emailHandler;
