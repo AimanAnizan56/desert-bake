@@ -1,4 +1,4 @@
-import { Box, Text, Container, Divider, Heading, Input, InputGroup, InputLeftElement, RadioGroup, Radio, Flex, Button, Alert, AlertIcon } from '@chakra-ui/react';
+import { Box, Text, Container, Divider, Heading, Input, InputGroup, InputLeftElement, RadioGroup, Radio, Flex, Button, Alert, AlertIcon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@chakra-ui/react';
 import { ChartPieIcon, ChatBubbleOvalLeftEllipsisIcon, ClipboardDocumentListIcon, CurrencyDollarIcon, PhotoIcon } from '@heroicons/react/24/outline';
 import axios, { AxiosError } from 'axios';
 import { withIronSessionSsr } from 'iron-session/next';
@@ -26,6 +26,18 @@ const CreateProduct = (props: any) => {
     trigger: false,
     message: 'Alert',
   });
+
+  const [modalState, setModalState] = useState({
+    isOpen: false,
+    onClose: () => {
+      console.log('closing modal');
+      setModalState({ ...modalState, isOpen: false });
+    },
+  });
+  const [submitButton, setSubmitButton] = useState({
+    isLoading: false,
+  });
+
   const [buttonState, setButtonState] = useState({
     isLoading: false,
     isDisabled: true,
@@ -58,7 +70,13 @@ const CreateProduct = (props: any) => {
     setProductImageSrc('/');
   };
 
+  const handleConfirmation = async () => {
+    // popup a modal to check confirmation
+    setModalState({ ...modalState, isOpen: true });
+  };
+
   const handleSubmit = async () => {
+    setModalState({ ...modalState, isOpen: false });
     setButtonState({
       ...buttonState,
       isLoading: true,
@@ -249,7 +267,7 @@ const CreateProduct = (props: any) => {
               <Divider border={'1px'} color={'gray.500'} opacity={1} mb={'1rem'} />
 
               <Box as="div" textAlign={'center'}>
-                <Button colorScheme={'brand'} isLoading={buttonState.isLoading} isDisabled={buttonState.isDisabled} onClick={handleSubmit}>
+                <Button colorScheme={'brand'} isLoading={buttonState.isLoading} isDisabled={buttonState.isDisabled} onClick={handleConfirmation}>
                   Create Product
                 </Button>
               </Box>
@@ -264,6 +282,39 @@ const CreateProduct = (props: any) => {
           {alertOn.message}
         </Alert>
       )}
+
+      <Modal isOpen={modalState.isOpen} onClose={modalState.onClose} isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader color={'brand.500'}>Confirm</ModalHeader>
+          <ModalCloseButton />
+
+          <ModalBody>
+            <Box as="div" mb={'0.5rem'}>
+              By submit this form,{' '}
+              <Box as="span" fontWeight={'bold'}>
+                email
+              </Box>{' '}
+              will be send to customer to{' '}
+              <Box as="span" fontWeight={'bold'}>
+                notify the new product
+              </Box>
+              .{' '}
+            </Box>
+            <Box as="div">Are you confirm to create this product?</Box>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button mx={2} colorScheme={'brand'} width={'5rem'} variant={'outline'} onClick={modalState.onClose}>
+              Cancel
+            </Button>
+
+            <Button isLoading={submitButton.isLoading} colorScheme={'brand'} width={'5rem'} onClick={handleSubmit}>
+              Create
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 };
