@@ -28,6 +28,7 @@ export default class Product {
     const data = await row;
 
     if (data.affectedRows == 1) {
+      this.id = data.insertId;
       return {
         id: data.insertId,
         name: this.name,
@@ -53,6 +54,14 @@ export default class Product {
     const data = await makeQuery('SELECT * FROM product WHERE product_id=? AND status="active"', [id]);
 
     return data;
+  };
+
+  getProductName = () => {
+    return this.name;
+  };
+
+  getProductDescription = () => {
+    return this.description;
   };
 
   getImagePath = async () => {
