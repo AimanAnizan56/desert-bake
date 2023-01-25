@@ -16,7 +16,7 @@ const Home = (props: any) => {
   }>();
 
   const callSalesApi = async () => {
-    const url = '/api/v1/sales';
+    const url = '/api/v1/dashboard';
 
     try {
       const res = await axios.get(url);
