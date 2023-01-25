@@ -3,7 +3,7 @@ import Customer from '../model/Customer.model';
 import Payment from '../model/Payment.model';
 import Product from '../model/Product.model';
 
-export default class SalesController {
+export default class DashboardController {
   static getData = async (req: NextApiRequest, res: NextApiResponse) => {
     // - top product, fewer bought product (product model)
     const top_product = await Product.getTopProduct();
@@ -31,12 +31,3 @@ export default class SalesController {
     });
   };
 }
-
-// MOST CUSTOMER SPEND
-// SELECT customer.customer_id, customer_name, SUM(cart_total)
-// FROM customer, cart, orders
-// WHERE customer.customer_id=cart.customer_id AND
-// orders.customer_id = customer.customer_id AND
-// orders.cart_id=cart.cart_id AND
-// (orders.order_status='complete' OR orders.order_status='preparing' OR orders.order_status='ready_for_pickup')
-// GROUP BY customer.customer_id

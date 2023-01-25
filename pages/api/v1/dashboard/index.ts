@@ -1,7 +1,7 @@
 import { withIronSessionApiRoute } from 'iron-session/next';
 import { NextApiRequest, NextApiResponse } from 'next';
 import nextConnect from 'next-connect';
-import SalesController from '../../../../controller/Sales.controller';
+import DashboardController from '../../../../controller/Dashboard.controller';
 import { ironSessionOptions } from '../../../../lib/helper';
 
 const handler = nextConnect({
@@ -11,7 +11,7 @@ const handler = nextConnect({
 });
 
 handler.get(async (req: NextApiRequest, res: NextApiResponse) => {
-  await SalesController.getData(req, res);
+  await DashboardController.getData(req, res);
 });
 
 export default withIronSessionApiRoute(handler, ironSessionOptions);
