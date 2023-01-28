@@ -62,6 +62,53 @@ export default class AdminController {
   };
 
   static updateAdmin = (req: NextApiRequest, res: NextApiResponse) => {
-    // todo -- update admin profile
+    const { id } = req.query;
+    const { name, email, current_password, new_password } = req.body;
+
+    if (id == undefined || id.length == 0) {
+      res.status(400).json({
+        message: 'Please provide id',
+      });
+      return;
+    }
+
+    if (isNaN(parseInt(id as string))) {
+      res.status(400).json({
+        message: 'Id must be a number',
+      });
+      return;
+    }
+
+    if (!req.session.user) {
+      res.status(400).json({
+        message: 'Please login first',
+      });
+      return;
+    }
+
+    if (id != req.session.user?.id) {
+      res.status(400).json({
+        message: 'User can only their own profile',
+      });
+      return;
+    }
+
+    if ((name == undefined || email == undefined) && (current_password == undefined || new_password == undefined)) {
+      res.status(400).json({
+        message: 'Please provide name and email OR current password and new password',
+      });
+      return;
+    }
+
+    if ((name != undefined || email != undefined) && (current_password != undefined || new_password != undefined)) {
+      res.status(400).json({
+        message: 'Please choose whether to update name and email OR current password and new password',
+      });
+      return;
+    }
+
+    res.status(400).json({
+      message: 'Okay',
+    });
   };
 }
