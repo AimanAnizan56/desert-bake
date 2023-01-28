@@ -49,13 +49,28 @@ export default class Admin {
     return false;
   };
 
-  static updateAdminPassword = async (id: number, password: string) => {
-    const query = 'UPDATE admin SET password=? WHERE admin_id=?';
-    const data = await makeQuery(query, [password, id]);
+  static updateAdminPassword = async (id: number, current_password: string, new_password: string) => {
+    let query = 'SELECT admin_id FROM admin WHERE admin_id=? AND password=?';
+    let data = await makeQuery(query, [id, hashPassword(current_password)]);
+
+    if (data.length == 0) {
+      return {
+        success: false,
+        cause: 'Current password not match',
+      };
+    }
+
+    query = 'UPDATE admin SET password=? WHERE admin_id=?';
+    data = await makeQuery(query, [hashPassword(new_password), id]);
 
     if (data.affectedRows == 1) {
-      return true;
+      return {
+        success: true,
+      };
     }
-    return false;
+    return {
+      success: false,
+      cause: 'Server error',
+    };
   };
 }
