@@ -125,9 +125,6 @@ export default class AdminController {
       const success = await Admin.updateAdmin(parseInt(id as string), name, email);
 
       if (success) {
-        res.status(200).json({
-          message: 'Successfully updated',
-        });
         req.session.user = {
           id: req.session.user.id,
           name: name,
@@ -136,6 +133,11 @@ export default class AdminController {
         };
 
         await req.session.save();
+
+        res.status(200).json({
+          message: 'Successfully updated',
+        });
+
         return;
       }
 
