@@ -61,7 +61,7 @@ export default class AdminController {
     });
   };
 
-  static updateAdmin = (req: NextApiRequest) => {
+  static updateAdmin = (req: NextApiRequest, res: NextApiResponse) => {
     // todo -- update admin profile
   };
 }
