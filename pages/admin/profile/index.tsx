@@ -1,4 +1,4 @@
-import { Box, Container, Input, InputGroup, InputLeftElement, Heading, Button, Text, Flex, InputRightElement } from '@chakra-ui/react';
+import { Box, Container, Input, InputGroup, InputLeftElement, Heading, Button, Text, Flex, InputRightElement, Alert, AlertIcon } from '@chakra-ui/react';
 import { EyeIcon, EyeSlashIcon, UserCircleIcon } from '@heroicons/react/24/outline';
 import { withIronSessionSsr } from 'iron-session/next';
 import { GetServerSideProps } from 'next';
@@ -6,6 +6,7 @@ import Navbar from '../../../components/Navbar';
 import { ironSessionOptions } from '../../../lib/helper';
 import { useEffect, useState } from 'react';
 import { EmailIcon, LockIcon } from '@chakra-ui/icons';
+import axios from 'axios';
 
 const Profile = (props: any) => {
   type User = {
@@ -45,6 +46,12 @@ const Profile = (props: any) => {
     currPass: false,
     password: false,
     confPassword: false,
+  });
+
+  const [alertOn, setAlertOn] = useState({
+    status: undefined as 'success' | 'info' | 'warning' | 'error' | 'loading' | undefined,
+    trigger: false,
+    message: 'Alert',
   });
 
   const [showInput, setShowInput] = useState({
@@ -139,6 +146,44 @@ const Profile = (props: any) => {
     event.preventDefault();
 
     const url = `/api/v1/admin/${user.id}`;
+
+    if (formVal.name.length == 0 || formVal.email.length == 0) {
+      return;
+    }
+
+    try {
+      const res = await axios.put(url, {
+        name: formVal.name,
+        email: formVal.email,
+      });
+
+      const { message } = res.data;
+
+      if (res.status == 200) {
+        setAlertOn({
+          ...alertOn,
+          message: message,
+          status: 'success',
+          trigger: true,
+        });
+      }
+    } catch (err: any) {
+      const { message } = err.response.data;
+
+      setAlertOn({
+        ...alertOn,
+        message: message,
+        status: 'error',
+        trigger: true,
+      });
+    }
+
+    setTimeout(() => {
+      setAlertOn({
+        ...alertOn,
+        trigger: false,
+      });
+    }, 3000);
   };
 
   const handlePasswordUpdate = async (event: any) => {
@@ -346,6 +391,13 @@ const Profile = (props: any) => {
           </Box>
         </Container>
       </main>
+
+      {alertOn.trigger && (
+        <Alert status={alertOn.status} w="30vw" mx="auto" position={'fixed'} left={'50vw'} bottom={'2rem'} transform={'translateX(-50%)'}>
+          <AlertIcon />
+          {alertOn.message}
+        </Alert>
+      )}
     </>
   );
 };
