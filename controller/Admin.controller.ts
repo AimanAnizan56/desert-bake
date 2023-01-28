@@ -61,7 +61,7 @@ export default class AdminController {
     });
   };
 
-  static updateAdmin = (req: NextApiRequest, res: NextApiResponse) => {
+  static updateAdmin = async (req: NextApiRequest, res: NextApiResponse) => {
     const { id } = req.query;
     const { name, email, current_password, new_password } = req.body;
 
@@ -107,8 +107,30 @@ export default class AdminController {
       return;
     }
 
-    res.status(400).json({
-      message: 'Okay',
-    });
+    if (name != undefined && email != undefined) {
+      // update email and password
+      if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+        res.status(400).json({
+          message: 'Email is invalid',
+        });
+      }
+
+      const success = await Admin.updateAdmin(parseInt(id as string), name, email);
+
+      if (success) {
+        res.status(200).json({
+          message: 'Successfully updated',
+        });
+        return;
+      }
+
+      res.status(500).json({
+        message: 'Cannot update name and email',
+      });
+    }
+
+    if (current_password && new_password != undefined) {
+      // update password -- check current password first
+    }
   };
 }
