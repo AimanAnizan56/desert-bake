@@ -86,11 +86,39 @@ const Profile = (props: any) => {
   const handlePasswordBlur = () => {
     // do password validation
     console.log('password validation');
+    if (/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(formPassVal.password)) {
+      setError({
+        ...error,
+        password: false,
+        confPassword: false,
+      });
+      if (formPassVal.password != formPassVal.confPassword) {
+        setError({
+          ...error,
+          confPassword: true,
+        });
+      }
+      return;
+    }
+    setError({
+      ...error,
+      password: true,
+    });
   };
 
   const handleConfPasswordBlur = () => {
     // do confirmpassword validation
-    console.log('confirm password validation');
+    if (formPassVal.confPassword == formPassVal.password) {
+      setError({
+        ...error,
+        confPassword: false,
+      });
+      return;
+    }
+    setError({
+      ...error,
+      confPassword: true,
+    });
   };
 
   const handleUpdate = async (event: any) => {
@@ -179,7 +207,7 @@ const Profile = (props: any) => {
                       onFocus={() => setError({ ...error, currPass: false })}
                       onChange={(e) => setFormPassVal({ ...formPassVal, currPass: e.target.value })}
                       type={showInput.currPass ? 'text' : 'password'}
-                      placeholder={'Enter password'}
+                      placeholder={'Enter current password'}
                       isRequired
                     />
                     <InputRightElement width="4.5rem">
@@ -217,7 +245,7 @@ const Profile = (props: any) => {
                       onFocus={() => setError({ ...error, password: false })}
                       onChange={(e) => setFormPassVal({ ...formPassVal, password: e.target.value })}
                       type={showInput.password ? 'text' : 'password'}
-                      placeholder={'Enter password'}
+                      placeholder={'Enter new password'}
                       isRequired
                     />
                     <InputRightElement width="4.5rem">
@@ -261,7 +289,7 @@ const Profile = (props: any) => {
                       onFocus={() => setError({ ...error, confPassword: false })}
                       onChange={(e) => setFormPassVal({ ...formPassVal, confPassword: e.target.value })}
                       type={showInput.confPassword ? 'text' : 'password'}
-                      placeholder={'Enter password'}
+                      placeholder={'Re-enter new password'}
                       isRequired
                     />
                     <InputRightElement width="4.5rem">
