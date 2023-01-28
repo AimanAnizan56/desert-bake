@@ -128,6 +128,14 @@ export default class AdminController {
         res.status(200).json({
           message: 'Successfully updated',
         });
+        req.session.user = {
+          id: req.session.user.id,
+          name: name,
+          email: email,
+          admin: true,
+        };
+
+        await req.session.save();
         return;
       }
 
