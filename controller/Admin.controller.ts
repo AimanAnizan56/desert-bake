@@ -109,6 +109,13 @@ export default class AdminController {
 
     if (name != undefined && email != undefined) {
       // update email and password
+      if (name.length == 0 || email.length == 0) {
+        res.status(400).json({
+          message: 'Please provide name and email',
+        });
+        return;
+      }
+
       if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
         res.status(400).json({
           message: 'Email is invalid',
@@ -131,6 +138,31 @@ export default class AdminController {
 
     if (current_password && new_password != undefined) {
       // update password -- check current password first
+      if (current_password.length == 0 || new_password.length == 0) {
+        res.status(200).json({
+          message: 'Please provide current password and new password',
+        });
+      }
+
+      if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(new_password)) {
+        res.status(400).json({
+          message: 'Password must be at least 8 length, including lowercase, uppercase, number and special character!',
+        });
+      }
+
+      const modelRes = await Admin.updateAdminPassword(parseInt(id as string), current_password, new_password);
+
+      if (!modelRes.success) {
+        res.status(400).json({
+          message: modelRes.cause,
+        });
+        return;
+      }
+
+      res.status(200).json({
+        message: 'Successfully updated',
+        type: 'Password',
+      });
     }
   };
 }
