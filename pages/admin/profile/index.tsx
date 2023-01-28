@@ -67,6 +67,20 @@ const Profile = (props: any) => {
     });
   }, [formVal.name, formVal.email]);
 
+  useEffect(() => {
+    if (error.password || error.confPassword || formPassVal.currPass.length == 0) {
+      setButtonStatePassword({
+        ...buttonStatePassword,
+        isDisabled: true,
+      });
+      return;
+    }
+    setButtonStatePassword({
+      ...buttonStatePassword,
+      isDisabled: false,
+    });
+  }, [error.password, error.confPassword, formPassVal.currPass]);
+
   const handleEmailValidation = () => {
     if (formVal.email.length != 0 && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(formVal.email)) {
       setError({
