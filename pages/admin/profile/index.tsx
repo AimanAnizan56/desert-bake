@@ -190,6 +190,50 @@ const Profile = (props: any) => {
     event.preventDefault();
 
     const url = `/api/v1/admin/${user.id}`;
+
+    if (formPassVal.currPass.length == 0 || formPassVal.password.length == 0 || formPassVal.confPassword.length == 0) {
+      return;
+    }
+
+    try {
+      const res = await axios.put(url, {
+        current_password: formPassVal.currPass,
+        new_password: formPassVal.password,
+      });
+
+      const { message } = res.data;
+
+      if (res.status == 200) {
+        setAlertOn({
+          ...alertOn,
+          message: message,
+          status: 'success',
+          trigger: true,
+        });
+
+        setFormPassVal({
+          password: '',
+          currPass: '',
+          confPassword: '',
+        });
+      }
+    } catch (err: any) {
+      const { message } = err.response.data;
+
+      setAlertOn({
+        ...alertOn,
+        message: message,
+        status: 'error',
+        trigger: true,
+      });
+    }
+
+    setTimeout(() => {
+      setAlertOn({
+        ...alertOn,
+        trigger: false,
+      });
+    }, 3000);
   };
 
   return (
