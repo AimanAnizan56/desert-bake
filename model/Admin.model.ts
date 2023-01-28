@@ -2,7 +2,7 @@ import { hashPassword } from '../lib/helper';
 import { makeQuery } from '../lib/mysql_config';
 
 export default class Admin {
-  private readonly id!: number;
+  private id!: number;
   private name: string;
   private email: string;
   private password!: string;
@@ -13,6 +13,22 @@ export default class Admin {
     this.password = hashPassword(password);
   }
 
+  setId = (id: number) => {
+    this.id = id;
+  };
+
+  setName = (name: string) => {
+    this.name = name;
+  };
+
+  setEmail = (email: string) => {
+    this.email = email;
+  };
+
+  setPassword = (password: string) => {
+    this.password = password;
+  };
+
   static getAdmin = async (email: string, password: string) => {
     const passwordHashed = hashPassword(password);
     const data = await makeQuery('SELECT admin_id, admin_name, admin_email FROM admin WHERE admin_email=? AND password=?', [email, passwordHashed]);
@@ -21,5 +37,25 @@ export default class Admin {
       return [];
     }
     return data[0];
+  };
+
+  static updateAdmin = async (id: number, name: string, email: string) => {
+    const query = 'UPDATE admin SET admin_name=?, admin_email=? WHERE admin_id=?';
+    const data = await makeQuery(query, [name, email, id]);
+
+    if (data.affectedRows == 1) {
+      return true;
+    }
+    return false;
+  };
+
+  static updateAdminPassword = async (id: number, password: string) => {
+    const query = 'UPDATE admin SET password=? WHERE admin_id=?';
+    const data = await makeQuery(query, [password, id]);
+
+    if (data.affectedRows == 1) {
+      return true;
+    }
+    return false;
   };
 }
