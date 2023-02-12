@@ -1,7 +1,7 @@
 import { withIronSessionSsr } from 'iron-session/next';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ironSessionOptions } from '../../../lib/helper';
 import axios from 'axios';
 import { Box, Container, Divider, Flex, Grid } from '@chakra-ui/react';
@@ -29,7 +29,7 @@ const Checkout = (props: any) => {
     totalPrice: 0,
   });
 
-  const getCustomerCartAPI = async () => {
+  const getCustomerCartAPI = useCallback(async () => {
     if (cart_id == undefined || cart_id == '') {
       return;
     }
@@ -60,9 +60,9 @@ const Checkout = (props: any) => {
     } catch (err) {
       console.log('err getCustomerCart', err);
     }
-  };
+  }, [itemDetail, cart_id]);
 
-  const getCustomerPaymentAPI = async () => {
+  const getCustomerPaymentAPI = useCallback(async () => {
     // customer payment api
     if (cart_id == undefined || cart_id == '') {
       return;
@@ -81,7 +81,7 @@ const Checkout = (props: any) => {
       console.log('Err: ', err);
       console.log('====================================');
     }
-  };
+  }, [cart_id]);
 
   useEffect(() => {
     getCustomerCartAPI();
