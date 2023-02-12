@@ -254,6 +254,15 @@ const Order = (props: any) => {
 export default Order;
 
 export const getServerSideProps: GetServerSideProps = withIronSessionSsr(async ({ req }) => {
+  if (!req.session.user) {
+    return {
+      redirect: {
+        permanent: true,
+        destination: '/signin',
+      },
+    };
+  }
+
   return {
     props: {
       user: req.session.user ? req.session.user : {},
