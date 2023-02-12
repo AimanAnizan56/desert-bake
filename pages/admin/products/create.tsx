@@ -45,11 +45,15 @@ const CreateProduct = (props: any) => {
 
   useEffect(() => {
     if (product.name.length > 0 && product.price.length > 0 && product.description.length > 0 && product.type.length > 0 && product.image != undefined) {
-      setButtonState({ ...buttonState, isDisabled: false });
+      changeButtonState({ ...buttonState, isDisabled: false });
       return;
     }
-    setButtonState({ ...buttonState, isDisabled: true });
+    changeButtonState({ ...buttonState, isDisabled: true });
   }, [product]);
+
+  const changeButtonState = (state: { isLoading: boolean; isDisabled: boolean }) => {
+    setButtonState(state);
+  };
 
   const setImage = (e: any) => {
     // @ts-ignore
@@ -77,7 +81,7 @@ const CreateProduct = (props: any) => {
 
   const handleSubmit = async () => {
     setModalState({ ...modalState, isOpen: false });
-    setButtonState({
+    changeButtonState({
       ...buttonState,
       isLoading: true,
     });
@@ -109,7 +113,7 @@ const CreateProduct = (props: any) => {
       const { message, data } = res.data;
 
       if (res.status == 201) {
-        setButtonState({
+        changeButtonState({
           ...buttonState,
           isLoading: false,
         });
@@ -150,7 +154,7 @@ const CreateProduct = (props: any) => {
           const { message } = serverError.response.data;
 
           if (message) {
-            setButtonState({
+            changeButtonState({
               ...buttonState,
               isLoading: false,
             });
