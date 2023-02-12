@@ -4,7 +4,7 @@ import { withIronSessionSsr } from 'iron-session/next';
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import { ironSessionOptions } from '../lib/helper';
 
@@ -122,42 +122,44 @@ const Cart = (props: any) => {
     }
   };
 
-  const getCustomerCartAPI = async () => {
-    const url = '/api/v1/cart';
+  const getCustomerCartAPI = useCallback(async () => {
+    async () => {
+      const url = '/api/v1/cart';
 
-    try {
-      const res: any = await axios.get(url);
-      const { message, user_cart, cart_id } = await res.data;
-      let temp = {
-        totalPrice: 0,
-        totalQuantity: 0,
-      };
+      try {
+        const res: any = await axios.get(url);
+        const { message, user_cart, cart_id } = await res.data;
+        let temp = {
+          totalPrice: 0,
+          totalQuantity: 0,
+        };
 
-      if (message == 'Cart retrieve' && user_cart) {
-        user_cart.map((uc: any, i: any) => {
-          temp.totalQuantity += uc.item_quantity;
-          temp.totalPrice += uc.item_quantity * parseFloat(uc.item_price);
-        });
+        if (message == 'Cart retrieve' && user_cart) {
+          user_cart.map((uc: any, i: any) => {
+            temp.totalQuantity += uc.item_quantity;
+            temp.totalPrice += uc.item_quantity * parseFloat(uc.item_price);
+          });
 
-        setItemDetail({
-          ...itemDetail,
-          totalQuantity: temp.totalQuantity,
-          totalPrice: temp.totalPrice,
-          cartId: cart_id,
-        });
-        setCarts(user_cart);
-      } else {
-        setCarts(undefined);
+          setItemDetail({
+            ...itemDetail,
+            totalQuantity: temp.totalQuantity,
+            totalPrice: temp.totalPrice,
+            cartId: cart_id,
+          });
+          setCarts(user_cart);
+        } else {
+          setCarts(undefined);
+        }
+        setPageLoad(false);
+      } catch (err) {
+        console.log('err getCustomerCart', err);
       }
-      setPageLoad(false);
-    } catch (err) {
-      console.log('err getCustomerCart', err);
-    }
-  };
+    };
+  }, [itemDetail]);
 
   useEffect(() => {
     getCustomerCartAPI();
-  }, []);
+  }, [getCustomerCartAPI]);
 
   return (
     <>
