@@ -3,7 +3,7 @@ import axios, { AxiosError } from 'axios';
 import { withIronSessionSsr } from 'iron-session/next';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Navbar from '../../../../components/Navbar';
 import { ironSessionOptions } from '../../../../lib/helper';
 import Image from 'next/image';
@@ -46,7 +46,27 @@ const EditProduct = (props: any) => {
     };
 
     callAPI();
-  }, []);
+  }, [id]);
+
+  const changeButtonDisabled = useCallback(
+    (isDisabled: boolean) => {
+      setButtonState({
+        ...buttonState,
+        isDisabled: isDisabled,
+      });
+    },
+    [buttonState]
+  );
+
+  const changeButtonLoading = useCallback(
+    (isLoading: boolean) => {
+      setButtonState({
+        ...buttonState,
+        isLoading: isLoading,
+      });
+    },
+    [buttonState]
+  );
 
   useEffect(() => {
     if (!product) {
@@ -57,21 +77,7 @@ const EditProduct = (props: any) => {
       return;
     }
     changeButtonDisabled(false);
-  }, [product]);
-
-  const changeButtonDisabled = (isDisabled: boolean) => {
-    setButtonState({
-      ...buttonState,
-      isDisabled: isDisabled,
-    });
-  };
-
-  const changeButtonLoading = (isLoading: boolean) => {
-    setButtonState({
-      ...buttonState,
-      isLoading: isLoading,
-    });
-  };
+  }, [product, changeButtonDisabled]);
 
   const setImage = (e: any) => {
     // @ts-ignore
