@@ -4,7 +4,7 @@ import { withIronSessionSsr } from 'iron-session/next';
 import { GetServerSideProps } from 'next';
 import Navbar from '../../../components/Navbar';
 import { ironSessionOptions } from '../../../lib/helper';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { EmailIcon, LockIcon } from '@chakra-ui/icons';
 import axios from 'axios';
 
@@ -60,33 +60,41 @@ const Profile = (props: any) => {
     confPassword: false,
   });
 
-  useEffect(() => {
-    if (formVal.name.length != 0 && formVal.email.length != 0 && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(formVal.email)) {
+  const changeButtonDisabled = useCallback(
+    (isDisabled: boolean) => {
       setButtonState({
         ...buttonState,
-        isDisabled: false,
+        isDisabled: isDisabled,
       });
+    },
+    [buttonState]
+  );
+
+  useEffect(() => {
+    if (formVal.name.length != 0 && formVal.email.length != 0 && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(formVal.email)) {
+      changeButtonDisabled(false);
       return;
     }
-    setButtonState({
-      ...buttonState,
-      isDisabled: true,
-    });
-  }, [formVal.name, formVal.email]);
+    changeButtonDisabled(true);
+  }, [formVal.name, formVal.email, changeButtonDisabled]);
+
+  const changeButtonPasswordDisabled = useCallback(
+    (isDisabled: boolean) => {
+      setButtonStatePassword({
+        ...buttonStatePassword,
+        isDisabled: isDisabled,
+      });
+    },
+    [buttonStatePassword]
+  );
 
   useEffect(() => {
     if (error.password || error.confPassword || formPassVal.currPass.length == 0) {
-      setButtonStatePassword({
-        ...buttonStatePassword,
-        isDisabled: true,
-      });
+      changeButtonPasswordDisabled(true);
       return;
     }
-    setButtonStatePassword({
-      ...buttonStatePassword,
-      isDisabled: false,
-    });
-  }, [error.password, error.confPassword, formPassVal.currPass]);
+    changeButtonPasswordDisabled(false);
+  }, [error.password, error.confPassword, formPassVal.currPass, changeButtonPasswordDisabled]);
 
   const handleEmailValidation = () => {
     if (formVal.email.length != 0 && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(formVal.email)) {
