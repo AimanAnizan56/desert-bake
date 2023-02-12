@@ -84,15 +84,6 @@ const Checkout = (props: any) => {
   };
 
   useEffect(() => {
-    if (Object.keys(props.user).length != 0) {
-      setUser({
-        ...props.user,
-      });
-    } else {
-      router.push('/signin');
-      return;
-    }
-
     getCustomerCartAPI();
     getCustomerPaymentAPI();
   }, []);
