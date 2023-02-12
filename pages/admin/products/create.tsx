@@ -3,7 +3,7 @@ import { ChartPieIcon, ChatBubbleOvalLeftEllipsisIcon, ClipboardDocumentListIcon
 import axios, { AxiosError } from 'axios';
 import { withIronSessionSsr } from 'iron-session/next';
 import { GetServerSideProps } from 'next';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Navbar from '../../../components/Navbar';
 import { ironSessionOptions } from '../../../lib/helper';
 import { useRouter } from 'next/router';
@@ -43,17 +43,33 @@ const CreateProduct = (props: any) => {
     isDisabled: true,
   });
 
+  const changeButtonDisabled = useCallback(
+    (isDisabled: boolean) => {
+      setButtonState({
+        ...buttonState,
+        isDisabled: isDisabled,
+      });
+    },
+    [buttonState]
+  );
+
+  const changeButtonLoading = useCallback(
+    (isLoading: boolean) => {
+      setButtonState({
+        ...buttonState,
+        isLoading: isLoading,
+      });
+    },
+    [buttonState]
+  );
+
   useEffect(() => {
     if (product.name.length > 0 && product.price.length > 0 && product.description.length > 0 && product.type.length > 0 && product.image != undefined) {
-      changeButtonState({ ...buttonState, isDisabled: false });
+      changeButtonDisabled(false);
       return;
     }
-    changeButtonState({ ...buttonState, isDisabled: true });
-  }, [product]);
-
-  const changeButtonState = (state: { isLoading: boolean; isDisabled: boolean }) => {
-    setButtonState(state);
-  };
+    changeButtonDisabled(true);
+  }, [product, changeButtonDisabled]);
 
   const setImage = (e: any) => {
     // @ts-ignore
@@ -81,10 +97,7 @@ const CreateProduct = (props: any) => {
 
   const handleSubmit = async () => {
     setModalState({ ...modalState, isOpen: false });
-    changeButtonState({
-      ...buttonState,
-      isLoading: true,
-    });
+    changeButtonLoading(true);
 
     const formData = new FormData();
     const config = {
@@ -113,10 +126,7 @@ const CreateProduct = (props: any) => {
       const { message, data } = res.data;
 
       if (res.status == 201) {
-        changeButtonState({
-          ...buttonState,
-          isLoading: false,
-        });
+        changeButtonLoading(false);
 
         setAlertOn({
           status: 'success',
@@ -154,10 +164,7 @@ const CreateProduct = (props: any) => {
           const { message } = serverError.response.data;
 
           if (message) {
-            changeButtonState({
-              ...buttonState,
-              isLoading: false,
-            });
+            changeButtonLoading(false);
 
             setAlertOn({
               trigger: true,
