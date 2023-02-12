@@ -7,7 +7,7 @@ import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ironSessionOptions } from '../../lib/helper';
 
 const SignIn = () => {
@@ -98,14 +98,24 @@ const SignIn = () => {
     }
   };
 
+  const changeButtonDisabled = useCallback(
+    (isDisabled: boolean) => {
+      setButtonState({
+        ...buttonState,
+        isDisabled: isDisabled,
+      });
+    },
+    [buttonState]
+  );
+
   useEffect(() => {
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(adminData.email) && adminData.password.length > 0) {
-      setButtonState({ ...buttonState, isDisabled: false });
+      changeButtonDisabled(false);
       return;
     }
 
-    setButtonState({ ...buttonState, isDisabled: true });
-  }, [adminData.email, adminData.password]);
+    changeButtonDisabled(true);
+  }, [adminData.email, adminData.password, changeButtonDisabled]);
 
   return (
     <>
