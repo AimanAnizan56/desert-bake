@@ -123,39 +123,38 @@ const Cart = (props: any) => {
   };
 
   const getCustomerCartAPI = useCallback(async () => {
-    async () => {
-      const url = '/api/v1/cart';
+    const url = '/api/v1/cart';
 
-      try {
-        const res: any = await axios.get(url);
-        const { message, user_cart, cart_id } = await res.data;
-        let temp = {
-          totalPrice: 0,
-          totalQuantity: 0,
-        };
+    try {
+      const res: any = await axios.get(url);
+      const { message, user_cart, cart_id } = await res.data;
+      let temp = {
+        totalPrice: 0,
+        totalQuantity: 0,
+      };
 
-        if (message == 'Cart retrieve' && user_cart) {
-          user_cart.map((uc: any, i: any) => {
-            temp.totalQuantity += uc.item_quantity;
-            temp.totalPrice += uc.item_quantity * parseFloat(uc.item_price);
-          });
+      if (message == 'Cart retrieve' && user_cart) {
+        user_cart.map((uc: any, i: any) => {
+          temp.totalQuantity += uc.item_quantity;
+          temp.totalPrice += uc.item_quantity * parseFloat(uc.item_price);
+        });
 
-          setItemDetail({
-            ...itemDetail,
-            totalQuantity: temp.totalQuantity,
-            totalPrice: temp.totalPrice,
-            cartId: cart_id,
-          });
-          setCarts(user_cart);
-        } else {
-          setCarts(undefined);
-        }
-        setPageLoad(false);
-      } catch (err) {
-        console.log('err getCustomerCart', err);
+        setItemDetail((prev) => ({
+          ...prev,
+          totalQuantity: temp.totalQuantity,
+          totalPrice: temp.totalPrice,
+          cartId: cart_id,
+        }));
+
+        setCarts(user_cart);
+      } else {
+        setCarts(undefined);
       }
-    };
-  }, [itemDetail]);
+      setPageLoad(false);
+    } catch (err) {
+      console.log('err getCustomerCart', err);
+    }
+  }, []);
 
   useEffect(() => {
     getCustomerCartAPI();

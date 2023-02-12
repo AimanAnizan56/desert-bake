@@ -43,25 +43,19 @@ const CreateProduct = (props: any) => {
     isDisabled: true,
   });
 
-  const changeButtonDisabled = useCallback(
-    (isDisabled: boolean) => {
-      setButtonState({
-        ...buttonState,
-        isDisabled: isDisabled,
-      });
-    },
-    [buttonState]
-  );
+  const changeButtonDisabled = useCallback((isDisabled: boolean) => {
+    setButtonState((prev) => ({
+      ...prev,
+      isDisabled: isDisabled,
+    }));
+  }, []);
 
-  const changeButtonLoading = useCallback(
-    (isLoading: boolean) => {
-      setButtonState({
-        ...buttonState,
-        isLoading: isLoading,
-      });
-    },
-    [buttonState]
-  );
+  const changeButtonLoading = useCallback((isLoading: boolean) => {
+    setButtonState((prev) => ({
+      ...prev,
+      isLoading: isLoading,
+    }));
+  }, []);
 
   useEffect(() => {
     if (product.name.length > 0 && product.price.length > 0 && product.description.length > 0 && product.type.length > 0 && product.image != undefined) {

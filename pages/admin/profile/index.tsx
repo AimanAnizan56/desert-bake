@@ -60,15 +60,12 @@ const Profile = (props: any) => {
     confPassword: false,
   });
 
-  const changeButtonDisabled = useCallback(
-    (isDisabled: boolean) => {
-      setButtonState({
-        ...buttonState,
-        isDisabled: isDisabled,
-      });
-    },
-    [buttonState]
-  );
+  const changeButtonDisabled = useCallback((isDisabled: boolean) => {
+    setButtonState((prev) => ({
+      ...prev,
+      isDisabled: isDisabled,
+    }));
+  }, []);
 
   useEffect(() => {
     if (formVal.name.length != 0 && formVal.email.length != 0 && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(formVal.email)) {
@@ -78,15 +75,12 @@ const Profile = (props: any) => {
     changeButtonDisabled(true);
   }, [formVal.name, formVal.email, changeButtonDisabled]);
 
-  const changeButtonPasswordDisabled = useCallback(
-    (isDisabled: boolean) => {
-      setButtonStatePassword({
-        ...buttonStatePassword,
-        isDisabled: isDisabled,
-      });
-    },
-    [buttonStatePassword]
-  );
+  const changeButtonPasswordDisabled = useCallback((isDisabled: boolean) => {
+    setButtonStatePassword((prev) => ({
+      ...prev,
+      isDisabled: isDisabled,
+    }));
+  }, []);
 
   useEffect(() => {
     if (error.password || error.confPassword || formPassVal.currPass.length == 0) {

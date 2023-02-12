@@ -98,15 +98,12 @@ const SignIn = () => {
     }
   };
 
-  const changeButtonDisabled = useCallback(
-    (isDisabled: boolean) => {
-      setButtonState({
-        ...buttonState,
-        isDisabled: isDisabled,
-      });
-    },
-    [buttonState]
-  );
+  const changeButtonDisabled = useCallback((isDisabled: boolean) => {
+    setButtonState((prev) => ({
+      ...prev,
+      isDisabled: isDisabled,
+    }));
+  }, []);
 
   useEffect(() => {
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(adminData.email) && adminData.password.length > 0) {

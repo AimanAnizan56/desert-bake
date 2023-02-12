@@ -4,7 +4,7 @@ import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import Head from 'next/head';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import axios, { AxiosError } from 'axios';
 import { withIronSessionSsr } from 'iron-session/next';
 import { ironSessionOptions } from '../lib/helper';
@@ -104,24 +104,20 @@ const SignIn = () => {
     }
   };
 
-  const changeButtonDisabled = useCallback(
-    (isDisabled: boolean) => {
-      setButtonState({
-        ...buttonState,
-        isDisabled: isDisabled,
-      });
-    },
-    [buttonState]
-  );
-
   useEffect(() => {
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(customerData.email) && customerData.password.length > 0) {
-      changeButtonDisabled(false);
+      setButtonState((prev) => ({
+        ...prev,
+        isDisabled: false,
+      }));
       return;
     }
 
-    changeButtonDisabled(true);
-  }, [customerData.email, customerData.password, changeButtonDisabled]);
+    setButtonState((prev) => ({
+      ...prev,
+      isDisabled: true,
+    }));
+  }, [customerData.email, customerData.password]);
 
   return (
     <>

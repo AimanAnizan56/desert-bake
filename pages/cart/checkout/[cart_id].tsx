@@ -44,11 +44,11 @@ const Checkout = (props: any) => {
         setCarts(data);
 
         data.map((temp: any) => {
-          setItemDetail({
-            ...itemDetail,
-            totalQuantity: itemDetail.totalQuantity + temp.item_quantity,
+          setItemDetail((prev) => ({
+            ...prev,
+            totalQuantity: prev.totalQuantity + temp.item_quantity,
             totalPrice: temp.cart_total,
-          });
+          }));
         });
       } else {
         setCarts(undefined);
@@ -60,7 +60,7 @@ const Checkout = (props: any) => {
     } catch (err) {
       console.log('err getCustomerCart', err);
     }
-  }, [itemDetail, cart_id]);
+  }, [cart_id]);
 
   const getCustomerPaymentAPI = useCallback(async () => {
     // customer payment api

@@ -48,25 +48,19 @@ const EditProduct = (props: any) => {
     callAPI();
   }, [id]);
 
-  const changeButtonDisabled = useCallback(
-    (isDisabled: boolean) => {
-      setButtonState({
-        ...buttonState,
-        isDisabled: isDisabled,
-      });
-    },
-    [buttonState]
-  );
+  const changeButtonDisabled = useCallback((isDisabled: boolean) => {
+    setButtonState((prev) => ({
+      ...prev,
+      isDisabled: isDisabled,
+    }));
+  }, []);
 
-  const changeButtonLoading = useCallback(
-    (isLoading: boolean) => {
-      setButtonState({
-        ...buttonState,
-        isLoading: isLoading,
-      });
-    },
-    [buttonState]
-  );
+  const changeButtonLoading = useCallback((isLoading: boolean) => {
+    setButtonState((prev) => ({
+      ...prev,
+      isLoading: isLoading,
+    }));
+  }, []);
 
   useEffect(() => {
     if (!product) {
