@@ -86,7 +86,7 @@ const Checkout = (props: any) => {
   useEffect(() => {
     getCustomerCartAPI();
     getCustomerPaymentAPI();
-  }, []);
+  }, [getCustomerCartAPI, getCustomerPaymentAPI]);
 
   return (
     <>
