@@ -53,18 +53,25 @@ const EditProduct = (props: any) => {
       return;
     }
     if (product.product_name == '' || product.product_price == '' || product.product_description == '' || product.product_type == '') {
-      setButtonState({
-        ...buttonState,
-        isDisabled: true,
-      });
+      changeButtonDisabled(true);
       return;
     }
+    changeButtonDisabled(false);
+  }, [product]);
 
+  const changeButtonDisabled = (isDisabled: boolean) => {
     setButtonState({
       ...buttonState,
-      isDisabled: false,
+      isDisabled: isDisabled,
     });
-  }, [product]);
+  };
+
+  const changeButtonLoading = (isLoading: boolean) => {
+    setButtonState({
+      ...buttonState,
+      isLoading: isLoading,
+    });
+  };
 
   const setImage = (e: any) => {
     // @ts-ignore
@@ -86,10 +93,7 @@ const EditProduct = (props: any) => {
   };
 
   const handleUpdate = async () => {
-    setButtonState({
-      ...buttonState,
-      isLoading: true,
-    });
+    changeButtonLoading(true);
 
     const formData = new FormData();
     const config = {
@@ -118,10 +122,7 @@ const EditProduct = (props: any) => {
       const { message, data } = res.data;
 
       if (res.status >= 200 && res.status < 300) {
-        setButtonState({
-          ...buttonState,
-          isLoading: false,
-        });
+        changeButtonLoading(false);
 
         setAlertOn({
           status: 'success',
@@ -150,10 +151,7 @@ const EditProduct = (props: any) => {
           const { message } = serverError.response.data;
 
           if (message) {
-            setButtonState({
-              ...buttonState,
-              isLoading: false,
-            });
+            changeButtonLoading(false);
 
             setAlertOn({
               trigger: true,
