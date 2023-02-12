@@ -154,7 +154,7 @@ export const getServerSideProps: GetServerSideProps = withIronSessionSsr(async (
   return {
     redirect: {
       destination: '/admin/signin',
-      permanent: false,
+      permanent: true,
     },
     props: {},
   };
