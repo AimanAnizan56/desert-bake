@@ -206,12 +206,16 @@ const EditProduct = (props: any) => {
               </Box>
 
               <InputGroup mb={'1rem'}>
-                <InputLeftElement pointerEvents="none" children={<ClipboardDocumentListIcon color={'var(--chakra-colors-gray-400)'} width={'20px'} height={'20px'} />} />
+                <InputLeftElement pointerEvents="none">
+                  <ClipboardDocumentListIcon color={'var(--chakra-colors-gray-400)'} width={'20px'} height={'20px'} />
+                </InputLeftElement>
                 <Input type="text" placeholder="Product Name" value={product.product_name} onChange={(e) => setProduct({ ...product, product_name: e.target.value })} _focusVisible={{ borderColor: 'brand.400', boxShadow: '0 0 0 1px var(--chakra-colors-brand-400)' }} />
               </InputGroup>
 
               <InputGroup mb={'1rem'}>
-                <InputLeftElement pointerEvents="none" children={<CurrencyDollarIcon color={'var(--chakra-colors-gray-400)'} width={'20px'} height={'20px'} />} />
+                <InputLeftElement pointerEvents="none">
+                  <CurrencyDollarIcon color={'var(--chakra-colors-gray-400)'} width={'20px'} height={'20px'} />
+                </InputLeftElement>
                 <Input
                   type="number"
                   placeholder="Product Price"
@@ -233,7 +237,9 @@ const EditProduct = (props: any) => {
               </InputGroup>
 
               <InputGroup mb={'1rem'}>
-                <InputLeftElement pointerEvents="none" children={<ChatBubbleOvalLeftEllipsisIcon color={'var(--chakra-colors-gray-400)'} width={'20px'} height={'20px'} />} />
+                <InputLeftElement pointerEvents="none">
+                  <ChatBubbleOvalLeftEllipsisIcon color={'var(--chakra-colors-gray-400)'} width={'20px'} height={'20px'} />
+                </InputLeftElement>
                 <Input type="text" placeholder="Product Description" value={product.product_description} onChange={(e) => setProduct({ ...product, product_description: e.target.value })} _focusVisible={{ borderColor: 'brand.400', boxShadow: '0 0 0 1px var(--chakra-colors-brand-400)' }} />
               </InputGroup>
 
