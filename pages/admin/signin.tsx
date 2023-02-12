@@ -123,7 +123,9 @@ const SignIn = () => {
 
           <Box as="div" mb="1rem">
             <InputGroup>
-              <InputLeftElement pointerEvents="none" children={<EmailIcon color={'gray.500'} />} />
+              <InputLeftElement pointerEvents="none">
+                <EmailIcon color={'gray.500'} />
+              </InputLeftElement>
               <Input
                 variant={'filled'}
                 bgColor={'brand.50'}
@@ -152,7 +154,9 @@ const SignIn = () => {
           </Box>
 
           <InputGroup size="md" mb="1rem">
-            <InputLeftElement pointerEvents="none" children={<LockIcon color={'gray.500'} />} />
+            <InputLeftElement pointerEvents="none">
+              <LockIcon color={'gray.500'} />
+            </InputLeftElement>
             <Input
               variant={'filled'}
               bgColor={'brand.50'}

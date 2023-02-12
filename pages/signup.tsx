@@ -186,13 +186,17 @@ const SignUp = () => {
           </Heading>
 
           <InputGroup mb="1rem">
-            <InputLeftElement pointerEvents="none" children={<UserCircleIcon width={'20px'} height={'20px'} color={'#718096'} />} />
+            <InputLeftElement pointerEvents="none">
+              <UserCircleIcon width={'20px'} height={'20px'} color={'#718096'} />
+            </InputLeftElement>
             <Input variant={'filled'} bgColor={'brand.50'} _hover={{ bgColor: 'brand.100' }} focusBorderColor={'brand.500'} placeholder="Enter name" type="text" value={name} onChange={(e) => setName(e.target.value)} isRequired />
           </InputGroup>
 
           <Box as="div" mb="1rem">
             <InputGroup>
-              <InputLeftElement pointerEvents="none" children={<EmailIcon color={!emailError ? 'gray.500' : 'red'} />} />
+              <InputLeftElement pointerEvents="none">
+                <EmailIcon color={!emailError ? 'gray.500' : 'red'} />
+              </InputLeftElement>
               <Input
                 variant={'filled'}
                 bgColor={'brand.50'}
@@ -218,7 +222,9 @@ const SignUp = () => {
 
           <Box as="div" mb="1rem">
             <InputGroup>
-              <InputLeftElement pointerEvents="none" children={<LockIcon color={'gray.500'} />} />
+              <InputLeftElement pointerEvents="none">
+                <LockIcon color={'gray.500'} />
+              </InputLeftElement>
               <Input
                 variant={'filled'}
                 bgColor={'brand.50'}
@@ -262,7 +268,9 @@ const SignUp = () => {
 
           <Box as="div" mb="1rem">
             <InputGroup>
-              <InputLeftElement pointerEvents="none" children={<LockIcon color={'gray.500'} />} />
+              <InputLeftElement pointerEvents="none">
+                <LockIcon color={'gray.500'} />
+              </InputLeftElement>
               <Input
                 variant={'filled'}
                 bgColor={'brand.50'}
