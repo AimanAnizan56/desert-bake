@@ -4,7 +4,7 @@ import { EyeIcon, EyeSlashIcon, UserCircleIcon } from '@heroicons/react/24/outli
 import { withIronSessionSsr } from 'iron-session/next';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Navbar from '../../components/Navbar';
 import { ironSessionOptions } from '../../lib/helper';
 
@@ -60,6 +60,36 @@ const Customer = (props: PropsType) => {
     password: false,
     confPassword: false,
   });
+
+  const changeButtonDisabled = useCallback((isDisabled: boolean) => {
+    setButtonState((prev) => ({
+      ...prev,
+      isDisabled: isDisabled,
+    }));
+  }, []);
+
+  useEffect(() => {
+    if (formVal.name.length != 0 && formVal.email.length != 0 && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(formVal.email)) {
+      changeButtonDisabled(false);
+      return;
+    }
+    changeButtonDisabled(true);
+  }, [formVal.name, formVal.email, changeButtonDisabled]);
+
+  const changeButtonPasswordDisabled = useCallback((isDisabled: boolean) => {
+    setButtonStatePassword((prev) => ({
+      ...prev,
+      isDisabled: isDisabled,
+    }));
+  }, []);
+
+  useEffect(() => {
+    if (error.password || error.confPassword || formPassVal.currPass.length == 0) {
+      changeButtonPasswordDisabled(true);
+      return;
+    }
+    changeButtonPasswordDisabled(false);
+  }, [error.password, error.confPassword, formPassVal.currPass, changeButtonPasswordDisabled]);
 
   const handleEmailValidation = () => {
     if (formVal.email.length != 0 && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(formVal.email)) {
