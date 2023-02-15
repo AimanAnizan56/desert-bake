@@ -8,6 +8,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { EmailIcon, LockIcon } from '@chakra-ui/icons';
 import axios from 'axios';
 
+const inputFocusVisible = { borderColor: 'brand.400', boxShadow: '0 0 0 1px var(--chakra-colors-brand-400)' };
+const buttonFocusVisible = { boxShadow: '0 0 0 3px var(--chakra-colors-brand-200)' };
+
 const Profile = (props: any) => {
   type User = {
     id: string;
@@ -258,7 +261,7 @@ const Profile = (props: any) => {
                     <InputLeftElement pointerEvents="none">
                       <UserCircleIcon width={'20px'} height={'20px'} color={'var(--chakra-colors-gray-300)'} />
                     </InputLeftElement>
-                    <Input type="text" placeholder="Admin Name" value={formVal.name} onChange={(e) => setFormVal({ ...formVal, name: e.target.value })} _focusVisible={{ borderColor: 'brand.400', boxShadow: '0 0 0 1px var(--chakra-colors-brand-400)' }} />
+                    <Input type="text" placeholder="Admin Name" value={formVal.name} onChange={(e) => setFormVal((prev) => ({ ...prev, name: e.target.value }))} focusBorderColor={'brand.500'} _focusVisible={inputFocusVisible} />
                   </InputGroup>
                 </Box>
 
@@ -269,15 +272,7 @@ const Profile = (props: any) => {
                     <InputLeftElement pointerEvents="none">
                       <EmailIcon color={!error.email ? 'gray.300' : 'red'} />
                     </InputLeftElement>
-                    <Input
-                      type="text"
-                      isInvalid={error.email}
-                      placeholder="hello@admin.com"
-                      value={formVal.email}
-                      onChange={(e) => setFormVal({ ...formVal, email: e.target.value })}
-                      onBlur={handleEmailValidation}
-                      _focusVisible={{ borderColor: 'brand.400', boxShadow: '0 0 0 1px var(--chakra-colors-brand-400)' }}
-                    />
+                    <Input type="text" isInvalid={error.email} placeholder="hello@admin.com" value={formVal.email} onChange={(e) => setFormVal((prev) => ({ ...prev, email: e.target.value }))} onBlur={handleEmailValidation} focusBorderColor={'brand.500'} _focusVisible={inputFocusVisible} />
                   </InputGroup>
                   {error.email && (
                     <Text ml="0.3rem" color="red" fontWeight="bold" fontSize="0.7rem" mt={'0.1rem'}>
@@ -287,10 +282,10 @@ const Profile = (props: any) => {
                 </Box>
 
                 <Flex gap={'0.5rem'} direction={'column'} maxW={'15rem'} mx={'auto'}>
-                  <Button colorScheme={'brand'} isLoading={buttonState.isLoading} isDisabled={buttonState.isDisabled} onClick={handleUpdate} _focusVisible={{ boxShadow: '0 0 0 3px var(--chakra-colors-brand-200)' }}>
+                  <Button colorScheme={'brand'} isLoading={buttonState.isLoading} isDisabled={buttonState.isDisabled} onClick={handleUpdate} _focusVisible={buttonFocusVisible}>
                     Update Profile
                   </Button>
-                  <Button variant={'outline'} colorScheme={'brand'} onClick={() => setCurrentForm('change-password')}>
+                  <Button variant={'outline'} colorScheme={'brand'} onClick={() => setCurrentForm('change-password')} _focusVisible={buttonFocusVisible}>
                     Change Password
                   </Button>
                 </Flex>
@@ -308,9 +303,10 @@ const Profile = (props: any) => {
                     <Input
                       pr="4.5rem"
                       focusBorderColor={'brand.500'}
+                      _focusVisible={inputFocusVisible}
                       value={formPassVal.currPass}
-                      onFocus={() => setError({ ...error, currPass: false })}
-                      onChange={(e) => setFormPassVal({ ...formPassVal, currPass: e.target.value })}
+                      onFocus={() => setError((prev) => ({ ...prev, currPass: false }))}
+                      onChange={(e) => setFormPassVal((prev) => ({ ...prev, currPass: e.target.value }))}
                       type={showInput.currPass ? 'text' : 'password'}
                       placeholder={'Enter current password'}
                       isRequired
@@ -325,9 +321,9 @@ const Profile = (props: any) => {
                         _hover={{ color: 'gray.700' }}
                         display="flex"
                         justifyContent={'center'}
-                        onClick={() => setShowInput({ ...showInput, currPass: !showInput.currPass })}
+                        onClick={() => setShowInput((prev) => ({ ...prev, currPass: !showInput.currPass }))}
                         onKeyDown={(e) => {
-                          if (e.key == 'Enter' || e.keyCode == 32) setShowInput({ ...showInput, currPass: !showInput.currPass });
+                          if (e.key == 'Enter' || e.keyCode == 32) setShowInput((prev) => ({ ...prev, currPass: !showInput.currPass }));
                         }}
                       >
                         {showInput.currPass ? <EyeIcon /> : <EyeSlashIcon />}
@@ -345,10 +341,11 @@ const Profile = (props: any) => {
                     <Input
                       pr="4.5rem"
                       focusBorderColor={'brand.500'}
+                      _focusVisible={inputFocusVisible}
                       value={formPassVal.password}
                       onBlur={handlePasswordBlur}
-                      onFocus={() => setError({ ...error, password: false })}
-                      onChange={(e) => setFormPassVal({ ...formPassVal, password: e.target.value })}
+                      onFocus={() => setError((prev) => ({ ...prev, password: false }))}
+                      onChange={(e) => setFormPassVal((prev) => ({ ...prev, password: e.target.value }))}
                       type={showInput.password ? 'text' : 'password'}
                       placeholder={'Enter new password'}
                       isRequired
@@ -363,9 +360,9 @@ const Profile = (props: any) => {
                         _hover={{ color: 'gray.700' }}
                         display="flex"
                         justifyContent={'center'}
-                        onClick={() => setShowInput({ ...showInput, password: !showInput.password })}
+                        onClick={() => setShowInput((prev) => ({ ...prev, password: !showInput.password }))}
                         onKeyDown={(e) => {
-                          if (e.key == 'Enter' || e.keyCode == 32) setShowInput({ ...showInput, password: !showInput.password });
+                          if (e.key == 'Enter' || e.keyCode == 32) setShowInput((prev) => ({ ...prev, password: !showInput.password }));
                         }}
                       >
                         {showInput.password ? <EyeIcon /> : <EyeSlashIcon />}
@@ -391,8 +388,8 @@ const Profile = (props: any) => {
                       focusBorderColor={'brand.500'}
                       value={formPassVal.confPassword}
                       onBlur={handleConfPasswordBlur}
-                      onFocus={() => setError({ ...error, confPassword: false })}
-                      onChange={(e) => setFormPassVal({ ...formPassVal, confPassword: e.target.value })}
+                      onFocus={() => setError((prev) => ({ ...prev, confPassword: false }))}
+                      onChange={(e) => setFormPassVal((prev) => ({ ...prev, confPassword: e.target.value }))}
                       type={showInput.confPassword ? 'text' : 'password'}
                       placeholder={'Re-enter new password'}
                       isRequired
@@ -407,9 +404,9 @@ const Profile = (props: any) => {
                         _hover={{ color: 'gray.700' }}
                         display="flex"
                         justifyContent={'center'}
-                        onClick={() => setShowInput({ ...showInput, confPassword: !showInput.confPassword })}
+                        onClick={() => setShowInput((prev) => ({ ...prev, confPassword: !showInput.confPassword }))}
                         onKeyDown={(e) => {
-                          if (e.key == 'Enter' || e.keyCode == 32) setShowInput({ ...showInput, confPassword: !showInput.confPassword });
+                          if (e.key == 'Enter' || e.keyCode == 32) setShowInput((prev) => ({ ...prev, confPassword: !showInput.confPassword }));
                         }}
                       >
                         {showInput.confPassword ? <EyeIcon /> : <EyeSlashIcon />}
@@ -425,10 +422,10 @@ const Profile = (props: any) => {
                 </Box>
 
                 <Flex gap={'0.5rem'} direction={'column'} maxW={'15rem'} mx={'auto'}>
-                  <Button colorScheme={'brand'} isLoading={buttonStatePassword.isLoading} isDisabled={buttonStatePassword.isDisabled} onClick={handlePasswordUpdate} _focusVisible={{ boxShadow: '0 0 0 3px var(--chakra-colors-brand-200)' }}>
+                  <Button colorScheme={'brand'} isLoading={buttonStatePassword.isLoading} isDisabled={buttonStatePassword.isDisabled} onClick={handlePasswordUpdate} _focusVisible={buttonFocusVisible}>
                     Update Password
                   </Button>
-                  <Button variant={'outline'} colorScheme={'brand'} onClick={() => setCurrentForm('change-details')}>
+                  <Button variant={'outline'} colorScheme={'brand'} onClick={() => setCurrentForm('change-details')} _focusVisible={buttonFocusVisible}>
                     Back
                   </Button>
                 </Flex>
