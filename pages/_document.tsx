@@ -13,7 +13,8 @@ const Body = styled.body`
 `;
 
 const Footer = styled.footer`
-  background: var(--chakra-colors-gray-200);
+  background: var(--chakra-colors-brand-400);
+  color: white;
   text-align: center;
   padding: 1rem;
   margin-top: auto;
