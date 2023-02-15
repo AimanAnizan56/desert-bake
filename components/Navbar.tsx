@@ -121,7 +121,7 @@ const Navbar = ({ pageTitle, pageDescription, user, currentPage }: { pageTitle: 
   // *** For customer
   const Icons: { href: string; icon: JSX.Element; label: string; fc: Function }[] = [
     {
-      href: '/customer',
+      href: '/profile',
       icon: <UserIcon />,
       label: 'My Profile',
       fc: () => {},
