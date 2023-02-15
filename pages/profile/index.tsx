@@ -3,7 +3,6 @@ import { Box, Button, Container, Flex, Heading, Input, InputGroup, InputLeftElem
 import { EyeIcon, EyeSlashIcon, UserCircleIcon } from '@heroicons/react/24/outline';
 import { withIronSessionSsr } from 'iron-session/next';
 import { GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import Navbar from '../../components/Navbar';
 import { ironSessionOptions } from '../../lib/helper';
