@@ -185,7 +185,7 @@ const CreateProduct = (props: any) => {
       <main>
         <Container size={'container.md'} mb={'2rem'}>
           <Box as={'div'} mt={'2rem'} boxShadow={'var(--box-shadow)'} px={'3rem'} py={'1rem'}>
-            <Heading as="h3" size={'md'}>
+            <Heading as="h1" size={'md'}>
               New Product
             </Heading>
 

@@ -245,7 +245,7 @@ const Profile = (props: any) => {
       <main>
         <Container maxW={'container.sm'} my={'2rem'}>
           <Box as="div" mt={'2rem'} p={'2rem 1.4rem'}>
-            <Heading as="h3" size={'md'} mb={'1.5rem'}>
+            <Heading as="h1" size={'md'} mb={'1.5rem'}>
               My Profile
             </Heading>
 
