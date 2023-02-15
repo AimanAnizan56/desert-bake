@@ -162,7 +162,7 @@ const Cart = (props: any) => {
 
   return (
     <>
-      {props.user.id ? <Navbar pageTitle="View Cart" pageDescription="This is page that display all available products" currentPage={'View Cart'} user={props.user} /> : <Navbar pageTitle="List of Products" pageDescription="This is page that display all available products" currentPage="View Cart" />}
+      <Navbar pageTitle="View Cart" pageDescription="This is page that display all available products" currentPage={'View Cart'} user={props.user} />
 
       <main>
         <Container maxW={'container.lg'}>

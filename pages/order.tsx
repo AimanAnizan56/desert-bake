@@ -75,11 +75,7 @@ const Order = (props: any) => {
 
   return (
     <>
-      {props.user.id ? (
-        <Navbar pageTitle="View Order" pageDescription="This is page that display all order by customer" currentPage={'View Order'} user={props.user} />
-      ) : (
-        <Navbar pageTitle="List of Products" pageDescription="This is page that display all available products" currentPage="View Cart" />
-      )}
+      <Navbar pageTitle="View Order" pageDescription="This is page that display all order by customer" currentPage={'View Order'} user={props.user} />
 
       <main>
         <Container maxW={'container.lg'}>
