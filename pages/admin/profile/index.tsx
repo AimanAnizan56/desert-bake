@@ -95,16 +95,16 @@ const Profile = (props: any) => {
 
   const handleEmailValidation = () => {
     if (formVal.email.length != 0 && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(formVal.email)) {
-      setError({
-        ...error,
+      setError((prev) => ({
+        ...prev,
         email: false,
-      });
+      }));
       return;
     }
-    setError({
-      ...error,
+    setError((prev) => ({
+      ...prev,
       email: true,
-    });
+    }));
 
     console.log(error);
   };
@@ -113,38 +113,38 @@ const Profile = (props: any) => {
     // do password validation
     console.log('password validation');
     if (/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(formPassVal.password)) {
-      setError({
-        ...error,
+      setError((prev) => ({
+        ...prev,
         password: false,
         confPassword: false,
-      });
+      }));
       if (formPassVal.password != formPassVal.confPassword) {
-        setError({
-          ...error,
+        setError((prev) => ({
+          ...prev,
           confPassword: true,
-        });
+        }));
       }
       return;
     }
-    setError({
-      ...error,
+    setError((prev) => ({
+      ...prev,
       password: true,
-    });
+    }));
   };
 
   const handleConfPasswordBlur = () => {
     // do confirmpassword validation
     if (formPassVal.confPassword == formPassVal.password) {
-      setError({
-        ...error,
+      setError((prev) => ({
+        ...prev,
         confPassword: false,
-      });
+      }));
       return;
     }
-    setError({
-      ...error,
+    setError((prev) => ({
+      ...prev,
       confPassword: true,
-    });
+    }));
   };
 
   const handleUpdate = async (event: any) => {
@@ -386,6 +386,7 @@ const Profile = (props: any) => {
                     <Input
                       pr="4.5rem"
                       focusBorderColor={'brand.500'}
+                      _focusVisible={inputFocusVisible}
                       value={formPassVal.confPassword}
                       onBlur={handleConfPasswordBlur}
                       onFocus={() => setError((prev) => ({ ...prev, confPassword: false }))}
