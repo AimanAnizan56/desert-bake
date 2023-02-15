@@ -131,12 +131,9 @@ const SignIn = () => {
           <Box as="div" mb="1rem">
             <InputGroup>
               <InputLeftElement pointerEvents="none">
-                <EmailIcon color={'gray.500'} />
+                <EmailIcon color={'gray.300'} />
               </InputLeftElement>
               <Input
-                variant={'filled'}
-                bgColor={'brand.50'}
-                _hover={{ bgColor: 'brand.100' }}
                 focusBorderColor={'brand.500'}
                 placeholder="Enter email"
                 type="email"
@@ -162,12 +159,9 @@ const SignIn = () => {
 
           <InputGroup size="md" mb="1rem">
             <InputLeftElement pointerEvents="none">
-              <LockIcon color={'gray.500'} />
+              <LockIcon color={'gray.300'} />
             </InputLeftElement>
             <Input
-              variant={'filled'}
-              bgColor={'brand.50'}
-              _hover={{ bgColor: 'brand.100' }}
               pr="4.5rem"
               focusBorderColor={'brand.500'}
               value={adminData.password}
