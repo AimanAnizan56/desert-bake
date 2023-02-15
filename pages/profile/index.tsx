@@ -27,7 +27,6 @@ const inputFocusVisible = { borderColor: 'brand.400', boxShadow: '0 0 0 1px var(
 const buttonFocusVisible = { boxShadow: '0 0 0 3px var(--chakra-colors-brand-200)' };
 
 const Customer = (props: PropsType) => {
-  const router = useRouter();
   const { user }: { user: UserType } = props;
 
   const [currentForm, setCurrentForm] = useState('change-details');
