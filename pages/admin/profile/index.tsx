@@ -86,12 +86,12 @@ const Profile = (props: any) => {
   }, []);
 
   useEffect(() => {
-    if (error.password || error.confPassword || formPassVal.currPass.length == 0) {
+    if (error.password || error.confPassword || formPassVal.currPass.length == 0 || formPassVal.password.length == 0 || formPassVal.confPassword.length == 0) {
       changeButtonPasswordDisabled(true);
       return;
     }
     changeButtonPasswordDisabled(false);
-  }, [error.password, error.confPassword, formPassVal.currPass, changeButtonPasswordDisabled]);
+  }, [error.password, error.confPassword, formPassVal.currPass, formPassVal.password, formPassVal.confPassword, changeButtonPasswordDisabled]);
 
   const handleEmailValidation = () => {
     if (formVal.email.length != 0 && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(formVal.email)) {
