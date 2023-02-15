@@ -1,10 +1,8 @@
 import { withIronSessionSsr } from 'iron-session/next';
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
 import { Box, Heading, keyframes, Text } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import { ChevronDoubleDownIcon } from '@heroicons/react/24/outline';
 import Navbar from '../components/Navbar';
 import { ironSessionOptions } from '../lib/helper';
 
@@ -12,6 +10,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import Link from 'next/link';
 
 export default function Home(props: any) {
   const bounceKayframes = keyframes`
@@ -47,7 +46,7 @@ export default function Home(props: any) {
                 <Text textAlign={'center'}>Premium Quality & Tasty Products</Text>
 
                 <Box as={motion.div} animation={bounceAnimation} bg={'brand.500'} mx={'auto'} mt={'0.8rem'} display={'flex'} alignItems={'center'} justifyContent={'center'} gap={'0.5rem'} w={'10rem'} py={'0.5rem'} px={'0.2rem'} borderRadius={30}>
-                  Shop Now <ChevronDoubleDownIcon width="24px" height="24px" />
+                  <Link href="/products">Shop Now</Link>
                 </Box>
               </Box>
             </Box>
