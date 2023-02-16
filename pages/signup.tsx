@@ -175,7 +175,7 @@ const SignUp = () => {
     <>
       <Head>
         <title>Desert Bake | Sign Up</title>
-        <meta name="description" content="Desert Bake Sign Up" />
+        <meta name="description" content="Dessert Bake Sign Up" />
         <link rel="icon" href="/favicon.jpg" />
       </Head>
 
