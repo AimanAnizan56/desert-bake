@@ -144,10 +144,12 @@ export default class CustomerController {
 
     if (id == undefined || id.length == 0) {
       res.status(400).json({ message: 'Please provide your id ' });
+      return;
     }
 
     if (isNaN(parseInt(id as string))) {
       res.status(400).json({ message: 'Id must be a number' });
+      return;
     }
 
     if (!req.session.user) {
@@ -157,24 +159,29 @@ export default class CustomerController {
 
     if (id != req.session.user?.id) {
       res.status(400).json({ message: 'User can only their own profile' });
+      return;
     }
 
     if ((name == undefined || email == undefined) && (current_password == undefined || new_password == undefined)) {
       res.status(400).json({ message: 'Please provide name and email OR current password and new password' });
+      return;
     }
 
     if ((name != undefined || email != undefined) && (current_password != undefined || new_password != undefined)) {
       res.status(400).json({ message: 'Please choose whether to update name and email OR current password and new password' });
+      return;
     }
 
     // update customer name and email
     if (name != undefined && email != undefined) {
       if (name.length == 0 || email.length == 0) {
         res.status(400).json({ message: 'Please provide name and email' });
+        return;
       }
 
       if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
         res.status(400).json({ message: 'Email is invalid' });
+        return;
       }
 
       const success = await Customer.updateCustomer(parseInt(id as string), name, email);
@@ -200,12 +207,14 @@ export default class CustomerController {
     if (current_password != undefined && new_password != undefined) {
       if (current_password.length == 0 || new_password.length == 0) {
         res.status(200).json({ message: 'Please provide current password and new password' });
+        return;
       }
 
       if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(new_password)) {
         res.status(400).json({
           message: 'Password must be at least 8 length, including lowercase, uppercase, number and special character!',
         });
+        return;
       }
 
       const modelRes = await Customer.updateCustomerPassword(parseInt(id as string), current_password, new_password);
