@@ -40,7 +40,7 @@ export default function Home(props: any) {
                 </Text>
 
                 <Heading textAlign={'center'} as="h1">
-                  Welcome to Desert Bake
+                  Welcome to Dessert Bake
                 </Heading>
 
                 <Text textAlign={'center'}>Premium Quality & Tasty Products</Text>
