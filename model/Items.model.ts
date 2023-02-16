@@ -137,6 +137,18 @@ export default class Item {
     return [];
   };
 
+  static updatePrice = async (product_id: number, new_price: number) => {
+    const query = 'UPDATE items, cart SET items.item_price=? WHERE items.cart_id=cart.cart_id AND cart.cart_status="in use" AND product_id=?';
+
+    const row: any = await makeQuery(query, [new_price, product_id]);
+
+    if (row.affectedRows > 0) {
+      return true;
+    }
+
+    return false;
+  };
+
   output = () => {
     console.log('====================================');
     console.log('item_id: ', this.item_id);

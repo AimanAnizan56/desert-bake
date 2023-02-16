@@ -2,6 +2,8 @@ import { unlink } from 'node:fs';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Product from '../model/Product.model';
 import { emailAnnounceProduct } from '../lib/mailtrap';
+import Item from '../model/Items.model';
+import Cart from '../model/Cart.model';
 
 export default class ProductController {
   static createProduct = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -138,6 +140,16 @@ export default class ProductController {
       });
     }
 
+    row = await Item.updatePrice(parseInt(id as string), price[0]);
+
+    if (!row) {
+      res.status(200).json({
+        message: 'Cannot update product price in cart items',
+      });
+      return;
+    }
+
+    await Cart.recalculateTotal();
     res.status(200).json({
       message: 'Successfully updated',
       data: row,
