@@ -16,7 +16,7 @@ type UserType = {
 const Navbar = ({ pageTitle, pageDescription, user, currentPage }: { pageTitle: string; pageDescription: string; user?: UserType; currentPage?: string }) => {
   const router = useRouter();
 
-  const title = `Desert Bake | ${pageTitle}`;
+  const title = `Dessert Bake | ${pageTitle}`;
 
   // *** for admin
   if (user && user.admin) {
@@ -79,7 +79,7 @@ const Navbar = ({ pageTitle, pageDescription, user, currentPage }: { pageTitle: 
             <Box justifySelf={'start'}>
               <Link href="/">
                 <Text as="b" fontSize="1.3rem">
-                  <Img src="/img/logo.png" alt="Desert Bake" h="3rem" />
+                  <Img src="/img/logo.png" alt="Dessert Bake" h="3rem" />
                 </Text>
               </Link>
             </Box>
@@ -194,7 +194,7 @@ const Navbar = ({ pageTitle, pageDescription, user, currentPage }: { pageTitle: 
           <Box justifySelf={'start'}>
             <Link href="/">
               <Text as="b" fontSize="1.3rem">
-                <Img src="/img/logo.png" alt="Desert Bake" h="3rem" />
+                <Img src="/img/logo.png" alt="Dessert Bake" h="3rem" />
               </Text>
             </Link>
           </Box>
