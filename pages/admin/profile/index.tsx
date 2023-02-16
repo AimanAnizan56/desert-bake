@@ -165,29 +165,29 @@ const Profile = (props: any) => {
       const { message } = res.data;
 
       if (res.status == 200) {
-        setAlertOn({
-          ...alertOn,
+        setAlertOn((prev) => ({
+          ...prev,
           message: message,
           status: 'success',
           trigger: true,
-        });
+        }));
       }
     } catch (err: any) {
       const { message } = err.response.data;
 
-      setAlertOn({
-        ...alertOn,
+      setAlertOn((prev) => ({
+        ...prev,
         message: message,
         status: 'error',
         trigger: true,
-      });
+      }));
     }
 
     setTimeout(() => {
-      setAlertOn({
-        ...alertOn,
+      setAlertOn((prev) => ({
+        ...prev,
         trigger: false,
-      });
+      }));
     }, 3000);
   };
 
@@ -209,12 +209,12 @@ const Profile = (props: any) => {
       const { message } = res.data;
 
       if (res.status == 200) {
-        setAlertOn({
-          ...alertOn,
+        setAlertOn((prev) => ({
+          ...prev,
           message: message,
           status: 'success',
           trigger: true,
-        });
+        }));
 
         setFormPassVal({
           password: '',
@@ -225,19 +225,19 @@ const Profile = (props: any) => {
     } catch (err: any) {
       const { message } = err.response.data;
 
-      setAlertOn({
-        ...alertOn,
+      setAlertOn((prev) => ({
+        ...prev,
         message: message,
         status: 'error',
         trigger: true,
-      });
+      }));
     }
 
     setTimeout(() => {
-      setAlertOn({
-        ...alertOn,
+      setAlertOn((prev) => ({
+        ...prev,
         trigger: false,
-      });
+      }));
     }, 3000);
   };
 
