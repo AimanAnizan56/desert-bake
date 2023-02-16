@@ -17,7 +17,7 @@ export default class ProductController {
     }
 
     const product = new Product(name[0], parseFloat(price[0]), description[0], type[0]);
-    product.setImage(image[0]);
+    await product.setImage(image[0]);
 
     const row: any = await product.createProduct();
 
@@ -121,33 +121,11 @@ export default class ProductController {
     }
 
     if (image != undefined) {
-      product.setImage(image[0]);
-      const { imagePath }: any = await product.getImagePath();
+      await product.setImage(image[0]);
       row = await product.updateProductImage();
-      const realPath = `./public${imagePath}`;
-
-      unlink(realPath, (err) => {
-        if (err) {
-          console.log('====================================');
-          console.log('Error deleting file: ', err);
-          console.log('====================================');
-          throw err;
-        }
-
-        console.log('====================================');
-        console.log(`Image ${name[0]} path has been deleted: ${realPath}`);
-        console.log('====================================');
-      });
     }
 
-    row = await Item.updatePrice(parseInt(id as string), price[0]);
-
-    if (!row) {
-      res.status(200).json({
-        message: 'Cannot update product price in cart items',
-      });
-      return;
-    }
+    await Item.updatePrice(parseInt(id as string), price[0]);
 
     await Cart.recalculateTotal();
     res.status(200).json({
