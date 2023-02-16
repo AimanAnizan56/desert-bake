@@ -125,14 +125,7 @@ export default class ProductController {
       row = await product.updateProductImage();
     }
 
-    row = await Item.updatePrice(parseInt(id as string), price[0]);
-
-    if (!row) {
-      res.status(200).json({
-        message: 'Cannot update product price in cart items',
-      });
-      return;
-    }
+    await Item.updatePrice(parseInt(id as string), price[0]);
 
     await Cart.recalculateTotal();
     res.status(200).json({

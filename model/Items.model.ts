@@ -141,12 +141,6 @@ export default class Item {
     const query = 'UPDATE items, cart SET items.item_price=? WHERE items.cart_id=cart.cart_id AND cart.cart_status="in use" AND product_id=?';
 
     const row: any = await makeQuery(query, [new_price, product_id]);
-
-    if (row.affectedRows > 0) {
-      return true;
-    }
-
-    return false;
   };
 
   output = () => {
