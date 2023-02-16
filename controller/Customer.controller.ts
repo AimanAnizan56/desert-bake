@@ -138,8 +138,88 @@ export default class CustomerController {
     });
   };
 
-  static updateCustomer = async (req: NextApiRequest) => {
-    // todo -- update customer profile
+  static updateCustomer = async (req: NextApiRequest, res: NextApiResponse) => {
+    const { id } = req.query;
+    const { name, email, current_password, new_password } = req.body;
+
+    if (id == undefined || id.length == 0) {
+      res.status(400).json({ message: 'Please provide your id ' });
+    }
+
+    if (isNaN(parseInt(id as string))) {
+      res.status(400).json({ message: 'Id must be a number' });
+    }
+
+    if (!req.session.user) {
+      res.status(400).json({ message: 'Please login first' });
+      return;
+    }
+
+    if (id != req.session.user?.id) {
+      res.status(400).json({ message: 'User can only their own profile' });
+    }
+
+    if ((name == undefined || email == undefined) && (current_password == undefined || new_password == undefined)) {
+      res.status(400).json({ message: 'Please provide name and email OR current password and new password' });
+    }
+
+    if ((name != undefined || email != undefined) && (current_password != undefined || new_password != undefined)) {
+      res.status(400).json({ message: 'Please choose whether to update name and email OR current password and new password' });
+    }
+
+    // update customer name and email
+    if (name != undefined && email != undefined) {
+      if (name.length == 0 || email.length == 0) {
+        res.status(400).json({ message: 'Please provide name and email' });
+      }
+
+      if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+        res.status(400).json({ message: 'Email is invalid' });
+      }
+
+      const success = await Customer.updateCustomer(parseInt(id as string), name, email);
+
+      if (success) {
+        req.session.user = {
+          id: req.session.user.id,
+          name: name,
+          email: email,
+          admin: true,
+        };
+
+        await req.session.save();
+
+        res.status(200).json({ message: 'Successfully updated' });
+        return;
+      }
+
+      res.status(500).json({ message: 'Cannot update name and email' });
+    }
+
+    // update customer password
+    if (current_password != undefined && new_password != undefined) {
+      if (current_password.length == 0 || new_password.length == 0) {
+        res.status(200).json({ message: 'Please provide current password and new password' });
+      }
+
+      if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(new_password)) {
+        res.status(400).json({
+          message: 'Password must be at least 8 length, including lowercase, uppercase, number and special character!',
+        });
+      }
+
+      const modelRes = await Customer.updateCustomerPassword(parseInt(id as string), current_password, new_password);
+
+      if (!modelRes.success) {
+        res.status(400).json({ message: modelRes.cause });
+        return;
+      }
+
+      res.status(200).json({
+        message: 'Successfully update',
+        type: 'Password',
+      });
+    }
   };
 
   static validateEmail = async (req: NextApiRequest, res: NextApiResponse) => {
