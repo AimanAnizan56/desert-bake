@@ -20,7 +20,6 @@ export const ironSessionOptions = {
 export const MultiPartyMiddleware = async (req: NextApiRequest, res: NextApiResponse, next: any) => {
   const form = new multiparty.Form({
     autoFiles: true,
-    uploadDir: './public/upload',
   });
 
   await form.parse(req, (err, fields, files) => {

@@ -1,4 +1,6 @@
+import Cloudinary from '../lib/cloudinary';
 import { makeQuery } from '../lib/mysql_config';
+import fs from 'fs';
 
 export default class Product {
   private id!: number;
@@ -19,8 +21,24 @@ export default class Product {
     this.id = id;
   };
 
-  setImage = (image: any) => {
-    this.imagePath = (image.path as string).replaceAll('\\', '/').replace('public', '');
+  setImage = async (image: any) => {
+    try {
+      const cloudinary = new Cloudinary();
+
+      fs.readFile(image, async (err, data) => {
+        if (err) {
+          throw err;
+        }
+
+        const image_url = await cloudinary.uploadImage(data);
+        this.imagePath = image_url;
+      });
+    } catch (err) {
+      console.log('====================================');
+      console.log('Error set image product model');
+      console.log(err);
+      console.log('====================================');
+    }
   };
 
   createProduct = async () => {
