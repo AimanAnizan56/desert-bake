@@ -39,7 +39,11 @@ export default function Home(props: any) {
           user={props.user}
         />
       ) : (
-        <Navbar pageTitle="Homepage" pageDescription="Desert Bake Homepage" currentPage={'Home'} />
+        <Navbar
+          pageTitle="Homepage"
+          pageDescription="Indulge your sweet tooth with our delectable selection of desserts. Our online bakery offers a wide variety of cakes, desserts, and baverages that are perfect for any occasion. Order from our online bakery and enjoy fast services."
+          currentPage={'Home'}
+        />
       )}
       <main>
         <Swiper pagination={{ dynamicBullets: true }} modules={[Pagination]} style={{ background: 'gray' }}>
