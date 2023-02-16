@@ -13,6 +13,10 @@ class Cloudinary {
       const result = await this.cloudinary.uploader.upload(image_path, {
         resource_type: 'image',
       });
+      console.log('====================================');
+      console.log('Result upload image');
+      console.log(result);
+      console.log('====================================');
 
       const { secure_url } = result;
       return secure_url;

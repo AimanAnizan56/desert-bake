@@ -26,6 +26,7 @@ export default class Product {
       const cloudinary = new Cloudinary();
 
       const image_url = await cloudinary.uploadImage(image.path as string);
+
       this.imagePath = image_url;
     } catch (err) {
       console.log('====================================');
