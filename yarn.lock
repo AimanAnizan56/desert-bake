@@ -817,33 +817,6 @@
   resolved "https://registry.yarnpkg.com/@chakra-ui/visually-hidden/-/visually-hidden-2.0.11.tgz#b2eb236e803451b39cdfcce3c5ab52e773c066a3"
   integrity sha512-e+5amYvnsmEQdiWH4XMyvrtGTdwz//+48vwj5CsNWWcselzkwqodmciy5rIrT71/SCQDOtmgnL7ZWAUOffxfsQ==
 
-"@cloudinary-util/url-loader@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@cloudinary-util/url-loader/-/url-loader-1.3.0.tgz#5ab63d8be5844f0b03ce9fe4cc7277bf775a62d1"
-  integrity sha512-ISyFOXRURMRrGyQ/FMMiLRq+698JWTNJpgFdL9t10ZemhOJT/d3ssfas9rcFLOKeHKqb6fAAY+NuYFNUtvpJqw==
-  dependencies:
-    "@cloudinary-util/util" "1.2.2"
-    "@cloudinary/url-gen" "^1.8.7"
-
-"@cloudinary-util/util@1.2.2", "@cloudinary-util/util@^1.2.0":
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/@cloudinary-util/util/-/util-1.2.2.tgz#af205a3b8ce2e8cec14bb9bf9f504b1d0151c3e4"
-  integrity sha512-xtXLfjsLoAKTsFUKDS0P/RPfgfnWs6iSkSBYZoG9uxAgK0MutWUZECX6wfN9FDa/3Yr+Z8oTRxxQuFBasyAqDg==
-
-"@cloudinary/transformation-builder-sdk@^1.2.0":
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/@cloudinary/transformation-builder-sdk/-/transformation-builder-sdk-1.2.3.tgz#47623dfaf568876721558c7ba37674cc7f2185c9"
-  integrity sha512-JLXdolOJVaX9f9Uz+72LJsX5OWmdi2QKbPSoCTE4+D5GugPWghdYrCDu53SSkbcGWfIohjUNIjS++6eRgYlYPg==
-  dependencies:
-    "@cloudinary/url-gen" "^1.7.0"
-
-"@cloudinary/url-gen@^1.7.0", "@cloudinary/url-gen@^1.8.6", "@cloudinary/url-gen@^1.8.7":
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/@cloudinary/url-gen/-/url-gen-1.9.0.tgz#0a8421ff4a4330993e9cf6b8225d918e4614af9e"
-  integrity sha512-rw2/KkWsb2oBTQX58E7Zm1pOb3+K7tqHPxms2C7P49qzJbqG+y/u1StwfqCrE94mZMr8q+o47cHxoQJMwWz1fQ==
-  dependencies:
-    "@cloudinary/transformation-builder-sdk" "^1.2.0"
-
 "@ctrl/tinycolor@^3.4.0":
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/@ctrl/tinycolor/-/tinycolor-3.4.1.tgz#75b4c27948c81e88ccd3a8902047bcd797f38d32"
@@ -2885,15 +2858,6 @@ natural-compare@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
-
-next-cloudinary@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/next-cloudinary/-/next-cloudinary-2.2.0.tgz#2a8860b214f066347e779b8e1f2287d322ab2dcb"
-  integrity sha512-MSiay0e8xFPT4GvIdMIAvGBoFeND+tSJw4e6LvfsSI/LHrNuxaEArKg0v1TYz+lbxiqIjZFarmAYR6gX6FZvFw==
-  dependencies:
-    "@cloudinary-util/url-loader" "^1.3.0"
-    "@cloudinary-util/util" "^1.2.0"
-    "@cloudinary/url-gen" "^1.8.6"
 
 next-connect@^0.13.0:
   version "0.13.0"

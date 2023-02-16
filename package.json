@@ -25,7 +25,6 @@
     "multiparty": "^4.2.3",
     "mysql2": "^2.3.3",
     "next": "13.0.0",
-    "next-cloudinary": "^2.2.0",
     "next-connect": "^0.13.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
