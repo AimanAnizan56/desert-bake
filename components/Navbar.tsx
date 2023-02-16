@@ -71,7 +71,9 @@ const Navbar = ({ pageTitle, pageDescription, user, currentPage }: { pageTitle: 
       <>
         <Head>
           <title>{title}</title>
-          <meta name="description" content={pageDescription} />
+          <meta name="description" content={pageDescription} key="desc" />
+          <meta property="og:title" content={title} />
+          <meta property="og:description" content={pageDescription} />
           <link rel="icon" href="/favicon.jpg" />
         </Head>
         <Box as="nav" bgColor="white" boxShadow="base" py="0.7rem" px="4rem" fontSize="1.1rem">
@@ -186,7 +188,9 @@ const Navbar = ({ pageTitle, pageDescription, user, currentPage }: { pageTitle: 
     <>
       <Head>
         <title>{title}</title>
-        <meta name="description" content={pageDescription} />
+        <meta name="description" content={pageDescription} key="desc" />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={pageDescription} />
         <link rel="icon" href="/favicon.jpg" />
       </Head>
       <Box as="nav" bgColor="white" boxShadow="base" py="0.7rem" px="4rem" fontSize="1.1rem">

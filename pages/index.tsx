@@ -11,6 +11,9 @@ import { Pagination } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import Link from 'next/link';
+import Head from 'next/head';
+
+const thumbnail_image = process.env.NEXT_PUBLIC_THUMBNAIL;
 
 export default function Home(props: any) {
   const bounceKayframes = keyframes`
@@ -25,6 +28,9 @@ export default function Home(props: any) {
 
   return (
     <>
+      <Head>
+        <meta property="og:image" content={thumbnail_image} />
+      </Head>
       {props.user.id ? <Navbar pageTitle="Homepage" pageDescription="Desert Bake Homepage" currentPage={'Home'} user={props.user} /> : <Navbar pageTitle="Homepage" pageDescription="Desert Bake Homepage" currentPage={'Home'} />}
       <main>
         <Swiper pagination={{ dynamicBullets: true }} modules={[Pagination]} style={{ background: 'gray' }}>
