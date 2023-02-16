@@ -108,7 +108,7 @@ export default class AdminController {
     }
 
     if (name != undefined && email != undefined) {
-      // update email and password
+      // update email and name
       if (name.length == 0 || email.length == 0) {
         res.status(400).json({
           message: 'Please provide name and email',
@@ -146,7 +146,7 @@ export default class AdminController {
       });
     }
 
-    if (current_password && new_password != undefined) {
+    if (current_password != undefined && new_password != undefined) {
       // update password -- check current password first
       if (current_password.length == 0 || new_password.length == 0) {
         res.status(200).json({
