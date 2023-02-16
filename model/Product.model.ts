@@ -25,14 +25,8 @@ export default class Product {
     try {
       const cloudinary = new Cloudinary();
 
-      fs.readFile(image, async (err, data) => {
-        if (err) {
-          throw err;
-        }
-
-        const image_url = await cloudinary.uploadImage(data);
-        this.imagePath = image_url;
-      });
+      const image_url = await cloudinary.uploadImage(image);
+      this.imagePath = image_url;
     } catch (err) {
       console.log('====================================');
       console.log('Error set image product model');
