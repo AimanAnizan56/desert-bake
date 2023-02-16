@@ -18,8 +18,9 @@ class Cloudinary {
       console.log(result);
       console.log('====================================');
 
-      const { secure_url } = result;
-      return secure_url;
+      const { public_id, format } = result;
+      const filename = `${public_id}.${format}`;
+      return filename;
     } catch (err) {
       console.log('====================================');
       console.log('Error Cloudinary');
