@@ -1,6 +1,7 @@
 import { LockIcon } from '@chakra-ui/icons';
-import { Box, Button, Container, Flex, Heading, Input, InputGroup, InputLeftElement, InputRightElement, Text } from '@chakra-ui/react';
+import { Alert, AlertIcon, Box, Button, Container, Flex, Heading, Input, InputGroup, InputLeftElement, InputRightElement, Text } from '@chakra-ui/react';
 import { EyeIcon, EyeSlashIcon, UserCircleIcon } from '@heroicons/react/24/outline';
+import axios from 'axios';
 import { withIronSessionSsr } from 'iron-session/next';
 import { GetServerSideProps } from 'next';
 import { useCallback, useEffect, useState } from 'react';
@@ -57,6 +58,11 @@ const Customer = (props: PropsType) => {
     currPass: false,
     password: false,
     confPassword: false,
+  });
+  const [alertOn, setAlertOn] = useState({
+    status: undefined as 'success' | 'info' | 'warning' | 'error' | 'loading' | undefined,
+    trigger: false,
+    message: 'Alert',
   });
 
   const changeButtonDisabled = useCallback((isDisabled: boolean) => {
@@ -140,12 +146,96 @@ const Customer = (props: PropsType) => {
 
   const handleUpdate = async (event: any) => {
     event.preventDefault();
-    // todo -- make backend first, then write code here
+
+    const url = `/api/v1/customer/${user.id}`;
+
+    if (formVal.name.length == 0 || formVal.email.length == 0) {
+      return;
+    }
+
+    try {
+      const res = await axios.put(url, {
+        name: formVal.name,
+        email: formVal.email,
+      });
+
+      const { message } = res.data;
+
+      if (res.status == 200) {
+        setAlertOn((prev) => ({
+          ...prev,
+          message: message,
+          status: 'success',
+          trigger: true,
+        }));
+      }
+    } catch (err: any) {
+      const { message } = err.response.data;
+
+      setAlertOn((prev) => ({
+        ...prev,
+        message: message,
+        status: 'error',
+        trigger: true,
+      }));
+    }
+
+    setTimeout(() => {
+      setAlertOn((prev) => ({
+        ...prev,
+        trigger: false,
+      }));
+    }, 3000);
   };
 
   const handlePasswordUpdate = async (event: any) => {
     event.preventDefault();
-    // todo -- make backend first, then write code here
+
+    const url = `/api/v1/customer/${user.id}`;
+
+    if (formPassVal.currPass.length == 0 || formPassVal.password.length == 0 || formPassVal.confPassword.length == 0) {
+      return;
+    }
+
+    try {
+      const res = await axios.put(url, {
+        current_password: formPassVal.currPass,
+        new_password: formPassVal.password,
+      });
+
+      const { message } = res.data;
+
+      if (res.status == 200) {
+        setAlertOn((prev) => ({
+          ...prev,
+          message: message,
+          status: 'success',
+          trigger: true,
+        }));
+
+        setFormPassVal({
+          password: '',
+          currPass: '',
+          confPassword: '',
+        });
+      }
+    } catch (err: any) {
+      const { message } = err.response.data;
+
+      setAlertOn((prev) => ({
+        ...prev,
+        message: message,
+        status: 'error',
+        trigger: true,
+      }));
+    }
+
+    setTimeout(() => {
+      setAlertOn((prev) => ({
+        ...prev,
+        trigger: false,
+      }));
+    }, 3000);
   };
 
   return (
@@ -347,6 +437,13 @@ const Customer = (props: PropsType) => {
           </Box>
         </Container>
       </main>
+
+      {alertOn.trigger && (
+        <Alert status={alertOn.status} w="30vw" mx="auto" position={'fixed'} left={'50vw'} bottom={'2rem'} transform={'translateX(-50%)'}>
+          <AlertIcon />
+          {alertOn.message}
+        </Alert>
+      )}
     </>
   );
 };
