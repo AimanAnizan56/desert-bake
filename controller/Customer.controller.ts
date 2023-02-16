@@ -157,6 +157,11 @@ export default class CustomerController {
       return;
     }
 
+    if (req.session.user.admin) {
+      res.status(400).json({ message: 'This url is for customer only' });
+      return;
+    }
+
     if (id != req.session.user?.id) {
       res.status(400).json({ message: 'User can only their own profile' });
       return;
