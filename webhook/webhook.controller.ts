@@ -10,6 +10,13 @@ export class WebhookPaymentController {
     const payment_date = event.created;
     const status = paymentIntent.status;
 
+    console.log('====================================');
+    console.log('Payment intent data');
+    console.log(`payment_id: ${payment_id}`);
+    console.log(`payment_date: ${payment_date}`);
+    console.log(`payment_status: ${status}`);
+    console.log('====================================');
+
     let succeed = WebhookPaymentQuery.updatePayment(payment_id, status, payment_date);
 
     if (!succeed) {
@@ -21,6 +28,7 @@ export class WebhookPaymentController {
       });
       return;
     }
+    console.log('succeed updatePayment', succeed);
 
     const { order_id } = paymentIntent.metadata;
     succeed = WebhookOrderQuery.updateOrder(order_id, 'preparing');
@@ -34,6 +42,7 @@ export class WebhookPaymentController {
       });
       return;
     }
+    console.log('succeed updateOrder', succeed);
 
     res.status(200).send({
       success: true,
