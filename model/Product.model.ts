@@ -1,6 +1,5 @@
 import Cloudinary from '../lib/cloudinary';
 import { makeQuery } from '../lib/mysql_config';
-import fs from 'fs';
 
 export default class Product {
   private id!: number;
