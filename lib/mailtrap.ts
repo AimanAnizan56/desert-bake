@@ -53,10 +53,15 @@ export const emailAnnounceProduct = async (product: Product, temp_image: any) =>
     const mailtrap_response = await axios.request(options);
     const { success, message_ids } = mailtrap_response.data;
     if (success) {
-      console.log('Mailtrap Response', {
+      const mailtrap_res_obj = {
         success: success,
         message_ids: message_ids,
-      });
+      };
+      console.log('Mailtrap Response', mailtrap_res_obj);
+      return mailtrap_res_obj;
+    }
+
+    if (!success && allCustomer.length == 0) {
       return {
         message: 'No customer has register yet',
         success: false,
