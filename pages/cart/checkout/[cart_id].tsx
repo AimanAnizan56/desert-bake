@@ -16,13 +16,6 @@ const Checkout = (props: any) => {
   const [clientSecret, setClientSecret] = useState();
   const [paymentId, setPaymentId] = useState();
 
-  const [user, setUser] = useState<{
-    id: number;
-    name: string;
-    email: string;
-    admin: boolean;
-  }>();
-
   const [carts, setCarts] = useState<Array<any>>();
   const [itemDetail, setItemDetail] = useState({
     totalQuantity: 0,
