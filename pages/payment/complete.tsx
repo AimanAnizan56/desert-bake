@@ -69,7 +69,7 @@ const Complete = () => {
           </Box>
 
           <Box as="div" textAlign="center">
-            <Button variant="outline" colorScheme={redirect_status == 'succeeded' ? 'green' : 'red'} px="2rem" onClick={() => router.back()}>
+            <Button variant="outline" colorScheme={redirect_status == 'succeeded' ? 'green' : 'red'} px="2rem" onClick={() => router.push('/order')}>
               {redirect_status == 'succeeded' ? 'Complete' : 'Back'}
             </Button>
           </Box>
