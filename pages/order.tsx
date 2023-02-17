@@ -117,7 +117,7 @@ const Order = (props: any) => {
               </Box>
             )}
 
-            {!pageLoad && !filteredOrders && (
+            {!pageLoad && orders && !filteredOrders && (
               <Box as="div" textAlign={'center'}>
                 No orders found within this status.
               </Box>
