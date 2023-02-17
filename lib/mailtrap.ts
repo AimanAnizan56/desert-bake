@@ -5,16 +5,8 @@ import path from 'path';
 import Product from '../model/Product.model';
 import { emailTemplate } from './email-template';
 
-export const emailAnnounceProduct = async (product: Product) => {
-  const index = __dirname.split('\\').findIndex((elem) => elem == 'dessert-bake');
-  const tempPath = __dirname.split('\\');
-
-  let realpath = tempPath[0];
-  for (let i = 1; i < index; i++) {
-    realpath = path.join(realpath, tempPath[i]);
-  }
-  realpath = path.join(realpath, 'dessert-bake', 'public', (await product.getImagePath())?.imagePath as string);
-  const productImage = fs.readFileSync(realpath, { encoding: 'base64' });
+export const emailAnnounceProduct = async (product: Product, temp_image: any) => {
+  const productImage = fs.readFileSync(temp_image.path as string, { encoding: 'base64' });
 
   if ((await Customer.getAllCustomerData()).length == 0) {
     console.log('====================================');

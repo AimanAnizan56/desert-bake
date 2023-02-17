@@ -29,7 +29,7 @@ export default class ProductController {
       return;
     }
 
-    const emailRes: any = await emailAnnounceProduct(product);
+    const emailRes: any = await emailAnnounceProduct(product, image[0]);
 
     if (!emailRes.success) {
       const noCust = emailRes.message == 'No customer has register yet';
