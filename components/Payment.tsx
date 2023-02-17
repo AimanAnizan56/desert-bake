@@ -36,7 +36,7 @@ const CheckoutForm = ({ modalSuccessState, setModalSuccessState }: any) => {
         elements,
         confirmParams: {
           // todo -- improvise later / ignore if there if success page
-          return_url: `${process.env.NEXT_PUBLIC_HOST_TEST}/`,
+          return_url: `https://${window.location.host}/payment/complete`,
         },
         redirect: 'if_required',
       });
@@ -130,7 +130,7 @@ const Payment = ({ clientSecret, totalPrice, paymentId }: any) => {
               Payment Successful
             </Box>
             <Flex gap={2} fontWeight={'normal'} fontSize={'0.9rem'} color="gray.500" justifyContent={'center'}>
-              <Box as="span">{paymentId}</Box>
+              <Box as="span">Thank you for your payment!</Box>
             </Flex>
           </ModalHeader>
           <ModalBody>

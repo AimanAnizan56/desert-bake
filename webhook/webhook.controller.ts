@@ -10,7 +10,14 @@ export class WebhookPaymentController {
     const payment_date = event.created;
     const status = paymentIntent.status;
 
-    let succeed = WebhookPaymentQuery.updatePayment(payment_id, status, payment_date);
+    console.log('====================================');
+    console.log('Payment intent data');
+    console.log(`payment_id: ${payment_id}`);
+    console.log(`payment_date: ${payment_date}`);
+    console.log(`payment_status: ${status}`);
+    console.log('====================================');
+
+    let succeed = await WebhookPaymentQuery.updatePayment(payment_id, status, payment_date);
 
     if (!succeed) {
       console.log('====================================');
@@ -21,9 +28,10 @@ export class WebhookPaymentController {
       });
       return;
     }
+    console.log('succeed updatePayment', succeed);
 
     const { order_id } = paymentIntent.metadata;
-    succeed = WebhookOrderQuery.updateOrder(order_id, 'preparing');
+    succeed = await WebhookOrderQuery.updateOrder(order_id, 'preparing');
 
     if (!succeed) {
       console.log('====================================');
@@ -34,6 +42,7 @@ export class WebhookPaymentController {
       });
       return;
     }
+    console.log('succeed updateOrder', succeed);
 
     res.status(200).send({
       success: true,
@@ -60,7 +69,10 @@ class WebhookPaymentQuery {
   // update payment in db
   static updatePayment = async (payment_id: string, payment_status: string, payment_date: string) => {
     const row: any = await makeQuery('UPDATE payment SET payment_status=?, payment_date=? WHERE payment_id=?', [payment_status, payment_date, payment_id]);
-
+    console.log('====================================');
+    console.log('row update payment: ');
+    console.log(row);
+    console.log('====================================');
     if (row.affectedRows == 1) {
       return true;
     }

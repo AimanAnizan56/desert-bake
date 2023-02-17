@@ -44,14 +44,14 @@ paymentWebhook.post(async (req: NextApiRequest, res: NextApiResponse) => {
 
   // payload.type (payment_intent.succeeded, payment_intent.canceled)
   switch (event.type) {
-    case 'payment_intent.succeeded' || 'charge.succeeded':
-      WebhookPaymentController.handleSucceeded(event, res);
+    case 'payment_intent.succeeded':
+      await WebhookPaymentController.handleSucceeded(event, res);
       break;
-    case 'payment_intent.canceled' || 'charge.canceled':
-      WebhookPaymentController.handleCanceled(event, res);
+    case 'payment_intent.canceled':
+      await WebhookPaymentController.handleCanceled(event, res);
       break;
-    case 'charge.failed' || 'payment_intent.payment_failed':
-      WebhookPaymentController.handleFailed(event, res);
+    case 'payment_intent.payment_failed':
+      await WebhookPaymentController.handleFailed(event, res);
       break;
     default:
       res.status(400).json({

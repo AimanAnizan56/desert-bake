@@ -196,7 +196,7 @@ export default class CustomerController {
           id: req.session.user.id,
           name: name,
           email: email,
-          admin: true,
+          admin: false,
         };
 
         await req.session.save();
