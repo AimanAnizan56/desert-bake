@@ -1,4 +1,3 @@
-import { unlink } from 'node:fs';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Product from '../model/Product.model';
 import { emailAnnounceProduct } from '../lib/mailtrap';

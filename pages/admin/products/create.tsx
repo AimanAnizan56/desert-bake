@@ -34,9 +34,6 @@ const CreateProduct = (props: any) => {
       setModalState({ ...modalState, isOpen: false });
     },
   });
-  const [submitButton, setSubmitButton] = useState({
-    isLoading: false,
-  });
 
   const [buttonState, setButtonState] = useState({
     isLoading: false,
@@ -76,21 +73,21 @@ const CreateProduct = (props: any) => {
       };
 
       reader.readAsDataURL(e.target.files[0]);
-      setProduct({ ...product, image: e.target.files[0] });
+      setProduct((prev) => ({ ...prev, image: e.target.files[0] }));
       return;
     }
 
-    setProduct({ ...product, image: undefined });
+    setProduct((prev) => ({ ...prev, image: undefined }));
     setProductImageSrc('/');
   };
 
   const handleConfirmation = async () => {
     // popup a modal to check confirmation
-    setModalState({ ...modalState, isOpen: true });
+    setModalState((prev) => ({ ...prev, isOpen: true }));
   };
 
   const handleSubmit = async () => {
-    setModalState({ ...modalState, isOpen: false });
+    setModalState((prev) => ({ ...prev, isOpen: false }));
     changeButtonLoading(true);
 
     const formData = new FormData();
@@ -129,21 +126,21 @@ const CreateProduct = (props: any) => {
         });
 
         setTimeout(() => {
-          setAlertOn({
-            ...alertOn,
+          setAlertOn((prev) => ({
+            ...prev,
             trigger: false,
-          });
+          }));
 
           router.push('/admin/products');
         }, 1500);
 
-        setProduct({
-          ...product,
+        setProduct((prev) => ({
+          ...prev,
           name: '',
           price: '',
           description: '',
-          type: 'dessert',
-        });
+          type: 'cake',
+        }));
         console.log('Product Data', data);
       }
     } catch (err) {
@@ -167,10 +164,10 @@ const CreateProduct = (props: any) => {
             });
 
             setTimeout(() => {
-              setAlertOn({
+              setAlertOn((prev) => ({
                 ...alertOn,
                 trigger: false,
-              });
+              }));
             }, 3000);
           }
         }
@@ -320,7 +317,7 @@ const CreateProduct = (props: any) => {
               Cancel
             </Button>
 
-            <Button isLoading={submitButton.isLoading} colorScheme={'brand'} width={'5rem'} onClick={handleSubmit}>
+            <Button colorScheme={'brand'} width={'5rem'} onClick={handleSubmit}>
               Create
             </Button>
           </ModalFooter>

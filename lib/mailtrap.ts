@@ -1,7 +1,6 @@
 import axios from 'axios';
 import Customer from '../model/Customer.model';
 import fs from 'fs';
-import path from 'path';
 import Product from '../model/Product.model';
 import { emailTemplate } from './email-template';
 
