@@ -17,7 +17,7 @@ export class WebhookPaymentController {
     console.log(`payment_status: ${status}`);
     console.log('====================================');
 
-    let succeed = WebhookPaymentQuery.updatePayment(payment_id, status, payment_date);
+    let succeed = await WebhookPaymentQuery.updatePayment(payment_id, status, payment_date);
 
     if (!succeed) {
       console.log('====================================');
@@ -31,7 +31,7 @@ export class WebhookPaymentController {
     console.log('succeed updatePayment', succeed);
 
     const { order_id } = paymentIntent.metadata;
-    succeed = WebhookOrderQuery.updateOrder(order_id, 'preparing');
+    succeed = await WebhookOrderQuery.updateOrder(order_id, 'preparing');
 
     if (!succeed) {
       console.log('====================================');
