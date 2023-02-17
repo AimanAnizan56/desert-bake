@@ -60,7 +60,10 @@ class WebhookPaymentQuery {
   // update payment in db
   static updatePayment = async (payment_id: string, payment_status: string, payment_date: string) => {
     const row: any = await makeQuery('UPDATE payment SET payment_status=?, payment_date=? WHERE payment_id=?', [payment_status, payment_date, payment_id]);
-
+    console.log('====================================');
+    console.log('row update payment: ');
+    console.log(row);
+    console.log('====================================');
     if (row.affectedRows == 1) {
       return true;
     }
