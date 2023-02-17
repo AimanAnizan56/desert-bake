@@ -130,7 +130,7 @@ const Payment = ({ clientSecret, totalPrice, paymentId }: any) => {
               Payment Successful
             </Box>
             <Flex gap={2} fontWeight={'normal'} fontSize={'0.9rem'} color="gray.500" justifyContent={'center'}>
-              <Box as="span">{paymentId}</Box>
+              <Box as="span">Thank you for your payment!</Box>
             </Flex>
           </ModalHeader>
           <ModalBody>

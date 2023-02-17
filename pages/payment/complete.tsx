@@ -65,7 +65,7 @@ const Complete = () => {
           </Heading>
 
           <Box as="p" textAlign="center" mb="1rem" color={redirect_status == 'succeeded' ? '' : 'red.400'}>
-            {redirect_status == 'succeeded' ? 'Thank you for your payment' : "You've cancelled the payment!"}
+            {redirect_status == 'succeeded' ? 'Thank you for your payment!' : "You've cancelled the payment!"}
           </Box>
 
           <Box as="div" textAlign="center">
