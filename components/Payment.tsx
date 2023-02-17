@@ -36,7 +36,7 @@ const CheckoutForm = ({ modalSuccessState, setModalSuccessState }: any) => {
         elements,
         confirmParams: {
           // todo -- improvise later / ignore if there if success page
-          return_url: `${process.env.NEXT_PUBLIC_HOST_TEST}/`,
+          return_url: `${process.env.NEXT_PUBLIC_HOST_TEST}/payment/complete`,
         },
         redirect: 'if_required',
       });
