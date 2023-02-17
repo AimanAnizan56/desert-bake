@@ -8,7 +8,7 @@ class Cloudinary {
     });
   }
 
-  uploadImage = async (image_path: any) => {
+  uploadImage = async (image_path: string) => {
     try {
       const result = await this.cloudinary.uploader.upload(image_path, {
         resource_type: 'image',
