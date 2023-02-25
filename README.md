@@ -1,3 +1,7 @@
+# Repository
+
+- [E-Commerce Ordering System for Dessert Bake by Aiman Anizan](https://github.com/AimanAnizan56/dessert-bake)
+
 ## Requirement
 
 - [Node.js v18.14.1](https://nodejs.org/en/download/)
@@ -5,7 +9,7 @@
 
 ## Getting Started
 
-Before run the development server, make sure .env file are provided as .env.example. <br>
+Before run the development server, make sure .env.local file are provided as .env.example. <br>
 To run on the development, use:
 
 ```bash
