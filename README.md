@@ -1,10 +1,11 @@
 ## Requirement
 
-- NodeJS
-- Stripe CLI
+- [Node.js v18.14.1](https://nodejs.org/en/download/)
+- [Stripe CLI v1.13.7](https://stripe.com/docs/stripe-cli)
 
 ## Getting Started
 
+Before run the development server, make sure .env file are provided as .env.example. <br>
 To run on the development, use:
 
 ```bash
@@ -17,7 +18,7 @@ yarn stripe-listen
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/*].
+[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/\*]().
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
