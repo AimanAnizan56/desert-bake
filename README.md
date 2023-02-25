@@ -6,10 +6,13 @@
 
 - [Node.js v18.14.1](https://nodejs.org/en/download/)
 - [Stripe CLI v1.13.7](https://stripe.com/docs/stripe-cli)
+- [Mysql database]()
+- [Mailtrap](https://mailtrap.io/)
+- [Cloudinary](https://cloudinary.com/)
 
 ## Getting Started
 
-Before run the development server, make sure all dependencies are installed and provided .env.local file as .env.example. <br>
+Before run the development server, make sure all dependencies are installed and provided .env.local file as .env.example. <br><br>
 To run on the development, use:
 
 ```bash
