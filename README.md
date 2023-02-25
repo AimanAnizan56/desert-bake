@@ -9,7 +9,7 @@
 
 ## Getting Started
 
-Before run the development server, make sure .env.local file are provided as .env.example. <br>
+Before run the development server, make sure all dependencies are installed and provided .env.local file as .env.example. <br>
 To run on the development, use:
 
 ```bash
