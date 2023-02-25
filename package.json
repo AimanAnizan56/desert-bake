@@ -1,7 +1,11 @@
 {
   "name": "dessert-bake",
   "version": "0.1.0",
+  "description": "This project is final year project for my CS266 program, based on Dessert Bake stakeholder",
+  "homepage": "https://github.com/AimanAnizan56/dessert-bake#readme",
+  "author": "aiman anizan <anizanaiman@gmail.com>",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
