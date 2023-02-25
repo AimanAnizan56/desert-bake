@@ -1,7 +1,7 @@
-# Requirement
+## Requirement
 
-a) NodeJS
-b) Stripe CLI
+- NodeJS
+- Stripe CLI
 
 ## Getting Started
 
