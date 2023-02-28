@@ -3,6 +3,7 @@ import Admin from '../model/Admin.model';
 
 export default class AdminController {
   static login = async (req: NextApiRequest, res: NextApiResponse) => {
+    res.setHeader('cache-control', 'no-store, max-age=0');
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -47,6 +48,7 @@ export default class AdminController {
   };
 
   static logout = (req: NextApiRequest, res: NextApiResponse) => {
+    res.setHeader('cache-control', 'no-store, max-age=0');
     req.session.destroy();
     if (req.session.user == undefined) {
       res.status(200).json({

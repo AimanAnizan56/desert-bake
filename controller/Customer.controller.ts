@@ -3,6 +3,7 @@ import Customer from '../model/Customer.model';
 
 export default class CustomerController {
   static login = async (req: NextApiRequest, res: NextApiResponse) => {
+    res.setHeader('cache-control', 'no-store, max-age=0');
     // POST - Authenticate user begin
     if (req.session.user != undefined) {
       res.status(400).json({
@@ -55,6 +56,7 @@ export default class CustomerController {
   };
 
   static logout = (req: NextApiRequest, res: NextApiResponse) => {
+    res.setHeader('cache-control', 'no-store, max-age=0');
     req.session.destroy();
     if (req.session.user == undefined) {
       res.status(200).json({
