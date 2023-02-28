@@ -36,7 +36,7 @@ const Navbar = ({ pageTitle, pageDescription, user, currentPage }: { pageTitle: 
           e.preventDefault();
 
           try {
-            let res = await axios.get('/api/v1/admin/logout');
+            let res = await axios.post('/api/v1/admin/logout');
             const { logout, message } = await res.data;
 
             if (logout) {
@@ -149,7 +149,7 @@ const Navbar = ({ pageTitle, pageDescription, user, currentPage }: { pageTitle: 
         e.preventDefault();
 
         try {
-          let res = await axios.get('/api/v1/customer/logout');
+          let res = await axios.post('/api/v1/customer/logout');
           const { logout, message } = await res.data;
 
           if (logout) {
