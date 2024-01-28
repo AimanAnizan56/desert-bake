@@ -50,7 +50,7 @@ export class PaymentController {
       amount: realAmount,
       currency: 'myr',
       payment_method_types: ['card'],
-      receipt_emai: req.session.user.email,
+      receipt_email: req.session.user.email,
       customer: req.session.user.id,
     });
 
